@@ -1,0 +1,364 @@
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Web;
+using System.Web.SessionState;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
+
+using WorkFlow.lib;
+
+using ModuleWorkFlow.BLL.Apply;
+using ModuleWorkFlow.Model.Apply;
+
+namespace ModuleWorkFlow.admin
+{
+	/// <summary>
+	/// Summary description for ProductType.
+	/// </summary>
+	public class MerchindiseApplyView : System.Web.UI.Page
+	{
+		protected System.Web.UI.WebControls.Button btn_add_edit;
+		protected System.Web.UI.HtmlControls.HtmlTable Table1;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyNo;
+		protected System.Web.UI.WebControls.TextBox txt_MerchindiseApplyNo;
+		protected System.Web.UI.WebControls.Label lab_inputDate;
+		protected WebControlLibrary.InputCalendar txt_inputDate;
+		protected System.Web.UI.WebControls.Label lab_assestRequisitionId;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyCreater;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyCreateDate;
+		protected WebControlLibrary.InputCalendar txt_MerchindiseApplyCreateDate;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyChecker;
+		protected System.Web.UI.WebControls.TextBox txt_MerchindiseApplyChecker;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyCheckDate;
+		protected WebControlLibrary.InputCalendar txt_MerchindiseApplyCheckDate;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyApprover;
+		protected System.Web.UI.WebControls.TextBox txt_MerchindiseApplyApprover;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyApproveDate;
+		protected WebControlLibrary.InputCalendar txt_MerchindiseApplyApproveDate;
+		protected System.Web.UI.WebControls.Label lab_MerchindiseApplyComment;
+		protected System.Web.UI.WebControls.TextBox txt_MerchindiseApplyComment;
+		protected System.Web.UI.WebControls.Label lab_status;
+		protected System.Web.UI.WebControls.TextBox txt_status;
+		protected System.Web.UI.WebControls.DataGrid dg_MerchindiseApply;
+		protected System.Web.UI.WebControls.Label Label_Message;
+		protected System.Web.UI.WebControls.Label lab_Id;
+		protected System.Web.UI.WebControls.Label func;
+		protected System.Web.UI.WebControls.DropDownList dpl_assestRequisitionId;
+		protected System.Web.UI.WebControls.Button btn_Detail;
+		protected System.Web.UI.WebControls.DropDownList dpl_MerchindiseApplyCreater;
+
+		private ModuleWorkFlow.BLL.Apply.MerchindiseApply merchindiseApply;
+	
+		private void Page_Load(object sender, System.EventArgs e)
+		{
+			merchindiseApply = new ModuleWorkFlow.BLL.Apply.MerchindiseApply();
+			if (!this.IsPostBack)
+			{
+				string id = Request.Params["id"];
+				if (id != null)
+				{
+					BindDrop();
+					initialEdit(Convert.ToInt32(id));
+					btn_Detail.Enabled = true;
+				}
+				else
+				{
+					BindDrop();
+				}
+			}
+		}
+		
+		private void BindDrop()
+		{
+			ModuleWorkFlow.BLL.Apply.AssestRequistion ar = new AssestRequistion();
+			IList source = ar.GetAssestRequistionByStatus("APPROV_PASS");
+			ModuleWorkFlow.Model.Apply.AssestRequistionInfo ari = new AssestRequistionInfo();
+			ari.Id = 0;
+			ari.AssestRequisitionNo = "µL¥Ó½Ð³æ";
+			source.Insert(0,ari);
+			dpl_assestRequisitionId.DataSource = source;
+			dpl_assestRequisitionId.DataTextField = "assestRequisitionNo";
+			dpl_assestRequisitionId.DataValueField = "Id";
+			dpl_assestRequisitionId.DataBind();
+
+			ModuleWorkFlow.BLL.User user = new ModuleWorkFlow.BLL.User();
+			dpl_MerchindiseApplyCreater.DataSource = user.getListUserInfo();
+			dpl_MerchindiseApplyCreater.DataTextField = "Name";
+			dpl_MerchindiseApplyCreater.DataValueField = "Name";
+			dpl_MerchindiseApplyCreater.DataBind();
+		}
+
+		private void ClearView()
+		{
+			txt_MerchindiseApplyNo.Text="";
+			txt_inputDate.Text="";
+//			txt_assestRequisitionId.Text="";
+//			txt_MerchindiseApplyCreater.Text="";
+			txt_MerchindiseApplyCreateDate.Text="";
+			txt_MerchindiseApplyChecker.Text="";
+			txt_MerchindiseApplyCheckDate.Text="";
+			txt_MerchindiseApplyApprover.Text="";
+			txt_MerchindiseApplyApproveDate.Text="";
+			txt_MerchindiseApplyComment.Text="";
+			txt_status.Text="";
+//			lab_Id.Text="";
+			func.Text="";
+		}
+
+		#region Web Form Designer generated code
+		override protected void OnInit(EventArgs e)
+		{
+			//
+			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
+			//
+			InitializeComponent();
+			base.OnInit(e);
+		}
+		
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{    
+			this.btn_add_edit.Click += new System.EventHandler(this.btn_add_edit_Click);
+			this.btn_Detail.Click += new System.EventHandler(this.btn_Detail_Click);
+			this.Load += new System.EventHandler(this.Page_Load);
+
+		}
+		#endregion
+		
+		private void initialEdit(int id)
+		{
+			func.Text = "Edit";
+			MerchindiseApplyInfo merchindiseApplyinfo = new MerchindiseApplyInfo();
+			lab_Id.Text = Convert.ToString(id);
+			merchindiseApplyinfo = merchindiseApply.findbykey(Convert.ToInt32(lab_Id.Text));
+			if(merchindiseApplyinfo!=null)
+			{
+				txt_MerchindiseApplyNo.Text = merchindiseApplyinfo.MerchindiseApplyNo; 
+				if(! merchindiseApplyinfo.InputDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString())){
+				txt_inputDate.Text = merchindiseApplyinfo.InputDate.ToShortDateString();
+				}else{
+				txt_inputDate.Text = "";
+				}
+				AssestRequistion ar = new AssestRequistion();
+				IList sour = new ArrayList();
+				try
+				{
+					sour.Add(ar.findbykey(merchindiseApplyinfo.AssestRequisitionId));
+					dpl_assestRequisitionId.Items.Clear();
+					dpl_assestRequisitionId.DataSource = sour;
+					dpl_assestRequisitionId.DataTextField = "assestRequisitionNo";
+					dpl_assestRequisitionId.DataValueField = "Id";
+					dpl_assestRequisitionId.DataBind();
+				}
+				catch{}
+				try
+				{
+					dpl_MerchindiseApplyCreater.SelectedValue = merchindiseApplyinfo.MerchindiseApplyCreater; 
+				}
+				catch{}
+				if(! merchindiseApplyinfo.MerchindiseApplyCreateDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString()))
+				{
+				txt_MerchindiseApplyCreateDate.Text = merchindiseApplyinfo.MerchindiseApplyCreateDate.ToShortDateString();
+				}else{
+				txt_MerchindiseApplyCreateDate.Text = "";
+				}
+				txt_MerchindiseApplyChecker.Text = merchindiseApplyinfo.MerchindiseApplyChecker; 
+				if(! merchindiseApplyinfo.MerchindiseApplyCheckDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString())){
+				txt_MerchindiseApplyCheckDate.Text = merchindiseApplyinfo.MerchindiseApplyCheckDate.ToShortDateString();
+				}else{
+				txt_MerchindiseApplyCheckDate.Text = "";
+				}
+				txt_MerchindiseApplyApprover.Text = merchindiseApplyinfo.MerchindiseApplyApprover; 
+				if(! merchindiseApplyinfo.MerchindiseApplyApproveDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString())){
+				txt_MerchindiseApplyApproveDate.Text = merchindiseApplyinfo.MerchindiseApplyApproveDate.ToShortDateString();
+				}else{
+				txt_MerchindiseApplyApproveDate.Text = "";
+				}
+				txt_MerchindiseApplyComment.Text = merchindiseApplyinfo.MerchindiseApplyComment; 
+				txt_status.Text = merchindiseApplyinfo.Status; 
+			}
+			
+		}
+
+		private void btn_add_edit_Click(object sender, System.EventArgs e)
+		{
+			MerchindiseApplyInfo merchindiseApplyinfo = new MerchindiseApplyInfo();
+			merchindiseApplyinfo.MerchindiseApplyNo = txt_MerchindiseApplyNo.Text;
+			if(!txt_inputDate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseApplyinfo.InputDate = Convert.ToDateTime(txt_inputDate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_inputDate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseApplyinfo.InputDate = Lang.DEFAULTDATE;
+			}
+			if(!dpl_assestRequisitionId.SelectedValue.Equals(""))
+			{
+				try
+				{
+					merchindiseApplyinfo.AssestRequisitionId = Convert.ToInt32(dpl_assestRequisitionId.SelectedValue);
+				}
+				catch
+				{
+					Label_Message.Text = dpl_assestRequisitionId.SelectedValue + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseApplyinfo.AssestRequisitionId = 0;
+			}
+			merchindiseApplyinfo.MerchindiseApplyCreater = dpl_MerchindiseApplyCreater.SelectedValue;
+			if(!txt_MerchindiseApplyCreateDate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseApplyinfo.MerchindiseApplyCreateDate = Convert.ToDateTime(txt_MerchindiseApplyCreateDate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_MerchindiseApplyCreateDate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseApplyinfo.MerchindiseApplyCreateDate = Lang.DEFAULTDATE;
+			}
+			merchindiseApplyinfo.MerchindiseApplyChecker = txt_MerchindiseApplyChecker.Text;
+			if(!txt_MerchindiseApplyCheckDate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseApplyinfo.MerchindiseApplyCheckDate = Convert.ToDateTime(txt_MerchindiseApplyCheckDate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_MerchindiseApplyCheckDate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseApplyinfo.MerchindiseApplyCheckDate = Lang.DEFAULTDATE;
+			}
+			merchindiseApplyinfo.MerchindiseApplyApprover = txt_MerchindiseApplyApprover.Text;
+			if(!txt_MerchindiseApplyApproveDate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseApplyinfo.MerchindiseApplyApproveDate = Convert.ToDateTime(txt_MerchindiseApplyApproveDate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_MerchindiseApplyApproveDate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseApplyinfo.MerchindiseApplyApproveDate = Lang.DEFAULTDATE;
+			}
+			merchindiseApplyinfo.MerchindiseApplyComment = txt_MerchindiseApplyComment.Text;
+			merchindiseApplyinfo.Status = txt_status.Text;
+			if(!func.Text.Equals("Edit"))
+			{
+				merchindiseApplyinfo.Status = "WAIT";
+				if(merchindiseApply.GetMerchindiseApplyByNo(merchindiseApplyinfo.MerchindiseApplyNo)!=null)
+				{
+					Label_Message.Text = lab_MerchindiseApplyNo.Text + " " + Lang.NO_NOT_UNIQUE;
+					return;
+				}
+//				if(dpl_assestRequisitionId.SelectedValue.Equals(""))
+//				{
+//					Label_Message.Text = Lang.NO_REQUESTION_NO_ADD;
+//					return;
+//				}
+
+				if(merchindiseApply.insertMerchindiseApply(merchindiseApplyinfo))
+				{
+					lab_Id.Text = merchindiseApply.GetMaxMerchindiseApply().ToString();
+					if(!dpl_assestRequisitionId.SelectedValue.Equals("0"))
+					{
+						AssestRequistionDetail ard = new AssestRequistionDetail();
+						AssestRequistion ar = new AssestRequistion();
+						if(ar.updateAssestRequistionbyApprov("Merchindise_Pass",merchindiseApplyinfo.MerchindiseApplyCreater,merchindiseApplyinfo.AssestRequisitionId))
+						{
+							Label_Message.Text = Lang.APPROV_PASS;
+						}
+						else
+						{
+							Label_Message.Text = Lang.APPROV_FAIL;
+							return;
+						}
+						IList source = ard.GetAssestRequistionDetailByAssestRequistionId(merchindiseApplyinfo.AssestRequisitionId);
+						
+						MerchindiseApplyDetail md = new MerchindiseApplyDetail();
+						if(md.insertMerchindiseApplyDetailByRequestion(source,Convert.ToInt32(lab_Id.Text)))
+						{
+							Label_Message.Text = Lang.SAVE_SUCCESS;
+						}
+						else
+						{
+							Label_Message.Text = Lang.SAVE_FAIL;
+							return;
+						}
+						
+					}
+					else
+					{
+						Label_Message.Text = Lang.SAVE_SUCCESS;
+					}
+					
+					btn_Detail.Enabled = true;
+					
+				}
+				else
+				{
+					Label_Message.Text = Lang.SAVE_FAIL;
+					return;
+				}
+			}
+			else
+			{
+				merchindiseApplyinfo.Id = Convert.ToInt32(lab_Id.Text);
+				
+				if(merchindiseApply.updateMerchindiseApply(merchindiseApplyinfo))
+				{
+					Label_Message.Text = Lang.SAVE_SUCCESS;
+				}
+				else
+				{
+					Label_Message.Text = Lang.SAVE_FAIL;
+					return;
+				}
+			}
+			if(Label_Message.Text.Equals(Lang.SAVE_SUCCESS))
+			{
+				ClearView();
+				BindDrop();
+			}
+			
+		}
+
+		private void btn_Detail_Click(object sender, System.EventArgs e)
+		{
+			Response.Write("<script language=\"javascript\">window.open('MerchindiseDetailList.aspx?MerchindiseApplyId="+lab_Id.Text+"','MerchindiseDetail',\"toolbar=no,location=no,directories=yes,status=yes,menubar=yes,resizable=yes,scrollbars=no,idth=400px,height=500px\");</script>");
+		}
+	}
+}

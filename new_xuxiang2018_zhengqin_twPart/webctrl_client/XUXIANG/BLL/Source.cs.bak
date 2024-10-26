@@ -1,0 +1,328 @@
+using System;
+using System.Collections;
+
+using ModuleWorkFlow.IDAL;
+using ModuleWorkFlow.Model;
+
+namespace ModuleWorkFlow.BLL
+{
+	/// <summary>
+	/// Summary description for Source.
+	/// </summary>
+	public class Source
+	{
+		
+		
+		public Hashtable GetOneMachineTotalSource(string process,DateTime startscheduled,DateTime endscheduled,DateTime nowdate,string machineid)
+		{
+			if (startscheduled.Ticks!=DateTime.MinValue.Ticks)
+			{
+				return GetOneMachineTotalSourceForward(process,startscheduled,nowdate,machineid);
+			}
+			else
+			{
+				return GetOneMachineTotalSourceBackward(process,endscheduled,nowdate,machineid);
+			}
+		}
+
+		public Hashtable GetOneMachineSource(string process,DateTime startscheduled,DateTime endscheduled,DateTime nowdate,string machineid)
+		{
+			if (startscheduled.Ticks!=DateTime.MinValue.Ticks)
+			{
+				return GetOneMachineSourceForward(process,startscheduled,nowdate,machineid);
+			}
+			else
+			{
+				return GetOneMachineSourceBackward(process,endscheduled,nowdate,machineid);
+			}
+
+		}
+
+		public Hashtable GetTotalSource(string process,DateTime startscheduled,DateTime endscheduled,DateTime nowdate,IList scheduledParts)
+		{
+			if (startscheduled.Ticks!=DateTime.MinValue.Ticks)
+			{
+				return GetTotalSourceForward(process,startscheduled,nowdate,scheduledParts);
+			}
+			else
+			{
+				return GetTotalSourceBackward(process,endscheduled,nowdate,scheduledParts);
+			}
+		}
+
+		public Hashtable GetSource(string process,DateTime startscheduled,DateTime endscheduled,DateTime nowdate)
+		{
+			if (startscheduled.Ticks!=DateTime.MinValue.Ticks)
+			{
+				return GetSourceForward(process,startscheduled,nowdate);
+			}
+			else
+			{
+				return GetSourceBackward(process,endscheduled,nowdate);
+			}
+		}
+
+
+		public int GetOneMachineValuedMinutes(string process,DateTime processdate,string machineid,string moduleid,string partno_id)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetOneMachineValuedMinutes(process,processdate,machineid,moduleid,partno_id);
+
+		}
+		public Hashtable GetSourceBackward(string process,DateTime endscheduled,DateTime nowdate,IList scheduledParts)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetSourceBackward(process,endscheduled,nowdate,scheduledParts);
+		}
+
+		public Hashtable GetSourceBackward(string process,DateTime endscheduled,DateTime nowdate)
+		{
+			return GetSourceBackward(process,endscheduled,nowdate,null);
+		}
+
+		public Hashtable GetTotalSourceBackward(string process,DateTime endscheduled,DateTime nowdate,IList scheduledParts)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetTotalSourceBackward(process,endscheduled,nowdate,scheduledParts);
+		}
+
+		public Hashtable GetOneMachineSourceBackward(string process,DateTime endscheduled,DateTime nowdate,string machineid)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetOneMachineSourceBackward(process,endscheduled,nowdate,machineid);
+		}
+
+		public Hashtable GetOneMachineTotalSourceBackward(string process,DateTime endscheduled,DateTime nowdate,string machineid)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetOneMachineTotalSourceBackward(process,endscheduled,nowdate,machineid);
+		}
+
+		public Hashtable GetSourceForward(string process,DateTime startscheduled,DateTime nowdate,IList scheduledParts)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetSourceForward(process,startscheduled,scheduledParts);
+
+		}
+
+		public Hashtable GetSourceForward(string process,DateTime startscheduled,DateTime nowdate)
+		{
+			
+			return GetSourceForward(process,startscheduled,nowdate,null);
+
+		}
+
+
+
+		public Hashtable GetTotalSourceForward(string process,DateTime startscheduled,DateTime nowdate,IList scheduledParts)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetTotalSourceForward(process,startscheduled,scheduledParts);
+		}
+
+		public Hashtable GetOneMachineSourceForward(string process,DateTime startscheduled,DateTime nowdate,string machineid)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetOneMachineSourceForward(process,startscheduled,machineid);
+		}
+
+		public Hashtable GetOneMachineTotalSourceForward(string process,DateTime startscheduled,DateTime nowdate,string machineid)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetOneMachineTotalSourceForward(process,startscheduled,machineid);
+		}
+
+
+
+		public bool AddSource(string process, IList scheduleinfos)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.AddSource(process,scheduleinfos);
+		}
+
+		public bool AddRecommandSource(string process, IList scheduleinfos)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.AddRecommandSource(process,scheduleinfos);
+		}
+
+		public bool RemoveSources(string process,DateTime startscheduled,string moduleid)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.RemoveSources(process,startscheduled,moduleid);
+		}
+
+		public bool RemoveRecommandSource(string process,string moduleid)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.RemoveRecommandSource(process,moduleid);
+		}
+
+		public PartProcessInfo GetStartProcessDate(PartProcessInfo partprocessinfo)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetStartProcessDate(partprocessinfo);
+
+		}
+
+		public PartProcessInfo GetEndProcessDate(PartProcessInfo partprocessinfo)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetEndProcessDate(partprocessinfo);
+
+		}
+
+		public Hashtable GetDesignatedMinutes(string process,DateTime startscheduled)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetDesignatedMinutes(process,startscheduled);
+
+		}
+
+		public IList GetBorkenMachineSchedules(MachineBrokenInfo bbi)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetBorkenMachineSchedules(bbi);
+
+		}
+
+		public bool UpdateBrokenMachineSchedule(ScheduleInfo scheduleinfo)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.UpdateBrokenMachineSchedule(scheduleinfo);
+		}
+
+		public int GetDoneMinutesByPartno(string process,string moduleid,string partnoid,int processorder,DateTime factstarttime,DateTime scheduletime)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			ISource dal= ModuleWorkFlow.DALFactory.Source.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetDoneMinutesByPartno(process,moduleid,partnoid,processorder,factstarttime,scheduletime);
+		}
+
+
+		public Hashtable dealSource(Hashtable hsource,string machineid,MachineBrokenInfo mbi,int usedminutes,DateTime processdate,string process,Hashtable hmachine)
+		{
+			Hashtable hs=hsource;
+			SourceInfo sourceinfo;
+			string key=processdate.ToString()+machineid;
+			if (hs.Contains(key))
+			{
+				sourceinfo=hs[key] as SourceInfo;
+				sourceinfo.ValuedTime=sourceinfo.ValuedTime-usedminutes;
+			}
+			else
+			{
+				//Hashtable hmachine=new Machine().GetMachine(process);
+				sourceinfo=new SourceInfo(machineid,processdate,usedminutes);
+				sourceinfo.MaxMinutes=(hmachine[machineid] as MachineInfo).MaxPerday;
+				if (mbi==null)
+				{
+					sourceinfo.ValuedTime=(hmachine[machineid] as MachineInfo).MaxPerday;
+				}
+				else
+				{
+					if (mbi.EndTime.Ticks!=DateTime.MinValue.Ticks && (processdate.Ticks<mbi.StartTime.Ticks || processdate.Ticks>mbi.EndTime.Ticks))
+					{
+						sourceinfo.ValuedTime=(hmachine[machineid] as MachineInfo).MaxPerday-usedminutes;
+					}
+					else
+					{
+						sourceinfo.ValuedTime=0;
+					}
+				}
+				
+				
+				hs.Add(processdate.ToString()+machineid,sourceinfo);
+			}
+			return hs;
+		}
+
+		public Hashtable dealSource(Hashtable hsource,string machineid,int usedminutes,DateTime processdate,string process)
+		{
+			Hashtable hs=hsource;
+			SourceInfo sourceinfo;
+			string key=processdate.ToString()+machineid;
+			sourceinfo=hs[key] as SourceInfo;
+			sourceinfo.ValuedTime=sourceinfo.ValuedTime-usedminutes;
+			return hs;
+
+		}
+
+		public bool AddSource(ScheduleInfo scheduleinfo)
+		{
+			IList scheduleinfos=new ArrayList();
+			scheduleinfos.Add(scheduleinfo);
+			
+			return AddSource(scheduleinfo.CustomerProcessId,scheduleinfos);
+
+		}
+
+		public bool AddRecommandSource(ScheduleInfo scheduleinfo)
+		{
+			IList scheduleinfos=new ArrayList();
+			scheduleinfos.Add(scheduleinfo);
+			
+			return AddRecommandSource(scheduleinfo.CustomerProcessId,scheduleinfos);
+
+		}
+
+
+
+	}
+}

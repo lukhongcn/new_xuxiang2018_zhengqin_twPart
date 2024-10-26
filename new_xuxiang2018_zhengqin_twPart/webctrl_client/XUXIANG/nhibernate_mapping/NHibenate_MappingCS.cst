@@ -1,0 +1,235 @@
+<%-- 
+??CodeSmith??NHibernate??????.Net?
+--%>
+<%@ CodeTemplate Language="C#" Debug="False" TargetLanguage="T-SQL" Description="Generates SQL to extract inline comments from stored procedures and add them as Description extended properties." %>
+<%@ Property Name="TableName" Type="SchemaExplorer.TableSchema" Category="Table" Description="????" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="" Category="" Description="????" %>
+<%@ Property Name="ClassName" Type="System.String" Default="" Category="" Description="????" %>
+<%@ Property Name="OutPutDirectory" Type="System.String" Default="" Category="" Description="outputdirectory" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Collections" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+/* ------------------------------------
+	
+  ??????(??)
+  ??: zsy619@163.com
+  ??: zsy.cnblogs.com
+  ???<%= System.DateTime.Now.ToString("yyyy-MM-dd") %>
+  
+------------------------------------ */
+
+using System;
+
+namespace <%= NameSpace %> 
+{
+	/// <summary>
+	/// <%= ClassName %>
+	/// </summary>
+	public class <%= ClassName %>
+	{
+		#region ????
+		public <%= ClassName %>()
+		{
+			
+		}
+		#endregion
+		
+		/*#region ????
+		public ~<%= ClassName %>()
+		{
+			
+		}
+		#endregion*/
+		
+		#region <%= ClassName %>????
+		<%
+		for(int j=0;j<TableName.Columns.Count;j++)
+		{
+			string inType		= TableName.Columns[j].DataType.ToString();
+			string columnName	= TableName.Columns[j].Name.ToString();
+			string description  = TableName.Columns[j].Description;
+			
+			GetPropertyValue(inType,columnName);
+			if(TableName.Columns[j].Description != String.Empty)
+			{
+				Response.WriteLine("		/// <summary>");
+				Response.WriteLine("		/// " + description);
+				Response.WriteLine("		/// </summary>");
+			}
+			GetProperty(inType,columnName);
+		}
+		%>
+		#endregion
+	}
+}
+
+<script runat="template">
+
+/*[Editor(typeof(System.Windows.Forms.Design.FolderNameEditor), typeof(System.Drawing.Design.UITypeEditor))] 
+	[CodeTemplateProperty(CodeTemplatePropertyOption.Optional)]
+	[Category("General")]
+	[Description("The directory to output the results to.")]
+	[DefaultValue("")]
+	public string OutputDirectory 
+	{ 
+		get
+		{
+			if (_outputDirectory.Length == 0)
+			{
+				return @"c:\NetTiers\" + (SourceDatabase != null ? SourceDatabase.Name : "Output");
+			}
+			else
+			{
+				return _outputDirectory;
+			}
+		}
+		set
+		{
+			if (value.EndsWith("\\")) value = value.Substring(0, value.Length - 1);
+			_outputDirectory = value;
+		} 
+	}*/
+/*
+???????
+*/
+public string GetNetType(string inType)
+{
+	string result = "";
+	switch(inType.ToLower().Trim())
+	{
+		case "text":
+			result = "string";
+			break;
+		case "uniqueidentifier":
+			result = "int";
+			break;
+		case "tinyint":
+			result = "short";
+			break;
+		case "smallint":
+			result = "short";
+			break;
+		case "int":
+			result = "int";
+			break;
+		case "int32":
+			result = "int";
+			break;
+		case "smalldatetime":
+			result = "DateTime";
+			break;
+		case "real":
+			result = "float";
+			break;
+		case "money":
+			result = "decimal";
+			break;
+		case "datetime":
+			result = "DateTime";
+			break;
+		case "float":
+			result = "float";
+			break;
+		case "sql_variant":
+			result = "string";
+			break;
+		case "ntext":
+			result = "string";
+			break;
+		case "bit":
+			result = "bool";
+			break;
+		case "decimal":
+			result = "decimal";
+			break;
+		case "numeric":
+			result = "decimal";
+			break;
+		case "smallmoney":
+			result = "decimal";
+			break;
+		case "bigint":
+			result = "long";
+			break;
+		case "varchar":
+			result = "string";
+			break;
+		case "char":
+			result = "char";
+			break;
+		case "timestamp":
+			result = "TimeSpan";
+			break;
+		case "nvarchar":
+			result = "string";
+			break;
+		case "nchar":
+			result = "char";
+			break;
+		case "sysname":
+			result = "string";
+			break;
+		default:
+			result = "string";
+			break;
+	}
+	return result;
+}
+/*
+??????
+*/
+public void GetPropertyValue(string inType,string columnName)
+{
+	Response.WriteLine("		private " + GetNetType(inType) + " _" + columnName + ";");	
+}
+/*
+????
+*/
+public void GetProperty(string inType,string columnName)
+{
+	string outType = GetNetType(inType);
+	Response.WriteLine("		public virtual " + outType + " " + UpperFirstChar(columnName));
+	Response.WriteLine("		{");
+	Response.WriteLine("			get");
+	Response.WriteLine("			{");
+	Response.WriteLine("				return _" + columnName + ";");
+	Response.WriteLine("			}");
+	Response.WriteLine("			set");
+	Response.WriteLine("			{");
+	Response.WriteLine("				_" + columnName + " = value;");
+	Response.WriteLine("			}");
+	Response.WriteLine("		}");
+}
+/*
+????????
+*/
+public string UpperFirstChar(string inputStr)
+{
+	string result = "";
+	if(inputStr.Length >= 2)
+	{
+		string first = inputStr.Substring(0,1);
+		string last	 = inputStr.Substring(1,inputStr.Length - 1);
+		result = first.ToUpper() + last;
+	}
+	else
+	{
+		result = inputStr.ToUpper();	
+	}
+	return result;
+}
+
+/*
+copy to file
+*/
+/*public void RenderToFile(string templateName, string path, bool overwrite)
+{
+	this._CurrentFileName = path;
+	this.GetTemplate(templateName).RenderToFile(path, overwrite);
+	this._counter++;
+}*/
+</script>

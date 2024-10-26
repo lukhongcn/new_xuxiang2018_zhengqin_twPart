@@ -1,0 +1,95 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DefaultSub.master.cs" Inherits="ModuleWorkFlow.DefaultSub" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=big5" />
+    <title><%=menuname %></title>
+    <link href="css/amd.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.treetable.css" />
+    <link rel="stylesheet" href="css/jquery.treetable.theme.default.css" />
+    <link rel="stylesheet" href="plugins/bootstrap.5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="plugins/jQuery-datetimepicker.2.4.5/jquery.datetimepicker.css" type="text/css" />
+    <script language="javascript" src="js/lib.js"></script>
+    <script type="text/javascript" src="plugins/JQuery.3.4.1/jquery-3.4.1.min.js"></script>
+  
+    <script type="text/javascript" src="plugins/jQuery-datetimepicker.2.4.5/jquery.datetimepicker.js"></script>
+    <script type="text/Javascript" src="js/jquery.treetable.js"></script>
+   
+     <style>
+        /* Custom styles for the date picker input */
+        /*.date-picker {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+            font-size: 16px;
+        }*/
+         .custom-height-width {
+            height: 25px; /* Set your desired height */
+            padding: 6px 12px; /* Adjust padding as necessary */
+            font-size: 14px; /* Adjust font size if needed */
+            width: 160px;
+        }
+
+          .custom-large-width {
+                height: 25px; /* Set your desired height */
+                padding: 6px 12px; /* Adjust padding as necessary */
+                font-size: 14px; /* Adjust font size if needed */
+                width: 200px;
+            }
+
+         .custom-number-width {
+            height: 25px; /* Set your desired height */
+            padding: 6px 12px; /* Adjust padding as necessary */
+            font-size: 14px; /* Adjust font size if needed */
+            width: 60px;
+        }
+
+         .me-10 {
+            margin-right: 10px; /* Set your desired right margin */
+        }
+
+         table.treetable tbody tr td {
+             position: relative;
+             padding-left: 0px;
+             word-break: break-all;
+             word-wrap: break-word
+         }
+
+        table.treetable tbody tr td span.indenter {
+             position: relative;
+             left: 5px;
+             word-break: break-all;
+             word-wrap: break-word
+         }
+    </style>
+</head>
+<body>
+     <script>
+         $(document).ready(function () {
+             // Initialize date-only picker
+             $('.date-picker').datetimepicker({
+                 timepicker: false,  // Disable time picker for a date-only picker
+                 format: 'Y-m-d'     // Date format
+             });
+
+             // Initialize date and time picker
+             $('.datetime-picker').datetimepicker({
+                 format: 'Y-m-d H:i', // Date and time format
+                 step: 30             // Step of minutes
+             });
+
+         });
+    </script>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="contentHolder" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+    <asp:ContentPlaceHolder ID="JSHolder" runat="server">
+   </asp:ContentPlaceHolder>
+</body>
+</html>

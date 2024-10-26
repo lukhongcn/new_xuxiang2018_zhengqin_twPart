@@ -1,0 +1,181 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	margin:0;
+	padding:0;
+	font-size:12px;
+	font-family:"宋体",Arial, Helvetica, sans-serif;
+}
+
+ul{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+
+.ctt{
+	height:auto;
+	padding:6px;
+	clear:both;
+	border:1px solid #8fb9d1;
+	background:url(../image/joinus_bg.gif) repeat-x;
+	border-top:0;
+	text-align:left;
+	padding-left:20px;
+}
+.title_des{
+	margin-left:20px;
+	text-align:left;
+	font-size:14px;
+	font-weight:bold;
+	color:#29518c;
+	border-bottom:1px dashed #99CCFF;
+	line-height:26px;
+	/*width:553px;*/
+}
+.ctt li{
+	margin-left:40px;
+	line-height:22px;
+	color:#393939;
+}
+.nav{
+	float:left;
+	margin:10px 0 0 20px;
+	display:inline;
+	width:620px;
+}
+.tab_{
+	font-family:"Microsoft YaHei";
+	background:url(../image/dot_topborder.gif) repeat-x;
+	height:34px;
+	_margin-bottom:-6px;
+}
+.tab_ ul{
+	float:left;
+	height:34px;
+}
+.tab_ li{
+	float:left;
+	width:138px;
+	cursor:pointer;
+	margin-right:5px;
+	text-align:center;
+}
+.normaltab {
+	background:url(../image/bg_phoneset_tab.jpg) no-repeat;
+	width:138px;
+	height:34px;
+	cursor:pointer;
+	color:#003776;
+}
+.hovertab { 
+	background:url(../image/bg_phoneset_tab.jpg) -138px no-repeat;
+	height:34px;
+	color:#1F3A87;
+	font-weight:bold;
+}
+.dis{
+	display:block;
+}
+.undis{
+	display:none;
+}
+.title_phone_brand{
+	float:left;
+	text-align:left;
+	margin-top:10px;
+	margin-left:20px;
+	display:inline;
+	font-size:14px;
+	font-weight:bold;
+	color:#000;
+	width:620px;
+	line-height:23px;
+}
+.title_header{
+	float:left;
+}
+.mobile_name{
+	color:#CC0000;
+}
+.btn_close{
+	float:right;
+}
+.btn_close a:link,
+.btn_close a:visited{
+	float:left;
+	background:url(../image/btn_close_phoneset.jpg) no-repeat;
+	width:63px;
+	height:23px
+}
+.btn_close a:hover{
+	float:left;
+	background:url(../image/btn_close_phoneset.jpg) -63px no-repeat;
+	height:23px;
+	cursor:pointer;
+}
+.tips_phoneset{
+	float:left;
+	margin-top:8px;
+	margin-left:20px;
+	display:inline;
+	padding-left:20px;
+	width:600px;
+	text-align:left;
+	border:1px dashed #99CCFF;
+	background:#e7f6f0;
+	line-height:22px;
+}
+.nokia_tips{
+	color:#cc0000;
+}
+.settips {
+	background:#fff;
+	border:1px solid #f00;
+	text-align:center;
+	line-height:40px;
+	font-size:12px;
+	z-index:999;
+	width:660px;
+	height:640px;
+	left:50%;
+	top:50%;
+	margin-left:-330px!important;/*FF IE7 half_width */
+	margin-top:-320px!important;/*FF IE7 half_height*/
+	margin-top:0px;
+	position:fixed!important;/* FF IE7*/
+	position:absolute;/*IE6*/
+	_top:       expression(eval(document.compatMode &&
+				document.compatMode=='CSS1Compat') ?
+				documentElement.scrollTop + (document.documentElement.clientHeight-this.offsetHeight)/2 :/*IE6*/
+				document.body.scrollTop + (document.body.clientHeight - this.clientHeight)/2);/*IE5 IE5.5*/
+}
+.bg,.popIframe,.popIframe2,.popIframe3,.popIframe4,.popIframe5,.popIframe6,.popIframe7,.popIframe8,.popIframe9,.popIframe10 {
+	background:#fff;
+	display:none;
+	width:100%;
+	height:100%;
+	left:0;
+	top:0;/*FF IE7*/
+	filter:alpha(opacity=50);/*IE*/
+	opacity:0.5;/*FF*/
+	z-index:1;
+	position:fixed!important;/*FF IE7*/
+	position:absolute;/*IE6*/
+	_top:       expression(eval(document.compatMode &&
+				document.compatMode=='CSS1Compat') ?
+				documentElement.scrollTop + (document.documentElement.clientHeight-this.offsetHeight)/2 :/*IE6*/
+				document.body.scrollTop + (document.body.clientHeight - this.clientHeight)/2);/* IE5 IE5.5*/
+}
+.popIframe{
+	filter:alpha(opacity=0);/*IE*/
+	opacity:0;/*FF*/
+}
+
+.title_header{
+	float:left;
+}
+.mobile_name{
+	color:#CC0000;
+}

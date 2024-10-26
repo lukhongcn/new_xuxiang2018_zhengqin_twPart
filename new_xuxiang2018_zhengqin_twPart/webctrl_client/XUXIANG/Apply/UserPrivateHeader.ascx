@@ -1,0 +1,1 @@
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="UserPrivateHeader.ascx.cs" Inherits="ModuleWorkFlow.controls.UserPrivateHeader" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>

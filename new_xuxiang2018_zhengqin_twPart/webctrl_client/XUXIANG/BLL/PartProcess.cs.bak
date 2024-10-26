@@ -1,0 +1,1592 @@
+using System;
+using System.Collections;
+
+using ModuleWorkFlow.IDAL;
+using ModuleWorkFlow.Model;
+
+namespace ModuleWorkFlow.BLL
+{
+	
+	public class PartProcess
+	{	
+		private Hashtable hprocess=null;
+		private IList machinelist=null;
+		private Hashtable hmachinelist=new Hashtable();
+		private Hashtable hprocesssource=new Hashtable();
+		private IList schedlues=new ArrayList();
+		private Hashtable hsource=new Hashtable();
+		private Hashtable hbrokenmachine=new Hashtable();
+		private IList scheduledparts;
+		
+		private PartProcessInfo  ScheduleOneMachine(PartProcessInfo partprocessinfo,string machineid)
+		{
+			DateTime processdate=new DateTime();
+			ScheduleSkelecton ss=new ScheduleSkelecton();
+			PartProcessInfo ppi=partprocessinfo;
+			
+			SourceInfo si;
+			ProcessInfo pi;
+			ScheduleInfo scheduleInfo,prescheduleInfo;
+			
+
+			Source source=new Source();
+			string processid=partprocessinfo.ProcessId;
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			MachineBrokenInfo mbi=hbrokenmachine[customerprocessid+machineid] as MachineBrokenInfo;
+			int nextday=0;
+			int scheduledminutes=0;
+
+			
+			
+
+			///get process
+			if (hprocess==null)
+			{
+				Process process=new Process();
+				hprocess=process.GetProcessIdProcess();
+			}
+
+			///get machineinfo
+			Hashtable hmachine=new Machine().GetMachine(customerprocessid);
+
+			
+
+			///set inital processdate
+			if (ppi.StartDate.Ticks!=DateTime.MinValue.Ticks)
+			{
+				processdate=ppi.StartDate;
+
+				if (ppi.FactStartDate.Ticks!=DateTime.MinValue.Ticks)
+				{
+					processdate=ppi.FactStartDate;
+				}
+
+				if (ppi.ScheduleDate.Ticks!=DateTime.MinValue.Ticks && processdate.Ticks<ppi.ScheduleDate.Ticks)
+				{
+					processdate=ppi.ScheduleDate;
+				}
+				//ppi.RemaintneedMinutes=ppi.RemaintneedMinutes-getDesignatedMinutes(ppi);
+				nextday=1;
+				
+			}
+			else
+			{
+				processdate=ppi.EndDate;
+				nextday=-1;
+			}
+
+			processdate=new DateTime(processdate.Year,processdate.Month,processdate.Day);
+
+			
+			
+			///do scheduleskelecton
+			ppi=ss.DealScheduleSkelecton(ppi);
+
+			
+			///schedule recommand
+			pi=hprocess[processid] as ProcessInfo;
+			if (partprocessinfo.NeedProduct==1 && pi.NeedSchedule==1)
+			{
+				while(partprocessinfo.RemaintneedMinutes>0)
+				{
+					scheduledminutes=0;
+					si=hsource[processdate.ToString()+machineid] as SourceInfo;
+					if (si.ValuedTime>0)
+					{
+						scheduleInfo=new ScheduleInfo();
+						scheduleInfo.MachinId=machineid;
+						scheduleInfo.ModuleId=partprocessinfo.ModuleId;
+						scheduleInfo.PartNo=partprocessinfo.PartNo;
+						scheduleInfo.PartNo_Id=partprocessinfo.PartNo_Id;
+						scheduleInfo.ProcessId=partprocessinfo.ProcessId;
+						scheduleInfo.ProcessDate=processdate;
+						scheduleInfo.CustomerProcessId=partprocessinfo.CustomerProcessId;
+						if (schedlues.Count>0)
+						{
+							prescheduleInfo=schedlues[schedlues.Count-1] as ScheduleInfo;
+							if (prescheduleInfo.ProcessDate.Ticks==processdate.Ticks && prescheduleInfo.ModuleId==scheduleInfo.ModuleId && prescheduleInfo.PartNo_Id==scheduleInfo.PartNo_Id && prescheduleInfo.ProcessId==scheduleInfo.ProcessId)
+							{
+								scheduledminutes=prescheduleInfo.ProcessMinute;
+							}
+						}
+						scheduleInfo=Schedule.DealSchedule(scheduleInfo,si.ValuedTime,partprocessinfo.RemaintneedMinutes,si.MaxMinutes,scheduledminutes);
+						scheduleInfo.ProcessNo=partprocessinfo.ProcessNo;
+						schedlues.Add(scheduleInfo);
+						partprocessinfo.RemaintneedMinutes=partprocessinfo.RemaintneedMinutes-scheduleInfo.ProcessMinute;
+						
+						hsource=source.dealSource(hsource,machineid,mbi,scheduleInfo.ProcessMinute,processdate,customerprocessid,hmachine);
+					}
+					
+					processdate=processdate.AddDays(nextday);
+					if (!hsource.Contains(processdate.ToString()+machineid))
+					{
+						hsource=source.dealSource(hsource,machineid,mbi,0,processdate,customerprocessid,hmachine);
+					}
+				}
+				processdate=processdate.AddDays(-nextday);
+
+				///do scheduleskelecton
+				ppi=ss.DealSchedule(ppi,processdate);
+
+				///put source
+				hprocesssource[customerprocessid]=hsource;	
+			}
+			return ppi;
+			
+		}
+
+		private PartProcessInfo SchedulePartMachines(PartProcessInfo partprocessinfo,IList machines)
+		{
+			DateTime processdate=new DateTime();
+			DateTime brokendate=new DateTime();
+			ScheduleSkelecton ss=new ScheduleSkelecton();
+			PartProcessInfo ppi=partprocessinfo;
+			
+			
+			SourceInfo si=new SourceInfo();
+			ProcessInfo pi;
+			ScheduleInfo scheduleInfo,prescheduleInfo;
+			
+			
+
+			Source source=new Source();
+			string processid=partprocessinfo.ProcessId;
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			int nextday=0;
+			string machineid=null;
+			string sourcekey;
+
+			MachineBrokenInfo mbi;
+			int scheduledminutes=0;
+			
+			
+			///get machineinfo
+			Hashtable hmachine=new Machine().GetMachine(customerprocessid);
+
+			///get process
+			if (hprocess==null)
+			{
+				Process process=new Process();
+				hprocess=process.GetProcessIdProcess();
+			}
+
+			///set inital processdate
+			if (ppi.StartDate.Ticks!=DateTime.MinValue.Ticks )
+			{
+				processdate=ppi.StartDate;
+
+				if (ppi.FactStartDate.Ticks!=DateTime.MinValue.Ticks)
+				{
+					processdate=ppi.FactStartDate;
+				}
+
+				if (ppi.ScheduleDate.Ticks!=DateTime.MinValue.Ticks && processdate.Ticks<ppi.ScheduleDate.Ticks)
+				{
+					processdate=ppi.ScheduleDate;
+				}
+				//ppi.RemaintneedMinutes=ppi.RemaintneedMinutes-getDesignatedMinutes(ppi);
+				nextday=1;
+				
+			}
+			else
+			{
+				processdate=ppi.EndDate;
+				nextday=-1;
+			}
+
+			
+			processdate=new DateTime(processdate.Year,processdate.Month,processdate.Day);
+			
+			hsource=hprocesssource[customerprocessid] as Hashtable;
+
+			
+			
+			
+
+			
+			///schedule recommand
+			pi=hprocess[processid] as ProcessInfo;
+			if (partprocessinfo.NeedProduct==1 && pi.NeedSchedule==1)
+			{
+				
+				machinelist=machines;
+				while(partprocessinfo.RemaintneedMinutes>0)
+				{
+					scheduledminutes=0;
+					if (machineid!=null)
+					{
+						sourcekey=processdate.ToString()+machineid;
+						//if (!hsource.Contains(sourcekey))
+						//{
+						mbi=hbrokenmachine[customerprocessid+machineid] as MachineBrokenInfo;
+						hsource=source.dealSource(hsource,machineid,mbi,0,processdate,customerprocessid,hmachine);
+						if (hprocesssource.ContainsKey(customerprocessid))
+						{
+							hprocesssource[customerprocessid]=hsource;
+						}
+						else
+						{
+							hprocesssource.Add(customerprocessid,hsource);
+						}
+						//}
+						si=hsource[sourcekey] as SourceInfo;
+
+					}
+					
+					if (machineid==null /*|| si.ValuedTime<=0*/)
+					{
+						int i=0;
+						while(i<machinelist.Count && si.ValuedTime<=0)
+						{
+							machineid=machinelist[i].ToString();
+
+							sourcekey=processdate.ToString()+machineid;
+							//if (!hsource.Contains(sourcekey))
+							//{
+							mbi=hbrokenmachine[customerprocessid+machineid] as MachineBrokenInfo;
+							hsource=source.dealSource(hsource,machineid,mbi,0,processdate,customerprocessid,hmachine);
+							if (hprocesssource.ContainsKey(customerprocessid))
+							{
+								hprocesssource[customerprocessid]=hsource;
+							}
+							else
+							{
+								hprocesssource.Add(customerprocessid,hsource);
+							}
+							//}
+							si=hsource[sourcekey] as SourceInfo;
+							i++;
+						}
+					}
+
+						
+					if (si.ValuedTime>0)
+					{
+
+						scheduleInfo=new ScheduleInfo();
+						scheduleInfo.MachinId=machineid;
+						scheduleInfo.ModuleId=partprocessinfo.ModuleId;
+						scheduleInfo.PartNo=partprocessinfo.PartNo;
+						scheduleInfo.PartNo_Id=partprocessinfo.PartNo_Id;
+						scheduleInfo.ProcessId=partprocessinfo.ProcessId;
+						scheduleInfo.ProcessDate=processdate;
+						scheduleInfo.CustomerProcessId=partprocessinfo.CustomerProcessId;
+						if (schedlues.Count>0)
+						{
+							prescheduleInfo=schedlues[schedlues.Count-1] as ScheduleInfo;
+							if (prescheduleInfo.ProcessDate.Ticks==processdate.Ticks && prescheduleInfo.ModuleId==scheduleInfo.ModuleId && prescheduleInfo.PartNo_Id==scheduleInfo.PartNo_Id && prescheduleInfo.ProcessId==scheduleInfo.ProcessId)
+							{
+								scheduledminutes=prescheduleInfo.ProcessMinute;
+							}
+						}
+						scheduleInfo=Schedule.DealSchedule(scheduleInfo,si.ValuedTime,partprocessinfo.RemaintneedMinutes,si.MaxMinutes,scheduledminutes);
+						scheduleInfo.ProcessNo=partprocessinfo.ProcessNo;
+						schedlues.Add(scheduleInfo);
+						partprocessinfo.RemaintneedMinutes=partprocessinfo.RemaintneedMinutes-scheduleInfo.ProcessMinute;
+						hsource=source.dealSource(hsource,machineid,scheduleInfo.ProcessMinute,processdate,customerprocessid);
+					}
+						
+
+					
+					
+					processdate=processdate.AddDays(nextday);
+					
+				}
+				if (processdate.Ticks!=ppi.StartDate.Ticks)
+				{
+					processdate=processdate.AddDays(-nextday);
+				}
+
+				///do scheduleskelecton
+				ppi=ss.DealSchedule(ppi,processdate);
+
+				///put source
+				hprocesssource[customerprocessid]=hsource;	
+			}
+			else
+			{
+				///do scheduleskelecton
+				ppi=ss.DealScheduleSkelecton(ppi);
+
+			}
+			return ppi;
+		}
+
+
+		private PartProcessInfo ScheduleAllMachines(PartProcessInfo partprocessinfo)
+		{
+			DateTime processdate=new DateTime();
+			DateTime brokendate=new DateTime();
+			ScheduleSkelecton ss=new ScheduleSkelecton();
+			PartProcessInfo ppi=partprocessinfo;
+			
+			
+			SourceInfo si=new SourceInfo();
+			ProcessInfo pi;
+			ScheduleInfo scheduleInfo,prescheduleInfo;
+			
+			
+
+			Source source=new Source();
+			string processid=partprocessinfo.ProcessId;
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			int nextday=0;
+			string machineid;
+			string sourcekey;
+
+			MachineBrokenInfo mbi;
+			int scheduledminutes=0;
+			
+			
+			///get machineinfo
+			Hashtable hmachine=new Machine().GetMachine(customerprocessid);
+
+			///get process
+			if (hprocess==null)
+			{
+				Process process=new Process();
+				hprocess=process.GetProcessIdProcess();
+			}
+
+			///set inital processdate
+			if (ppi.StartDate.Ticks!=DateTime.MinValue.Ticks )
+			{
+				processdate=ppi.StartDate;
+				
+				if (ppi.FactStartDate.Ticks!=DateTime.MinValue.Ticks)
+				{
+					processdate=ppi.FactStartDate;
+				}
+				
+		
+
+				if (ppi.ScheduleDate.Ticks!=DateTime.MinValue.Ticks && processdate.Ticks<ppi.ScheduleDate.Ticks)
+				{
+					processdate=ppi.ScheduleDate;
+				}
+				//ppi.RemaintneedMinutes=ppi.RemaintneedMinutes-getDesignatedMinutes(ppi);
+				nextday=1;
+				
+			}
+			else
+			{
+				processdate=ppi.EndDate;
+				nextday=-1;
+			}
+
+			
+
+			processdate=new DateTime(processdate.Year,processdate.Month,processdate.Day);
+			hsource=hprocesssource[customerprocessid] as Hashtable;
+
+			
+			
+			
+
+			
+			///schedule recommand
+			pi=hprocess[processid] as ProcessInfo;
+			if (partprocessinfo.NeedProduct==1 && pi.NeedSchedule==1)
+			{
+				if (!hmachinelist.Contains(customerprocessid))
+				{
+					machinelist=new Machine().GetMachineList(customerprocessid);
+					hmachinelist.Add(customerprocessid,machinelist);
+				}
+
+				machinelist=hmachinelist[customerprocessid] as IList;
+				while(partprocessinfo.RemaintneedMinutes>0)
+				{
+					scheduledminutes=0;
+					machineid = partprocessinfo.DesignateMachineId;
+					if (machineid!=null)
+					{
+						sourcekey=processdate.ToString()+machineid;
+						//if (!hsource.Contains(sourcekey))
+						//{
+						if (hbrokenmachine.Contains(customerprocessid+machineid))
+						{
+							mbi=hbrokenmachine[customerprocessid+machineid] as MachineBrokenInfo;
+						}
+						else
+						{
+							mbi=null;
+						}
+						hsource=source.dealSource(hsource,machineid,mbi,0,processdate,customerprocessid,hmachine);
+						if (hprocesssource.ContainsKey(customerprocessid))
+						{
+							hprocesssource[customerprocessid]=hsource;
+						}
+						else
+						{
+							hprocesssource.Add(customerprocessid,hsource);
+						}
+						//}
+						si=hsource[sourcekey] as SourceInfo;
+
+					}
+					
+					
+					if (machineid==null /*|| si.ValuedTime<=0*/)
+					{
+						int i=0;
+						while(/*i<machinelist.Count &&*/ si.ValuedTime<=0)
+						{
+							if (i==machinelist.Count)
+							{
+								i=0;
+								processdate=processdate.AddDays(nextday);
+
+							}
+							machineid=machinelist[i].ToString();
+
+							sourcekey=processdate.ToString()+machineid;
+							//if (!hsource.Contains(sourcekey))
+							//{
+							mbi=hbrokenmachine[customerprocessid+machineid] as MachineBrokenInfo;
+							hsource=source.dealSource(hsource,machineid,mbi,0,processdate,customerprocessid,hmachine);
+							if (hprocesssource.ContainsKey(customerprocessid))
+							{
+								hprocesssource[customerprocessid]=hsource;
+							}
+							else
+							{
+								hprocesssource.Add(customerprocessid,hsource);
+							}
+							//}
+							si=hsource[sourcekey] as SourceInfo;
+							i++;
+						}
+					}
+
+						
+					if (si.ValuedTime>0)
+					{
+
+						scheduleInfo=new ScheduleInfo();
+						scheduleInfo.MachinId=machineid;
+						scheduleInfo.ModuleId=partprocessinfo.ModuleId;
+						scheduleInfo.PartNo=partprocessinfo.PartNo;
+						scheduleInfo.PartNo_Id=partprocessinfo.PartNo_Id;
+						scheduleInfo.ProcessId=partprocessinfo.ProcessId;
+						scheduleInfo.ProcessDate=processdate;
+						scheduleInfo.CustomerProcessId=partprocessinfo.CustomerProcessId;
+						if (schedlues.Count>0)
+						{
+							prescheduleInfo=schedlues[schedlues.Count-1] as ScheduleInfo;
+							if (prescheduleInfo.ProcessDate.Ticks==processdate.Ticks && prescheduleInfo.ModuleId==scheduleInfo.ModuleId && prescheduleInfo.PartNo_Id==scheduleInfo.PartNo_Id && prescheduleInfo.ProcessId==scheduleInfo.ProcessId)
+							{
+								scheduledminutes=prescheduleInfo.ProcessMinute;
+							}
+						}
+						scheduleInfo=Schedule.DealSchedule(scheduleInfo,si.ValuedTime,partprocessinfo.RemaintneedMinutes,si.MaxMinutes,scheduledminutes);
+						scheduleInfo.ProcessNo=ppi.ProcessNo;
+						schedlues.Add(scheduleInfo);
+						partprocessinfo.RemaintneedMinutes=partprocessinfo.RemaintneedMinutes-scheduleInfo.ProcessMinute;
+						hsource=source.dealSource(hsource,machineid,scheduleInfo.ProcessMinute,processdate,customerprocessid);
+					}
+					processdate=processdate.AddDays(nextday);
+				}
+
+				if (ppi.FactStartDate.Ticks==DateTime.MinValue.Ticks)
+				{
+					if (processdate.Ticks!=ppi.StartDate.Ticks)
+					{
+						processdate=processdate.AddDays(-nextday);
+					}
+				}
+				else
+				{
+					if (processdate.Ticks != ppi.FactStartDate.Ticks)
+					{
+						processdate=processdate.AddDays(-nextday);
+					}
+				}
+
+				///do scheduleskelecton
+				ppi=ss.DealSchedule(ppi,processdate);
+
+				///put source
+				hprocesssource[customerprocessid]=hsource;	
+			}
+			else
+			{
+				///do scheduleskelecton
+				ppi=ss.DealScheduleSkelecton(ppi);
+
+			}
+			return ppi;
+		}
+
+
+		public PartProcessInfo ScheduleOneMachineActual(PartProcessInfo partprocessinfo,string machineid,DateTime nowtime)
+		{
+			Source source=new Source();
+			string processid=partprocessinfo.ProcessId;
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			PartProcessInfo ppi=partprocessinfo;
+			MachineBrokenInfo mbi;
+			MachineBroken machinebroken;
+			IList brokensources;
+			
+			DateTime processdate=new DateTime();
+			DateTime brokendate=new DateTime();
+
+			///get machineinfo
+			Hashtable hmachine=new Machine().GetMachine(customerprocessid);
+			ppi.ScheduleDate=nowtime;
+			if (ppi.StartDate.Ticks!=DateTime.MinValue.Ticks)
+			{
+				processdate=ppi.StartDate;
+				if (ppi.ScheduleDate.Ticks!=DateTime.MinValue.Ticks && ppi.ScheduleDate.Ticks>processdate.Ticks)
+				{
+					processdate=ppi.ScheduleDate;
+				}
+				
+				
+			}
+			else
+			{
+				processdate=ppi.EndDate;
+			}
+
+			///set initial source
+			if (!hprocesssource.Contains(customerprocessid))
+			{
+				machinebroken=new MachineBroken();
+				if (ppi.FactStartDate.Ticks==DateTime.MinValue.Ticks)
+				{
+					hsource=source.GetSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowtime);
+					brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowtime);
+				}
+				else
+				{
+					hsource=source.GetSource(customerprocessid,ppi.FactStartDate,ppi.EndDate,nowtime);
+					brokensources=machinebroken.GetBrokenSource(ppi.FactStartDate,ppi.EndDate,nowtime);
+				}
+				
+				
+				
+				hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+				hprocesssource.Add(customerprocessid,hsource);
+				
+			}
+			hsource=hprocesssource[customerprocessid] as Hashtable;
+
+			if (!hsource.Contains(processdate.ToString()+machineid))
+			{
+				//if (hmachine.Contains(machineid))
+				//{
+					mbi=hbrokenmachine[customerprocessid+machineid] as MachineBrokenInfo;
+					hsource=source.dealSource(hsource,machineid,mbi,0,processdate,customerprocessid,hmachine);
+					if (hprocesssource.ContainsKey(customerprocessid))
+					{
+						hprocesssource[customerprocessid]=hsource;
+					}
+					else
+					{
+						hprocesssource.Add(customerprocessid,hsource);
+					}
+					
+				//}
+				//else
+				//{
+				//	ppi=null;
+				//}
+
+				
+			}
+			
+			ppi= ScheduleOneMachine(partprocessinfo,machineid);
+
+
+			return ppi;
+			
+			
+			
+
+		}
+		
+		public PartProcessInfo ScheduleOneMachineRecommand(PartProcessInfo partprocessinfo,string machineid,DateTime nowdate)
+		{
+			Source source=new Source();
+			string processid=partprocessinfo.ProcessId;
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			PartProcessInfo ppi=partprocessinfo;
+			MachineBrokenInfo mbi;
+			MachineBroken machinebroken;
+
+			DateTime processdate=new DateTime();
+			DateTime brokendate=new DateTime();
+
+			///get machineinfo
+			Hashtable hmachine=new Machine().GetMachine(customerprocessid);
+
+
+
+			if (ppi.StartDate.Ticks!=DateTime.MinValue.Ticks)
+			{
+				processdate=ppi.StartDate;
+				
+			}
+			else
+			{
+				processdate=ppi.EndDate;
+			}
+
+
+			///set initial source
+			if (!hprocesssource.Contains(customerprocessid))
+			{
+				hsource=source.GetTotalSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowdate,scheduledparts);
+				machinebroken=new MachineBroken();
+				IList brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowdate);
+				hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+				hprocesssource.Add(customerprocessid,hsource);
+				
+			}
+			hsource=hprocesssource[customerprocessid] as Hashtable;
+			
+			if (!hsource.Contains(processdate.ToString()+machineid))
+			{
+				//if (hmachine.Contains(machineid))
+				//{
+				mbi=hbrokenmachine[customerprocessid+machineid] as MachineBrokenInfo;
+				hsource=source.dealSource(hsource,machineid,mbi,0,processdate,customerprocessid,hmachine);
+				if (hprocesssource.ContainsKey(customerprocessid))
+				{
+					hprocesssource[customerprocessid]=hsource;
+				}
+				else
+				{
+					hprocesssource.Add(customerprocessid,hsource);
+				}
+					
+				//}
+				//else
+				//{
+				//	ppi=null;
+				//}
+
+				
+			}
+			
+			ppi= ScheduleOneMachine(partprocessinfo,machineid);
+			return ppi;
+		}
+
+		public PartProcessInfo SchedulePartActual(PartProcessInfo partprocessinfo,DateTime nowdate,IList machines)
+		{
+			string processid=partprocessinfo.ProcessId;
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			PartProcessInfo ppi=partprocessinfo;
+			MachineBroken machinebroken;
+
+			Source source=new Source();
+
+			///set initial source
+			if (!hprocesssource.Contains(customerprocessid))
+			{
+				hsource=source.GetSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowdate);
+				machinebroken=new MachineBroken();
+				IList brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowdate);
+				hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+				hprocesssource.Add(customerprocessid,hsource);
+				partprocessinfo.ScheduleDate=nowdate;
+			}
+
+			
+			return SchedulePartMachines(partprocessinfo,machines);
+
+		}
+
+
+		public PartProcessInfo ScheduleActual(PartProcessInfo partprocessinfo,DateTime nowdate)
+		{
+			string processid=partprocessinfo.ProcessId;
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			PartProcessInfo ppi=partprocessinfo;
+			MachineBroken machinebroken;
+			IList brokensources;
+
+			Source source=new Source();
+
+			///set initial source
+			if (!hprocesssource.Contains(customerprocessid))
+			{
+				machinebroken=new MachineBroken();
+				if (ppi.FactStartDate.Ticks==DateTime.MinValue.Ticks)
+				{
+					hsource=source.GetSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowdate);
+					brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowdate);
+				}
+				else
+				{
+					hsource=source.GetSource(customerprocessid,ppi.FactStartDate,ppi.EndDate,nowdate);
+					brokensources=machinebroken.GetBrokenSource(ppi.FactStartDate,ppi.EndDate,nowdate);
+				}
+				
+				
+				hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+				hprocesssource.Add(customerprocessid,hsource);
+				partprocessinfo.ScheduleDate=nowdate;
+			}
+
+			
+			return ScheduleAllMachines(partprocessinfo);
+
+		}
+
+		public PartProcessInfo SchedulePartRecommand(PartProcessInfo partprocessinfo,DateTime nowdate,IList machines)
+		{
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			PartProcessInfo ppi=partprocessinfo;
+			MachineBroken machinebroken;
+
+			Source source=new Source();
+			source.RemoveRecommandSource(customerprocessid,ppi.ModuleId);
+
+			///set initial source
+			if (!hprocesssource.Contains(customerprocessid))
+			{
+				hsource=source.GetTotalSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowdate,scheduledparts);
+				machinebroken=new MachineBroken();
+				IList brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowdate);
+				hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+				hprocesssource.Add(customerprocessid,hsource);
+				
+			}
+			
+			return SchedulePartMachines(partprocessinfo,machines);
+
+		}
+
+
+		public PartProcessInfo ScheduleRecommand(PartProcessInfo partprocessinfo,DateTime nowdate)
+		{
+			string customerprocessid=partprocessinfo.CustomerProcessId;
+			PartProcessInfo ppi=partprocessinfo;
+			MachineBroken machinebroken;
+
+			Source source=new Source();
+			source.RemoveRecommandSource(customerprocessid,ppi.ModuleId);
+
+			///set initial source
+			if (!hprocesssource.Contains(customerprocessid))
+			{
+				//hsource=source.GetTotalSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowdate,scheduledparts);
+				hsource=source.GetTotalSourceRecommand(customerprocessid,ppi.StartDate,ppi.ModuleId);
+				machinebroken=new MachineBroken();
+				IList brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowdate);
+				hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+				hprocesssource.Add(customerprocessid,hsource);
+				
+			}
+			
+			return ScheduleAllMachines(partprocessinfo);
+
+		}
+
+		public IList ScheduleRecommand(IList partprocessinfos,DateTime nowdate)
+		{
+			Source source=new Source();
+			int machinecount;
+			
+			PartProcessInfo ppi;
+			string premoduleid=null;
+			string prepartno_id=null;
+			string preprocessid=null;
+			PartProcessInfo preinfo=null;
+			bool forward=false;
+			IList infos=new NeedSchedulePart().DealNeedSchedulePart(partprocessinfos);
+
+			ProcessInfo pi;
+			ScheduleSkelecton ss=new ScheduleSkelecton();
+
+			///get process
+			if (hprocess==null)
+			{
+				Process process=new Process();
+				hprocess=process.GetProcessIdProcess();
+			}
+
+			for (int i=0;i<infos.Count;i++)
+			{	
+				ppi=infos[i] as PartProcessInfo;
+
+				///schedule recommand
+				pi=hprocess[ppi.ProcessId] as ProcessInfo;
+				
+				///remove recommand source
+				if (premoduleid!=ppi.ModuleId )
+				{
+					if (preprocessid!=ppi.ProcessId)
+					{
+						if (preprocessid!=ppi.ProcessId && pi.NeedSchedule==1 && ppi.NeedProduct==1)
+						{
+							source.RemoveRecommandSource(ppi.CustomerProcessId,ppi.ModuleId);
+						}
+					}
+					
+				}
+				
+
+				///set start or end time
+				if (premoduleid!=ppi.ModuleId || prepartno_id!=ppi.PartNo_Id)
+				{
+					if (ppi.StartDate.Ticks!=DateTime.MinValue.Ticks)
+					{
+						forward=true;
+						if (ppi.StartDate.Ticks<nowdate.Ticks)
+						{
+							ppi.StartDate = nowdate;
+							ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+						}
+					}
+					else
+					{
+						forward=false;
+					}
+				}
+				else
+				{
+					if (preinfo!=null)
+					{
+						if (forward)
+						{
+							//ppi.StartDate=preinfo.EndDate.AddDays(1);
+							
+							if (ppi.NeedProduct == 1 && pi.NeedSchedule == 1)
+							{
+								if (!hprocesssource.Contains(ppi.CustomerProcessId))
+								{
+									//hsource=source.GetTotalSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowdate,scheduledparts);
+									hsource=source.GetTotalSourceRecommand(ppi.CustomerProcessId,ppi.StartDate,ppi.ModuleId);
+									MachineBroken machinebroken=new MachineBroken();
+									IList brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowdate);
+									hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+									hprocesssource.Add(ppi.CustomerProcessId,hsource);
+				
+								}
+								else
+								{
+									hsource=(Hashtable)hprocesssource[ppi.CustomerProcessId];
+								}
+
+								IList lmachine=new Machine().GetMachineList(ppi.CustomerProcessId);
+
+								for (machinecount=0;machinecount<lmachine.Count;machinecount++)
+								{
+									string key=ppi.StartDate.ToString()+lmachine[machinecount].ToString();
+									if (!hsource.Contains(key))
+									{
+										ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,1);
+										ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+										break;
+									}else{
+										SourceInfo si=(SourceInfo)hsource[key];
+										if (si==null || si.ValuedTime>=8*60)
+										{
+											ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,1);
+											ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+											break;
+										}
+									}
+								}
+
+
+								if (machinecount == lmachine.Count)
+								{
+									ppi.StartDate = preinfo.EndDate.AddDays(1);
+									ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+								}
+							}
+							else
+							{
+								ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,1);
+								ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+							}
+							
+
+							ppi.EndDate=new DateTime(); 
+						}
+						else
+						{
+							//ppi.EndDate=preinfo.StartDate.AddDays(-1);
+							ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,-1);
+							ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+							ppi.StartDate=new DateTime();
+						}
+
+
+					}
+
+					
+				}
+				if (pi.NeedSchedule==1 && ppi.NeedProduct==1)
+				{
+					if (ppi.MachineId=="")
+					{
+						ppi=ScheduleRecommand(ppi,nowdate);
+					}
+					else
+					{
+						string[] machines=ppi.MachineId.Split('/');
+						IList lmachines=new ArrayList();
+						for (int j=0;j<machines.Length;j++)
+						{
+							lmachines.Add(machines[j]);
+						}
+						ppi=SchedulePartRecommand(ppi,nowdate,lmachines);
+					}
+				}
+				else
+				{
+					ppi=ss.DealScheduleSkelecton(ppi);
+				}
+				
+				
+				
+
+				preinfo=ppi;
+				premoduleid=ppi.ModuleId;
+				prepartno_id=ppi.PartNo_Id;
+
+			}
+			return new ScheduleSkelecton().DealDesignAssembleSkelecton(infos);
+
+		}
+
+		public IList ScheduleActual(IList partprocessinfos,DateTime nowdate)
+		{
+			Source source=new Source();
+
+			PartProcessInfo ppi;
+			string premoduleid=null;
+			string prepartno_id=null;
+			string preprocessid=null;
+			PartProcessInfo preinfo=null;
+			IList infos=partprocessinfos;
+			ProcessInfo pi;
+			int machinecount;
+			ScheduleSkelecton ss=new ScheduleSkelecton();
+
+			//table of process designate machineid
+			Hashtable tprocesstdesignate = new Hashtable();
+			//table of designate machineid
+			Hashtable tdesignatemachine = new Hashtable();
+
+
+			///get process
+			if (hprocess==null)
+			{
+				Process process=new Process();
+				hprocess=process.GetProcessIdProcess();
+			}
+
+			
+
+			for (int i=0;i<infos.Count;i++)
+			{	
+				ppi=infos[i] as PartProcessInfo;
+
+				
+
+				///schedule recommand
+				pi=hprocess[ppi.ProcessId] as ProcessInfo;
+				
+				///remove recommand source
+				//if (premoduleid!=ppi.ModuleId )
+				//{
+					if (preprocessid!=ppi.ProcessId && pi.NeedSchedule==1 && ppi.NeedProduct==1)
+					{
+						source.RemoveSources(ppi.CustomerProcessId,nowdate,ppi.ModuleId);
+					}
+					
+				//}
+				
+
+				///set start or end time
+				if (premoduleid!=null && premoduleid==ppi.ModuleId && prepartno_id==ppi.PartNo_Id)
+				{
+					if (preinfo!=null)
+					{
+						//ppi.StartDate=preinfo.EndDate.AddDays(1);
+						//ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,1);
+						if (ppi.NeedProduct == 1 && pi.NeedSchedule == 1)
+						{
+							if (!hprocesssource.Contains(ppi.CustomerProcessId))
+							{
+								//hsource=source.GetTotalSource(customerprocessid,ppi.StartDate,ppi.EndDate,nowdate,scheduledparts);
+								hsource=source.GetSource(ppi.CustomerProcessId,ppi.StartDate,ppi.EndDate,nowdate);
+								MachineBroken machinebroken=new MachineBroken();
+								IList brokensources=machinebroken.GetBrokenSource(ppi.StartDate,ppi.EndDate,nowdate);
+								hbrokenmachine=machinebroken.GetBrokenSourceTable(brokensources);
+								hprocesssource.Add(ppi.CustomerProcessId,hsource);
+				
+							}
+							else
+							{
+								hsource=(Hashtable)hprocesssource[ppi.CustomerProcessId];
+							}
+
+							IList lmachine=new Machine().GetMachineList(ppi.CustomerProcessId);
+
+							for (machinecount=0;machinecount<lmachine.Count;machinecount++)
+							{
+								string key=ppi.StartDate.ToString()+lmachine[machinecount].ToString();
+								if (!hsource.Contains(key))
+								{
+									ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,1);
+									ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+									break;
+								}
+								else
+								{
+									SourceInfo si=(SourceInfo)hsource[key];
+									if (si==null || si.ValuedTime>=8*60)
+									{
+										ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,1);
+										ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+										break;
+									}
+								}
+							}
+
+							if (machinecount == lmachine.Count)
+							{
+								ppi.StartDate = preinfo.EndDate.AddDays(1);
+								ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+							}
+						}
+						else
+						{
+							//deal start time of next process without schedule
+							ppi.StartDate=ss.SetNextProcessDate(schedlues,preinfo,1);
+							ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+							//ppi.StartDate = preinfo.EndDate.AddDays(1);
+						}
+							
+
+						ppi.EndDate=new DateTime();
+					}
+				}
+
+				if (ppi.FactStartDate.Ticks==DateTime.MinValue.Ticks && ppi.StartDate.Ticks<nowdate.Ticks)
+				{
+					ppi.StartDate=nowdate;
+					ppi.StartDate = ss.DealStartDateWithBigSchedule(ppi.ModuleId,ppi.ProcessId,ppi.StartDate);
+				}
+				
+				/*middle schedule conflict with the schedule
+				if (ppi.MiddleStartDate.Ticks!=DateTime.MinValue.Ticks)
+				{
+					ppi.StartDate=ppi.MiddleStartDate;
+				}
+				*/
+				
+
+				if (pi.NeedSchedule==1 && ppi.NeedProduct==1)
+				
+				{
+					if (ppi.MachineId=="")
+					{
+						ppi=ScheduleActual(ppi,nowdate); 
+					}
+					else
+					{
+						string[] machines=ppi.MachineId.Split('/');
+						IList lmachines=new ArrayList();
+						//set designatemachineid
+						if (ppi.FactStartDate.Ticks == DateTime.MinValue.Ticks)
+						{
+
+							for (int j=0;j<machines.Length;j++)
+							{
+								lmachines.Add(machines[j]);
+							}
+						}
+						else
+						{
+							//get designatemachineid
+							if (tprocesstdesignate.Contains(ppi.ProcessId))
+							{
+								tprocesstdesignate[ppi.ProcessId] = source.GetDesignateMachineid(ppi.ProcessId,ppi.FactStartDate);
+							}
+							//set designatemachineid
+							tdesignatemachine = (Hashtable)tprocesstdesignate[ppi.ProcessId];
+							ppi.DesignateMachineId = tdesignatemachine[ppi.ModuleId+ppi.PartNo_Id+ppi.ProcessNo].ToString();
+							lmachines.Add(ppi.DesignateMachineId);
+						}
+
+
+						ppi=SchedulePartActual(ppi,nowdate,lmachines);
+					}
+				}
+				else
+				{
+					//deal end time of next process unscheduled process
+					ppi=ss.DealScheduleSkelecton(ppi);
+				}
+				
+				
+				///set ScheduleFinished
+				if (ppi.FactStartDate.Ticks != DateTime.MinValue.Ticks)
+				{	
+					int timespan = (int)(((TimeSpan)nowdate.Subtract(ppi.FactStartDate)).TotalMinutes);
+					if ( timespan <= ppi.ProcessNeedMinutes)
+					{
+
+						//ppi.StatusId = "ScheduleFinished";
+					}
+					else
+					{
+						ppi.StatusId = "Delay";
+					}
+				}
+				else
+				{
+					if (ppi.StatusId.Equals("Ready") && (ppi.StartDate.Ticks < nowdate.Ticks))
+					{
+						ppi.StatusId = "Delay";
+					}
+				}
+
+				preinfo=ppi;
+				premoduleid=ppi.ModuleId;
+				prepartno_id=ppi.PartNo_Id;
+
+			}
+			return new ScheduleSkelecton().DealDesignAssembleSkelecton(infos);
+			
+
+		}
+
+		private IList GetScheduledPart(IList needscheduleparts)
+		{
+			IList scheduledparts=new ArrayList();
+			PartProcessInfo ppi;
+			for (int i=0;i<needscheduleparts.Count;i++)
+			{
+				ppi=needscheduleparts[i] as PartProcessInfo;
+				if (ppi.StartDate.Ticks!=DateTime.MinValue.Ticks && ppi.EndDate.Ticks!=DateTime.MinValue.Ticks)
+				{
+					scheduledparts.Add(ppi.ModuleId+ppi.PartNo_Id);
+				}
+			}
+
+			return scheduledparts;
+		}
+
+
+		
+		/// <summary>
+		/// Summary description for PartProcess.
+		/// </summary>
+		public IList GetNeedSchedulePart(DateTime scheduleddate)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			IList needscheduleparts=dal.GetNeedSchedulePart(scheduleddate);
+			scheduledparts=GetScheduledPart(needscheduleparts);
+			return dal.GetNeedSchedulePart(scheduleddate);
+		}
+
+		public IList GetPartProcessByOverdealt(string moduleid)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetPartProcessByOverdealt(moduleid);
+
+		}
+
+		public IList GetNeedSchedulePart(string moduleid, DateTime ScheduledDate)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetNeedSchedulePart(moduleid, ScheduledDate);
+
+		}
+
+		public bool setModuleScheduleDate(bool isEndDate, string moduleid, DateTime dt)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.setModuleScheduleDate(isEndDate,moduleid,dt);
+
+		}
+
+		public bool UpdatePartProcessFactTime(PartProcessInfo partprocessinfo)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.UpdatePartProcessFactTime(partprocessinfo);
+
+		}
+
+		public bool UpdatePartProcessProcessTime(PartProcessInfo partprocessinfo)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.UpdatePartProcessProcessTime(partprocessinfo);
+
+		}
+
+		public void deleteRecAfterDateTime(DateTime dt)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			dal.deleteRecAfterDateTime(dt);
+		}
+
+		
+
+		public	IList getSchedulesList()
+		{
+			return schedlues;
+		}
+
+		private int getDesignatedMinutes(PartProcessInfo partprocessinfo)
+		{
+			Source source=new Source();
+			Hashtable hdesignated;
+			int designatedminutes;
+			///deal designated processminutes
+			hdesignated=source.GetDesignatedMinutes(partprocessinfo.ProcessId,partprocessinfo.StartDate);
+			
+			if (hdesignated.Contains(partprocessinfo.ModuleId+partprocessinfo.PartNo_Id))
+			{
+				designatedminutes=Convert.ToInt16(hdesignated[partprocessinfo.ModuleId+partprocessinfo.PartNo_Id]);
+			}
+			else
+			{
+				designatedminutes=0;
+			}
+
+			return designatedminutes;
+			
+
+		}
+
+		public IList GetPartProcessByCondition(string processid,string moduleid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.GetPartProcessInfo_RelationOtherTable(moduleid, processid);
+		}
+
+		public IList getPartProcessInfo(DateTime dt)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getPartProcessInfo(dt);
+		}
+
+		public IList GetPartProcessByNow(string processid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.GetPartProcessByNow(processid);
+		}
+
+		///add 12/16
+		public IList GetDonePartProcess(DateTime date)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetDonePartProcess(date);
+
+		}
+
+		public IList GetDoneSchedulePartByModuleId(string moduleid,DateTime nowday)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetDoneSchedulePartByModuleId(moduleid,nowday);
+
+		}
+
+		public IList GetDoneSchedulePartByModuleId(string moduleid,string partnoid,DateTime nowday)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.GetDoneSchedulePartByModuleId(moduleid,partnoid,nowday);
+
+		}
+
+		public void deleteRecAfterFactEndDate(PartProcessInfo ppi,DateTime factenddate)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			dal.deleteRecAfterFactEndDate(ppi,factenddate);
+		}
+
+		public IList GetModuleList(IList partprocesses)
+		{
+			IList modules=new ArrayList();
+			string premoduleid="";
+			PartProcessInfo ppi;
+
+			for (int i=0;i<partprocesses.Count;i++)
+			{
+				ppi=partprocesses[i] as PartProcessInfo;
+				if (ppi.ModuleId!=premoduleid)
+				{
+					modules.Add(ppi.ModuleId);
+				}
+				premoduleid=ppi.ModuleId;
+			}
+
+			return modules;
+		}
+
+//		public IList GetPartnoList(IList partprocesses,string moduleid)
+//		{
+//			IList partnos=new ArrayList();
+//			PartProcessInfo ppi;
+//			string prepartno="";
+//
+//			for (int i=0;i<partprocesses.Count;i++)
+//			{
+//				ppi=partprocesses[i] as PartProcessInfo;
+//				if (ppi.ModuleId==moduleid && prepartno!=ppi.PartNo)
+//				{
+//					partnos.Add(ppi.PartNo);
+//				}
+//				prepartno=ppi.PartNo;
+//			}
+//
+//			return partnos;
+//		}
+//
+//		public IList GetPartno_idList(IList partprocesses,string moduleid,string partno)
+//		{
+//			IList partno_ids=new ArrayList();
+//			PartProcessInfo ppi;
+//			string prepartno_id="";
+//
+//			for (int i=0;i<partprocesses.Count;i++)
+//			{
+//				ppi=partprocesses[i] as PartProcessInfo;
+//				if (ppi.ModuleId==moduleid && ppi.PartNo==partno && prepartno_id!=ppi.PartNo_Id)
+//				{
+//					partno_ids.Add(ppi.PartNo_Id);
+//				}
+//				prepartno_id=ppi.PartNo_Id;
+//			}
+//
+//			return partno_ids;
+//		}
+
+
+		public IList DealUndo(IList lpartprocess,IList lundoinfo)
+		{
+			PartProcessInfo ppi;
+			UndoInfo ui;
+			IList r_lpartprocess=new ArrayList();
+
+			for (int i=0;i<lundoinfo.Count;i++)
+			{
+				ui = (UndoInfo) lundoinfo[i];
+				ppi=(PartProcessInfo) lpartprocess[i];
+				
+				ppi.RemaintneedMinutes=ppi.RemaintneedMinutes+ui.RedoMinutes;
+				ppi.FactEndDate=DateTime.MinValue;
+				if (ppi.RemaintneedMinutes==ppi.ProcessNeedMinutes)
+				{
+					ppi.FactStartDate=DateTime.MinValue;
+
+				}
+
+				r_lpartprocess.Add(ppi);
+				
+			}
+
+			return r_lpartprocess;
+		}
+
+		public bool setPartProcessFactStartDate(PartProcessInfo partprocessinfo)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.setPartProcessFactStartDate(partprocessinfo);
+		}
+
+		public bool setPartProcessFactEndDate(PartProcessInfo partprocessinfo)
+		{
+			// Get an instance of the Customer DAL using the DALFactory
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			//dal=new ModuleWorkFlow.MySQLDAL.Customer();
+			// Run a search against the data store
+			return dal.setPartProcessFactEndDate(partprocessinfo);
+		}
+
+		public bool UpdatePartProcessStatus(PartProcessInfo partprocessinfo)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.UpdatePartProcessStatus(partprocessinfo);
+		}
+		
+		public bool updatePartProcessMiddleDate(PartProcessInfo ppi)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.updatePartProcessMiddleDate(ppi);
+		}
+
+		public IList getPartProcessInfo(string moduleid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getPartProcessInfo(moduleid);
+		}
+
+		public IList getListPartProcessInfo(string moduleid, string partnoid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getListPartProcessInfo(moduleid, partnoid);
+		}
+
+		public IList getListPartProcessInfo(string moduleid, string partnoid, string processid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getListPartProcessInfo(moduleid, partnoid, processid);
+		}
+
+		public IList getListPartProcessInfoByModulePartNo(string moduleid, string partno)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getListPartProcessInfoByModulePartNo(moduleid, partno);
+		}
+
+		public IList getListPartNoIdList(string moduleid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getListPartNoIdList(moduleid);
+		}
+
+		public IList getListPartNoIdList(string moduleid, string partno)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getListPartNoIdList(moduleid, partno);
+		}
+
+		public PartProcessInfo getPartProcessInfo(int processno)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getPartProcessInfo(processno);
+		}
+
+		public PartProcessInfo getPartProcessInfo(string moduleid, string partnoid, int processorder)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getPartProcessInfo(moduleid, partnoid, processorder);
+		}
+
+		public bool UpdatePartProcessNeedMintesAndProcessOrder(int processno, int needminutes, int processorder)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.UpdatePartProcessNeedMintesAndProcessOrder(processno, needminutes, processorder);
+		}
+
+		public bool setPartStatusToStart(PartProcessInfo ppi, DateTime starttime)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.setPartStatusToStart(ppi, starttime);
+		}
+
+		public bool setPartStatusToHoldon(PartProcessInfo ppi, DateTime holdontime)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.setPartStatusToHoldon(ppi, holdontime);
+		}
+		public bool setPartStatusToEnd(PartProcessInfo ppi, DateTime endtime)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.setPartStatusToEnd(ppi, endtime);
+		}
+
+		//add by Jeason 2006/05/03
+		public IList GetProcessOrderConflict()
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.GetProcessOrderConflict();
+		}
+
+		public bool UpdatePartProcessProcessOrder(IList processnos, IList processorders)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.UpdatePartProcessProcessOrder(processnos, processorders);
+		}
+
+		public IList getHadStartProcess(string moduleid, string partnoid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getHadStartProcess(moduleid, partnoid);
+		}
+
+		public IList getListPartProcessInfoByPartNoProcessId(string moduleid, string partno, string processid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getListPartProcessInfoByPartNoProcessId(moduleid, partno, processid);
+		}
+
+		public IList getPartProcessInfoByModuleId(string moduleid,string partno,string statusid,string processid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getPartProcessInfoByModuleId(moduleid, partno, statusid, processid);
+		}
+
+		public IList getListPartProcessingDaily(DateTime dt, string processid, string statusid)
+		{
+			IPartProcess dal= ModuleWorkFlow.DALFactory.PartProcess.Create();
+			return dal.getListPartProcessingDaily(dt, processid, statusid);
+		}
+
+		/// <summary>
+		/// ¡¼×@¡¼¡¼ã]¡¼ÆB¡¼¡¼¡¼¡¼¡¼¡¼í}¡¼Öv¡¼¡¼¡¼¡¼¡¼¡¼,£V¡¼ªµ¡¼¡¼¡¼¡¼ã]¡¼¡¼¡¼¡¼¡¼¡¼¡¼¡¼Ã¡¡¼¡¼¡é£Vªµ¡¼¡¼¡¼
+		/// </summary>
+		/// <param name="ppi"></param>
+		/// <returns></returns>
+		public PartProcessInfo checkOtherProcessIsDoing(PartProcessInfo ppi)
+		{
+			PartProcessInfo retppi = null;
+			ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
+			ArrayList alppi = (ArrayList)pp.getListPartProcessInfo(ppi.ModuleId, ppi.PartNo_Id);
+
+			for(int i=0;i<alppi.Count;i++)
+			{
+				PartProcessInfo innerppi = (PartProcessInfo)alppi[i];
+				if (innerppi.FactStartDate.Ticks > 0 && 
+					innerppi.FactEndDate.Ticks == 0 && 
+					!innerppi.StatusId.Equals("Holdon") &&
+					!innerppi.ProcessId.Equals(ppi.ProcessId))
+				{
+					retppi = innerppi;
+				}
+			}
+
+			return retppi;
+		}
+	}
+
+}

@@ -1,0 +1,48 @@
+<VisualStudioProject>
+    <CSHARP LastOpenVersion = "7.10.3077" >
+        <Build>
+            <Settings ReferencePath = "D:\Inetpub\wwwroot\ModuleWorkFlow\IDAL\bin\Debug\;D:\Inetpub\wwwroot\ModuleWorkFlow\DALFactory\bin\Debug\;C:\Inetpub\wwwroot\ModuleWorkFlow\IDAL\bin\Debug\;C:\Inetpub\wwwroot\ModuleWorkFlow\DALFactory\bin\Debug\;C:\Inetpub\wwwroot\ModuleWorkFlow\bin\;E:\NUit\bin\;C:\Inetpub\wwwroot\moduleworkflowYD\bin\;D:\wwwtest\moduleworkflowYD\bin\;D:\projects\wwwtest\moduleworkflowYD\bin\;D:\LUK\PROJECT\wwwtest\moduleworkflowYD\bin\;D:\project\moduleworkflowYD\bin\;D:\project\hyx\bin\;F:\project\MILE\bin\;D:\project\MILE\bin\" >
+                <Config
+                    Name = "Debug"
+                    EnableASPDebugging = "false"
+                    EnableASPXDebugging = "false"
+                    EnableUnmanagedDebugging = "false"
+                    EnableSQLServerDebugging = "false"
+                    RemoteDebugEnabled = "false"
+                    RemoteDebugMachine = ""
+                    StartAction = "Project"
+                    StartArguments = ""
+                    StartPage = ""
+                    StartProgram = ""
+                    StartURL = ""
+                    StartWorkingDirectory = ""
+                    StartWithIE = "false"
+                />
+                <Config
+                    Name = "Release"
+                    EnableASPDebugging = "false"
+                    EnableASPXDebugging = "true"
+                    EnableUnmanagedDebugging = "false"
+                    EnableSQLServerDebugging = "false"
+                    RemoteDebugEnabled = "false"
+                    RemoteDebugMachine = ""
+                    StartAction = "Project"
+                    StartArguments = ""
+                    StartPage = ""
+                    StartProgram = ""
+                    StartURL = ""
+                    StartWorkingDirectory = ""
+                    StartWithIE = "true"
+                />
+            </Settings>
+        </Build>
+        <OtherProjectSettings
+            CopyProjectDestinationFolder = ""
+            CopyProjectUncPath = ""
+            CopyProjectOption = "0"
+            ProjectView = "ProjectFiles"
+            ProjectTrust = "0"
+        />
+    </CSHARP>
+</VisualStudioProject>
+

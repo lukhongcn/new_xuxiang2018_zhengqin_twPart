@@ -1,0 +1,492 @@
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Web;
+using System.Web.SessionState;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
+
+using WorkFlow.lib;
+
+using ModuleWorkFlow.BLL.Apply;
+using ModuleWorkFlow.Model.Apply;
+using ModuleWorkFlow.BLL.System;
+using ModuleWorkFlow.Model.System;
+
+namespace ModuleWorkFlow.admin
+{
+	/// <summary>
+	/// Summary description for ProductType.
+	/// </summary>
+	public class MerchindiseCheckView : System.Web.UI.Page
+	{
+		protected System.Web.UI.WebControls.Button btn_add_edit;
+		protected System.Web.UI.HtmlControls.HtmlTable Table1;
+		protected System.Web.UI.WebControls.Label lab_checkNo;
+		protected System.Web.UI.WebControls.TextBox txt_checkNo;
+		protected System.Web.UI.WebControls.Label lab_checkDate;
+		protected WebControlLibrary.InputCalendar txt_checkDate;
+		protected System.Web.UI.WebControls.Label lab_merchindiseOrderNo;
+		protected System.Web.UI.WebControls.TextBox txt_merchindiseOrderNo;
+		protected System.Web.UI.WebControls.Label lab_merchindiseID;
+		protected System.Web.UI.WebControls.Label lab_merchindiseDate;
+		protected System.Web.UI.WebControls.TextBox txt_merchindiseDate;
+		protected System.Web.UI.WebControls.Label lab_faxType;
+		protected System.Web.UI.WebControls.Label lab_applierNo;
+		protected System.Web.UI.WebControls.Label lab_applierName;
+		protected System.Web.UI.WebControls.TextBox txt_applierName;
+		protected System.Web.UI.WebControls.Label lab_moneyTypeId;
+		protected System.Web.UI.WebControls.Label lab_moneyTypeName;
+		protected System.Web.UI.WebControls.TextBox txt_moneyTypeName;
+		protected System.Web.UI.WebControls.Label lab_changeRate;
+		protected System.Web.UI.WebControls.TextBox txt_changeRate;
+		protected System.Web.UI.WebControls.Label lab_payCondition;
+		protected System.Web.UI.WebControls.Label lab_payDays;
+		protected System.Web.UI.WebControls.TextBox txt_payDays;
+		protected System.Web.UI.WebControls.Label lab_ohterCondition;
+		protected System.Web.UI.WebControls.Label lab_comment;
+		protected System.Web.UI.WebControls.TextBox txt_comment;
+		protected System.Web.UI.WebControls.Label lab_creater;
+		protected System.Web.UI.WebControls.Label lab_createrDate;
+		protected WebControlLibrary.InputCalendar txt_createrDate;
+		protected System.Web.UI.WebControls.Label lab_applyDepartmentManage;
+		protected System.Web.UI.WebControls.TextBox txt_applyDepartmentManage;
+		protected System.Web.UI.WebControls.Label lab_evaluateDate;
+		protected System.Web.UI.WebControls.TextBox txt_evaluateDate;
+		protected System.Web.UI.WebControls.DataGrid dg_MerchindiseCheck;
+		protected System.Web.UI.WebControls.Label Label_Message;
+		protected System.Web.UI.WebControls.Label lab_Id;
+		protected System.Web.UI.WebControls.Label func;
+		protected System.Web.UI.WebControls.Button btn_Detail;
+		protected System.Web.UI.WebControls.DropDownList dpl_merchindiseID;
+		protected System.Web.UI.WebControls.DropDownList dpl_faxType;
+		protected System.Web.UI.WebControls.DropDownList dpl_applierNo;
+		protected System.Web.UI.WebControls.DropDownList dpl_moneyTypeId;
+		protected System.Web.UI.WebControls.DropDownList dpl_payCondition;
+		protected System.Web.UI.WebControls.DropDownList dpl_creater;
+		protected System.Web.UI.WebControls.DropDownList dpl_ohterCondition;
+
+		private MerchindiseCheck merchindiseCheck;
+	
+		private void Page_Load(object sender, System.EventArgs e)
+		{
+			merchindiseCheck = new MerchindiseCheck();
+			if (!this.IsPostBack)
+			{
+				string id = Request.Params["id"];
+				if (id != null)
+				{
+					BindDrop();
+					btn_Detail.Enabled = true;
+					initialEdit(Convert.ToInt32(id));
+					BindData();
+				}
+				else
+				{
+					BindDrop();
+					BindData();
+				}
+				
+			}
+		}
+		
+		private void BindData()
+		{
+			Merchindise m = new Merchindise();
+			try
+			{
+				MerchindiseInfo mi = m.findbykey(Convert.ToInt32(dpl_merchindiseID.SelectedValue));
+				txt_merchindiseDate.Text=mi.MerchindiseArriveDate.ToShortDateString();
+				dpl_faxType.SelectedValue=mi.MerchindiseFaxType;
+				BLL.System.Supply supply = new ModuleWorkFlow.BLL.System.Supply();
+				SupplyInfo si = supply.findbykey(mi.AssestRequisitionId);
+				dpl_applierNo.SelectedValue=si.SupplierName;
+				dpl_moneyTypeId.SelectedValue=mi.MerchindiseMoneyId.ToString();
+				txt_changeRate.Text=mi.ChangeRate.ToString();
+				dpl_payCondition.SelectedValue=mi.MerchindisePayCondition;
+				txt_payDays.Text=mi.MerchindisePayDays.ToString();
+				dpl_ohterCondition.SelectedValue=mi.MerchindiseOhterCondition;
+				txt_comment.Text=mi.Comment;
+			}catch{}
+		}
+
+		private void BindDrop()
+		{
+			Merchindise m = new Merchindise();
+			dpl_merchindiseID.DataSource = m.GetMerchindiseByStatus("APPROV_PASS");
+			dpl_merchindiseID.DataTextField = "MerchindiseNo";
+			dpl_merchindiseID.DataValueField = "Id";
+			dpl_merchindiseID.DataBind();
+
+			Rate rate = new Rate();
+			dpl_faxType.DataSource = rate.GetRateInfos();
+			dpl_faxType.DataTextField = "RateName";
+			dpl_faxType.DataValueField = "RateName";
+			dpl_faxType.DataBind();
+
+			BLL.System.Supply supply = new ModuleWorkFlow.BLL.System.Supply();
+			dpl_applierNo.DataSource = supply.GetSupplyInfos();
+			dpl_applierNo.DataTextField = "supplierName";
+			dpl_applierNo.DataValueField = "supplierName";
+			dpl_applierNo.DataBind();
+
+			Transactionshold ts = new Transactionshold();
+			dpl_moneyTypeId.DataSource = ts.GetTransactionsholdInfos();
+			dpl_moneyTypeId.DataTextField = "TransactionsholdName";
+			dpl_moneyTypeId.DataValueField = "Id";
+			dpl_moneyTypeId.DataBind();
+
+			BLL.System.PayMent pm = new ModuleWorkFlow.BLL.System.PayMent();
+			dpl_payCondition.DataSource = pm.GetPayMentInfos();
+			dpl_payCondition.DataTextField = "PaymentName";
+			dpl_payCondition.DataValueField = "PaymentName";
+			dpl_payCondition.DataBind();
+
+			BLL.System.Other other = new Other();
+			dpl_ohterCondition.DataSource = other.GetOtherInfos();
+			dpl_ohterCondition.DataTextField = "otherName";
+			dpl_ohterCondition.DataValueField = "otherName";
+			dpl_ohterCondition.DataBind();
+
+			BLL.User user= new ModuleWorkFlow.BLL.User();
+			dpl_creater.DataSource = user.getListUserInfo();
+			dpl_creater.DataTextField = "Name";
+			dpl_creater.DataValueField = "Name";
+			dpl_creater.DataBind();
+		}
+
+		private void ClearView()
+		{
+			txt_checkNo.Text="";
+			txt_checkDate.Text="";
+//			txt_merchindiseOrderNo.Text="";
+//			txt_merchindiseID.Text="";
+			txt_merchindiseDate.Text="";
+//			txt_faxType.Text="";
+//			txt_applierNo.Text="";
+//			txt_applierName.Text="";
+//			txt_moneyTypeId.Text="";
+//			txt_moneyTypeName.Text="";
+			txt_changeRate.Text="";
+//			txt_payCondition.Text="";
+			txt_payDays.Text="";
+//			txt_ohterCondition.Text="";
+			txt_comment.Text="";
+//			txt_creater.Text="";
+			txt_createrDate.Text="";
+//			txt_applyDepartmentManage.Text="";
+//			txt_evaluateDate.Text="";
+//			lab_Id.Text="";
+			func.Text="";
+		}
+
+		#region Web Form Designer generated code
+		override protected void OnInit(EventArgs e)
+		{
+			//
+			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
+			//
+			InitializeComponent();
+			base.OnInit(e);
+		}
+		
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{    
+			this.dpl_merchindiseID.SelectedIndexChanged += new System.EventHandler(this.dpl_merchindiseID_SelectedIndexChanged);
+			this.btn_add_edit.Click += new System.EventHandler(this.btn_add_edit_Click);
+			this.btn_Detail.Click += new System.EventHandler(this.btn_Detail_Click);
+			this.Load += new System.EventHandler(this.Page_Load);
+
+		}
+		#endregion
+		
+		private void initialEdit(int id)
+		{
+			func.Text = "Edit";
+			MerchindiseCheckInfo merchindiseCheckinfo = new MerchindiseCheckInfo();
+			lab_Id.Text = Convert.ToString(id);
+			merchindiseCheckinfo = merchindiseCheck.findbykey(Convert.ToInt32(lab_Id.Text));
+			if(merchindiseCheckinfo!=null)
+			{
+				txt_checkNo.Text = merchindiseCheckinfo.CheckNo; 
+				if(! merchindiseCheckinfo.CheckDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString())){
+				txt_checkDate.Text = merchindiseCheckinfo.CheckDate.ToShortDateString();
+				}else{
+				txt_checkDate.Text = "";
+				}
+//				txt_merchindiseOrderNo.Text = merchindiseCheckinfo.MerchindiseOrderNo; 
+
+				Merchindise m = new Merchindise();
+				IList sour = new ArrayList();
+				try
+				{
+					sour.Add(m.findbykey(merchindiseCheckinfo.MerchindiseID));
+					dpl_merchindiseID.Items.Clear();
+					dpl_merchindiseID.DataSource = sour;
+					dpl_merchindiseID.DataTextField = "MerchindiseNo";
+					dpl_merchindiseID.DataValueField = "Id";
+					dpl_merchindiseID.DataBind();
+				}
+				catch{}
+				if(! merchindiseCheckinfo.MerchindiseDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString())){
+				txt_merchindiseDate.Text = merchindiseCheckinfo.MerchindiseDate.ToShortDateString();
+				}else{
+				txt_merchindiseDate.Text = "";
+				}
+				try
+				{
+					if(!merchindiseCheckinfo.FaxType.Equals(""))
+					{
+						dpl_faxType.SelectedValue = merchindiseCheckinfo.FaxType; 
+					}
+				}
+				catch{}
+				try
+				{
+					if(!merchindiseCheckinfo.ApplierNo.Equals(""))
+					{
+						dpl_applierNo.SelectedValue = merchindiseCheckinfo.ApplierNo;
+					}
+				}
+				catch{}
+//				txt_applierName.Text = merchindiseCheckinfo.ApplierName;
+				try
+				{
+					if(merchindiseCheckinfo.MoneyTypeId!=0)
+					{
+						dpl_moneyTypeId.SelectedValue = Convert.ToString(merchindiseCheckinfo.MoneyTypeId);
+					}
+				}
+				catch{}
+//				txt_moneyTypeName.Text = merchindiseCheckinfo.MoneyTypeName; 
+				txt_changeRate.Text = Convert.ToString(merchindiseCheckinfo.ChangeRate);
+				try
+				{
+					if(!merchindiseCheckinfo.PayCondition.Equals(""))
+					{
+						dpl_payCondition.SelectedValue = merchindiseCheckinfo.PayCondition;
+					}
+				}
+				catch{}
+				txt_payDays.Text = Convert.ToString(merchindiseCheckinfo.PayDays);
+				try
+				{
+					if(!merchindiseCheckinfo.OhterCondition.Equals(""))
+					{
+						dpl_ohterCondition.SelectedValue = merchindiseCheckinfo.OhterCondition; 
+					}
+				}
+				catch{}
+				txt_comment.Text = merchindiseCheckinfo.Comment;
+				try
+				{
+					dpl_creater.SelectedValue = merchindiseCheckinfo.Creater; 
+				}
+				catch{}
+				if(! merchindiseCheckinfo.CreaterDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString()))
+				{
+				txt_createrDate.Text = merchindiseCheckinfo.CreaterDate.ToShortDateString();
+				}else{
+				txt_createrDate.Text = "";
+				}
+//				txt_applyDepartmentManage.Text = merchindiseCheckinfo.ApplyDepartmentManage; 
+//				if(! merchindiseCheckinfo.EvaluateDate.ToShortDateString().Equals(Lang.DEFAULTDATE.ToShortDateString())){
+//				txt_evaluateDate.Text = merchindiseCheckinfo.EvaluateDate.ToShortDateString();
+//				}else{
+//				txt_evaluateDate.Text = "";
+//				}
+			}
+			
+		}
+
+		private void btn_add_edit_Click(object sender, System.EventArgs e)
+		{
+			if(dpl_merchindiseID.SelectedValue.Trim().Equals(""))
+			{
+				Label_Message.Text = "無採購單無法添加";
+				return;
+			}
+			MerchindiseCheckInfo merchindiseCheckinfo = new MerchindiseCheckInfo();
+			merchindiseCheckinfo.CheckNo = txt_checkNo.Text;
+			if(!txt_checkDate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseCheckinfo.CheckDate = Convert.ToDateTime(txt_checkDate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_checkDate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseCheckinfo.CheckDate = Lang.DEFAULTDATE;
+			}
+//			merchindiseCheckinfo.MerchindiseOrderNo = txt_merchindiseOrderNo.Text;
+			if(!dpl_merchindiseID.SelectedValue.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseCheckinfo.MerchindiseID = Convert.ToInt32(dpl_merchindiseID.SelectedValue);
+				}
+				catch
+				{
+					Label_Message.Text = dpl_merchindiseID.SelectedValue + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseCheckinfo.MerchindiseID = 0;
+			}
+			if(!txt_merchindiseDate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseCheckinfo.MerchindiseDate = Convert.ToDateTime(txt_merchindiseDate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_merchindiseDate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseCheckinfo.MerchindiseDate = Lang.DEFAULTDATE;
+			}
+			merchindiseCheckinfo.FaxType = dpl_faxType.SelectedValue;
+			merchindiseCheckinfo.ApplierNo = dpl_applierNo.SelectedValue;
+			if(!dpl_moneyTypeId.SelectedValue.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseCheckinfo.MoneyTypeId = Convert.ToInt32(dpl_moneyTypeId.SelectedValue);
+				}
+				catch
+				{
+					Label_Message.Text = dpl_moneyTypeId.SelectedValue + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseCheckinfo.MoneyTypeId = 0;
+			}
+			if(!txt_changeRate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseCheckinfo.ChangeRate = Convert.ToDouble(txt_changeRate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_changeRate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseCheckinfo.ChangeRate = 0;
+			}
+			merchindiseCheckinfo.PayCondition = dpl_payCondition.SelectedValue;
+			if(!txt_payDays.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseCheckinfo.PayDays = Convert.ToInt32(txt_payDays.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_payDays.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseCheckinfo.PayDays = 0;
+			}
+			merchindiseCheckinfo.OhterCondition = dpl_ohterCondition.SelectedValue;
+			merchindiseCheckinfo.Comment = txt_comment.Text;
+			merchindiseCheckinfo.Creater = dpl_creater.SelectedValue;
+			if(!txt_createrDate.Text.Trim().Equals(""))
+			{
+				try
+				{
+					merchindiseCheckinfo.CreaterDate = Convert.ToDateTime(txt_createrDate.Text);
+				}
+				catch
+				{
+					Label_Message.Text = txt_createrDate.Text + Lang.NO_ERROR;
+					return;
+				}
+			}
+			else
+			{
+					merchindiseCheckinfo.CreaterDate = Lang.DEFAULTDATE;
+			}
+			if(!func.Text.Equals("Edit"))
+			{
+				if(merchindiseCheck.insertMerchindiseCheck(merchindiseCheckinfo))
+				{
+					lab_Id.Text = merchindiseCheck.GetMaxMerchindiseCheck().ToString();
+//					
+//					MerchindiseDetail md = new MerchindiseDetail();
+//					IList source = md.GetMerchindiseDetailByNo(merchindiseCheckinfo.MerchindiseID);
+//					MerchindiseCheckDetail mcd = new MerchindiseCheckDetail();
+//					if(!mcd.insertMerchindiseCheckByRequestion(source,Convert.ToInt32(lab_Id.Text)))
+//					{
+//						Label_Message.Text = Lang.SAVE_FAIL;
+//						return;
+//					}
+
+					btn_Detail.Enabled = true;
+					Label_Message.Text = Lang.SAVE_SUCCESS;
+				}
+				else
+				{
+					Label_Message.Text = Lang.SAVE_FAIL;
+					return;
+				}
+			}
+			else
+			{
+				merchindiseCheckinfo.Id = Convert.ToInt32(lab_Id.Text);
+				
+				if(merchindiseCheck.updateMerchindiseCheck(merchindiseCheckinfo))
+				{
+					Label_Message.Text = Lang.SAVE_SUCCESS;
+				}
+				else
+				{
+					Label_Message.Text = Lang.SAVE_FAIL;
+					return;
+				}
+			}
+			if(Label_Message.Text.Equals(Lang.SAVE_SUCCESS))
+			{
+				ClearView();
+			}
+			
+		}
+
+		private void dpl_merchindiseID_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			BindData();
+		}
+
+		private void btn_Detail_Click(object sender, System.EventArgs e)
+		{
+			Response.Write("<script language=\"javascript\">window.open('MerchindiseCheckDetailList.aspx?MerchindiseCheckId="+lab_Id.Text+"&merchindiseID="+dpl_merchindiseID.SelectedValue+"','MerchindiseDetail',\"toolbar=no,location=no,directories=yes,status=yes,menubar=yes,resizable=yes,scrollbars=no,idth=400px,height=500px\");</script>");
+		}
+	}
+}

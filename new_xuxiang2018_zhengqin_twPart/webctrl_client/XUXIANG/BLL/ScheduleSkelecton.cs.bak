@@ -1,0 +1,218 @@
+using System;
+using System.Collections;
+using ModuleWorkFlow.Model;
+
+
+namespace ModuleWorkFlow.BLL
+{
+	/// <summary>
+	/// Summary description for ScheduleSkelecton.
+	/// </summary>
+	/// 
+	
+
+	public class ScheduleSkelecton
+	{
+		private int nextdayminutes=8*60;
+
+
+		public PartProcessInfo DealScheduleSkelecton(PartProcessInfo partprocessinfo)
+		{
+			
+			PartProcessInfo ppi=partprocessinfo;
+			if (ppi.StartDate.Ticks==DateTime.MinValue.Ticks)
+			{
+				ppi.StartDate=ppi.EndDate.AddMinutes(-ppi.RemaintneedMinutes);
+			}
+			else
+			{
+				if (ppi.FactStartDate.Ticks==DateTime.MinValue.Ticks)
+				{
+					ppi.EndDate=ppi.StartDate.AddMinutes(ppi.RemaintneedMinutes);
+				}
+				else
+				{
+					//if (ppi.ScheduleDate.Ticks==DateTime.MinValue.Ticks)
+					//{
+						ppi.EndDate=ppi.FactStartDate.AddMinutes(ppi.RemaintneedMinutes);
+					//}
+					//else
+					//{
+						//ppi.EndDate=ppi.ScheduleDate.AddMinutes(ppi.RemaintneedMinutes);
+					//}
+				}
+			}
+			return ppi;
+		}
+
+		public PartProcessInfo DealSchedule(PartProcessInfo partprocessinfo,DateTime processdate)
+		{
+			PartProcessInfo ppi=partprocessinfo;
+			if (ppi.StartDate.Ticks==DateTime.MinValue.Ticks)
+			{
+				ppi.StartDate=processdate;
+			}
+			else
+			{
+				ppi.EndDate=processdate;
+			}
+
+			if (processdate.Ticks<ppi.StartDate.Ticks)
+			{
+				ppi.StartDate=processdate;
+			}
+
+			if (processdate.Ticks>ppi.EndDate.Ticks)
+			{
+				ppi.EndDate=processdate;
+			}
+			return ppi;
+		}
+
+		public DateTime SetNextProcessDate(IList schedules,PartProcessInfo prepartprocessinfo,int nextday)
+		{
+			int totalminutes=0;
+			ScheduleInfo scheduleinfo;
+			DateTime nextprocessdate=new DateTime();
+			nextprocessdate=prepartprocessinfo.EndDate;
+
+			for (int i=0;i<schedules.Count;i++)
+			{
+				scheduleinfo=(ScheduleInfo)schedules[i];
+				if(scheduleinfo.ProcessDate.Ticks/1000==prepartprocessinfo.EndDate.Ticks/1000 && 
+					scheduleinfo.ModuleId.Equals(prepartprocessinfo.ModuleId) &&
+					scheduleinfo.PartNo_Id.Equals(prepartprocessinfo.PartNo_Id))
+				{
+					totalminutes=totalminutes+scheduleinfo.ProcessMinute;
+				}
+			}
+
+
+			for (int i=schedules.Count-1;i>-1;i--)
+			{
+				scheduleinfo=(ScheduleInfo) schedules[i];
+				if (scheduleinfo.ProcessDate.Ticks/1000==prepartprocessinfo.EndDate.Ticks/1000 && 
+					scheduleinfo.ProcessId.Equals(prepartprocessinfo.ProcessId) &&
+					scheduleinfo.ModuleId.Equals(prepartprocessinfo.ModuleId) &&
+					scheduleinfo.PartNo_Id.Equals(prepartprocessinfo.PartNo_Id))
+				{
+					if (scheduleinfo.ProcessMinute+totalminutes>=nextdayminutes)
+					{
+						nextprocessdate=nextprocessdate.AddDays(nextday);
+					}
+					
+					break;
+				}
+				
+			}
+
+			return nextprocessdate;
+		}
+
+		public IList DealDesignAssembleSkelecton(IList partprocessinfos)
+		{
+			IList infos;
+			IList rinfos=new ArrayList();
+			string moduleid="";
+			PartProcessInfo ppi;
+			int i;
+			
+			while (partprocessinfos.Count>0)
+			{
+				//rerannge the list by moduleid
+				ppi=partprocessinfos[0] as PartProcessInfo;
+				moduleid=ppi.ModuleId; 
+				infos=new ArrayList();
+				i=0;
+			
+				while (i<partprocessinfos.Count)
+				{
+					ppi=partprocessinfos[i] as PartProcessInfo;
+					if (ppi.ModuleId==moduleid)
+					{
+						infos.Add(ppi);
+						partprocessinfos.Remove(ppi);
+					}
+					else
+					{
+						i++;
+					}
+				}
+
+				if (infos.Count>0)
+				{
+					//set assemble and design
+					infos=setAssembleDesign(infos);
+
+					//add to return list;
+					for (int j=0;j<infos.Count;j++)
+					{
+						rinfos.Add(infos[j]);
+					}
+				}
+				
+
+				
+
+			}
+			return rinfos;
+		}
+
+	
+		private IList setAssembleDesign(IList infos)
+		{
+			DateTime assemblestarttime=DateTime.MinValue;
+			DateTime designendtime=DateTime.MinValue;
+			PartProcessInfo ppi;
+
+			string prepartnoid="";
+			//get assembletime or desingtime;
+			for (int i=0;i<infos.Count;i++)
+			{
+				ppi=infos[i] as PartProcessInfo;
+				if (prepartnoid==ppi.PartNo_Id)
+				{
+					if (ppi.ProcessId=="Assemble")
+					{
+						if (assemblestarttime.Ticks==DateTime.MinValue.Ticks || assemblestarttime.Ticks<ppi.StartDate.Ticks)
+						{
+							assemblestarttime=ppi.StartDate;
+						}
+					}
+					if (ppi.ProcessId=="Design")
+					{
+						if (designendtime.Ticks==DateTime.MinValue.Ticks || designendtime.Ticks>ppi.EndDate.Ticks)
+						{
+							designendtime=ppi.EndDate;
+						}
+
+					}
+
+				}
+				prepartnoid=ppi.PartNo_Id;
+			}
+
+			//set assemblestarttime or designendtime
+			for (int i=0;i<infos.Count;i++)
+			{
+				ppi=infos[i] as PartProcessInfo;
+				if (designendtime.Ticks!=DateTime.MinValue.Ticks && ppi.ProcessId=="Design")
+				{
+					ppi.EndDate=designendtime;
+					ppi.StartDate=ppi.EndDate.AddMinutes(-ppi.RemaintneedMinutes);
+				}
+
+				if (assemblestarttime.Ticks!=DateTime.MinValue.Ticks && ppi.ProcessId=="Assemble")
+				{
+					ppi.StartDate=assemblestarttime;
+					ppi.EndDate=ppi.StartDate.AddMinutes(ppi.RemaintneedMinutes);
+				}
+			}
+
+			return infos;
+			
+		}
+
+
+	}
+}

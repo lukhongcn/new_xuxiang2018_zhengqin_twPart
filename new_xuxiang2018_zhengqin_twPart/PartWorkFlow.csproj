@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0120DA78-C437-41F8-9F22-D16726F75D3C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ModuleWorkFlow</RootNamespace>
+    <AssemblyName>new_xuxiang2018_zhengqin_twPart</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44316</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=18.1.0.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\new_xuxiang2018_zhengqin_twNJ\bin\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="LibGit2Sharp, Version=0.30.0.0, Culture=neutral, PublicKeyToken=7cbde695407f0333, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\LibGit2Sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\jiqun\jiqun\bin\Microsoft.Web.UI.WebControls.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="AspNet.ScriptManager.jQuery">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.3.4.1\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.MSAjax">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.WebForms">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.3\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.FriendlyUrls">
+      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.aspx" />
+    <Content Include="adminInventory\MaterialCodeList.aspx" />
+    <Content Include="adminInventory\MaterialCodeView.aspx" />
+    <Content Include="adminInventory\ProductCodeTypeList.aspx" />
+    <Content Include="adminInventory\ProductCodeTypeView.aspx" />
+    <Content Include="admin\CustomerDesignList.aspx" />
+    <Content Include="admin\CustomerDesignView.aspx" />
+    <Content Include="admin\DepartMentPrivilegeList.aspx" />
+    <Content Include="admin\DepartmentView.aspx" />
+    <Content Include="admin\DepartPrivilegeAddEdit.aspx" />
+    <Content Include="admin\discardReasonsView.aspx" />
+    <Content Include="admin\EmailGroupEdit.aspx" />
+    <Content Include="admin\EmailGroupList.aspx" />
+    <Content Include="admin\MaterialAddEdit.aspx" />
+    <Content Include="admin\MaterialList.aspx" />
+    <Content Include="admin\ModelList.aspx" />
+    <Content Include="admin\ModelView.aspx" />
+    <Content Include="admin\SupplyList.aspx" />
+    <Content Include="admin\SupplyView.aspx" />
+    <Content Include="admin\UnNormalReasonsView.aspx" />
+    <Content Include="admin\UserEdit.aspx" />
+    <Content Include="admin\UserList.aspx" />
+    <Content Include="admin\UserPasswordChange.aspx" />
+    <Content Include="admin\UserPrivilegeAddEdit.aspx" />
+    <Content Include="admin\UserPrivilegeList.aspx" />
+    <Content Include="admin\UserView.aspx" />
+    <Content Include="Contact.aspx" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\jquery.datetimepicker.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Controls\newLeft.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Login.aspx" />
+    <Content Include="middle.aspx" />
+    <Content Include="order\controls\OrderDesignView.ascx" />
+    <Content Include="order\OrderDesignList.aspx" />
+    <Content Include="order\OrderDesignView.aspx" />
+    <Content Include="PartList.aspx" />
+    <Content Include="ProjectAdd.aspx" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
+    <Content Include="WebForm1.aspx" />
+    <Content Include="DefaultSub.Master" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\WebForms\DetailsView.js" />
+    <Content Include="Scripts\WebForms\Focus.js" />
+    <Content Include="Scripts\WebForms\GridView.js" />
+    <Content Include="Scripts\WebForms\Menu.js" />
+    <Content Include="Scripts\WebForms\MenuStandards.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
+    <Content Include="Scripts\WebForms\SmartNav.js" />
+    <Content Include="Scripts\WebForms\TreeView.js" />
+    <Content Include="Scripts\WebForms\WebForms.js" />
+    <Content Include="Scripts\WebForms\WebParts.js" />
+    <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Site.Master" />
+    <Content Include="ViewSwitcher.ascx" />
+    <Content Include="Web.config" />
+    <Content Include="Bundle.config" />
+    <Content Include="Site.Mobile.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="adminInventory\MaterialCodeList.aspx.cs">
+      <DependentUpon>MaterialCodeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminInventory\MaterialCodeView.aspx.cs">
+      <DependentUpon>MaterialCodeView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminInventory\ProductCodeTypeList.aspx.cs">
+      <DependentUpon>ProductCodeTypeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="adminInventory\ProductCodeTypeView.aspx.cs">
+      <DependentUpon>ProductCodeTypeView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\CustomerDesignList.aspx.cs">
+      <DependentUpon>CustomerDesignList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\CustomerDesignView.aspx.cs">
+      <DependentUpon>CustomerDesignView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\DepartMentPrivilegeList.aspx.cs">
+      <DependentUpon>DepartMentPrivilegeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\DepartmentView.aspx.cs">
+      <DependentUpon>DepartmentView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\DepartPrivilegeAddEdit.aspx.cs">
+      <DependentUpon>DepartPrivilegeAddEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\discardReasonsView.aspx.cs">
+      <DependentUpon>discardReasonsView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\EmailGroupEdit.aspx.cs">
+      <DependentUpon>EmailGroupEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\EmailGroupList.aspx.cs">
+      <DependentUpon>EmailGroupList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\MaterialAddEdit.aspx.cs">
+      <DependentUpon>MaterialAddEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\MaterialList.aspx.cs">
+      <DependentUpon>MaterialList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\ModelList.aspx.cs">
+      <DependentUpon>ModelList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\ModelView.aspx.cs">
+      <DependentUpon>ModelView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\SupplyList.aspx.cs">
+      <DependentUpon>SupplyList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\SupplyView.aspx.cs">
+      <DependentUpon>SupplyView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\UnNormalReasonsView.aspx.cs">
+      <DependentUpon>UnNormalReasonsView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\UserEdit.aspx.cs">
+      <DependentUpon>UserEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\UserList.aspx.cs">
+      <DependentUpon>UserList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\UserPasswordChange.aspx.cs">
+      <DependentUpon>UserPasswordChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\UserPrivilegeAddEdit.aspx.cs">
+      <DependentUpon>UserPrivilegeAddEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\UserPrivilegeList.aspx.cs">
+      <DependentUpon>UserPrivilegeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\UserView.aspx.cs">
+      <DependentUpon>UserView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\newLeft.aspx.cs">
+      <DependentUpon>newLeft.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultSub.Master.cs">
+      <DependentUpon>DefaultSub.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultSub.Master.designer.cs">
+      <DependentUpon>DefaultSub.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="middle.aspx.cs">
+      <DependentUpon>middle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="order\controls\OrderDesignView.ascx.cs">
+      <DependentUpon>OrderDesignView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="order\controls\OrderDesignView.ascx.designer.cs">
+      <DependentUpon>OrderDesignView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="order\OrderDesignList.aspx.cs">
+      <DependentUpon>OrderDesignList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="order\OrderDesignView.aspx.cs">
+      <DependentUpon>OrderDesignView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PartList.aspx.cs">
+      <DependentUpon>PartList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectAdd.aspx.cs">
+      <DependentUpon>ProjectAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Mobile.Master.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Mobile.Master.designer.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="ViewSwitcher.ascx.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewSwitcher.ascx.designer.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="admin\CustomerDesignList.aspx.resx" />
+    <EmbeddedResource Include="admin\CustomerDesignView.aspx.resx" />
+    <EmbeddedResource Include="admin\DepartMentPrivilegeList.aspx.resx" />
+    <EmbeddedResource Include="admin\DepartmentView.aspx.resx" />
+    <EmbeddedResource Include="admin\DepartPrivilegeAddEdit.aspx.resx" />
+    <EmbeddedResource Include="admin\EmailGroupEdit.aspx.resx" />
+    <EmbeddedResource Include="admin\EmailGroupList.aspx.resx" />
+    <EmbeddedResource Include="admin\MaterialAddEdit.aspx.resx" />
+    <EmbeddedResource Include="admin\MaterialList.aspx.resx" />
+    <EmbeddedResource Include="admin\ModelList.aspx.resx" />
+    <EmbeddedResource Include="admin\SupplyList.aspx.resx" />
+    <EmbeddedResource Include="admin\SupplyView.aspx.resx" />
+    <EmbeddedResource Include="admin\UserEdit.aspx.resx" />
+    <EmbeddedResource Include="admin\UserList.aspx.resx" />
+    <EmbeddedResource Include="admin\UserPrivilegeAddEdit.aspx.resx" />
+    <EmbeddedResource Include="admin\UserPrivilegeList.aspx.resx" />
+    <EmbeddedResource Include="admin\UserView.aspx.resx" />
+    <EmbeddedResource Include="Controls\newLeft.aspx.resx" />
+    <EmbeddedResource Include="Login.aspx.resx" />
+    <EmbeddedResource Include="order\OrderDesignList.aspx.resx" />
+    <EmbeddedResource Include="order\OrderDesignView.aspx.resx" />
+    <EmbeddedResource Include="PartList.aspx.resx" />
+    <EmbeddedResource Include="ProjectAdd.aspx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.Alert\BLL.Alert.csproj">
+      <Project>{798b0758-0854-4a31-b65b-18f7034ef4c2}</Project>
+      <Name>BLL.Alert</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.Outsource\BLL.Outsource.csproj">
+      <Project>{6c9b7512-a5b7-497d-b163-8bf49c900504}</Project>
+      <Name>BLL.Outsource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.Report\BLL.Report.csproj">
+      <Project>{6d6de4cc-9a5c-4b69-abc9-1ab68217a231}</Project>
+      <Name>BLL.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.StupidReport\BLL.StupidReport.csproj">
+      <Project>{2dddef95-dece-40ad-a504-a3b3a0d2a5e5}</Project>
+      <Name>BLL.StupidReport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.System\BLL.System.csproj">
+      <Project>{adb0a4a5-30c4-40a4-a9ed-137bc7a9ef58}</Project>
+      <Name>BLL.System</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL\BLL.csproj">
+      <Project>{47bd34bd-0678-4ac5-aefe-020c468a4648}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\IDAL.Report\IDAL.Report.csproj">
+      <Project>{ac912214-ef60-46fd-a444-d27b6a989025}</Project>
+      <Name>IDAL.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.StupidReport\Model.StupidReport.csproj">
+      <Project>{19920b12-7ac3-45a8-aa33-752e7c131be5}</Project>
+      <Name>Model.StupidReport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.System\Model.System.csproj">
+      <Project>{dbc55b97-7848-4446-bd2c-816807b982c7}</Project>
+      <Name>Model.System</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model\Model.csproj">
+      <Project>{967d5465-7e73-46c0-b3bd-a921a6b94c89}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Alert.Interface\ModuleWorkFlow.BLL.Alert.Interface.csproj">
+      <Project>{a7b3291f-78aa-4149-9b74-94184d5c876b}</Project>
+      <Name>ModuleWorkFlow.BLL.Alert.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Config\ModuleWorkFlow.BLL.Config.csproj">
+      <Project>{721a82a4-ac3b-47a7-8d21-20f6872d435a}</Project>
+      <Name>ModuleWorkFlow.BLL.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.InventorySystem\ModuleWorkFlow.BLL.InventorySystem.csproj">
+      <Project>{9d014865-e3d6-4004-ad1f-a346b0d61fa8}</Project>
+      <Name>ModuleWorkFlow.BLL.InventorySystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Inventory\ModuleWorkFlow.BLL.Inventory.csproj">
+      <Project>{6ff3a7c9-48c5-43db-96cd-b6871988f21b}</Project>
+      <Name>ModuleWorkFlow.BLL.Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Order\ModuleWorkFlow.BLL.NewOrder.csproj">
+      <Project>{dc4d15ba-87cb-4138-a9fc-0041a8084082}</Project>
+      <Name>ModuleWorkFlow.BLL.NewOrder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Try\ModuleWorkFlow.BLL.Try.csproj">
+      <Project>{0d2febb4-a1d0-402a-a2c0-118ba671a198}</Project>
+      <Name>ModuleWorkFlow.BLL.Try</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Unnormal\ModuleWorkFlow.BLL.Unnormal.csproj">
+      <Project>{6faf5a68-2b63-49b4-af71-bcb051d0cbd7}</Project>
+      <Name>ModuleWorkFlow.BLL.Unnormal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.InventorySystem\ModuleWorkFlow.Model.InventorySystem.csproj">
+      <Project>{18572ba8-f102-40bc-b872-2a172a584a96}</Project>
+      <Name>ModuleWorkFlow.Model.InventorySystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.Order\ModuleWorkFlow.Model.NewOrder.csproj">
+      <Project>{caacffae-b3f0-405c-8c76-8fdd19a34f57}</Project>
+      <Name>ModuleWorkFlow.Model.NewOrder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.Try\ModuleWorkFlow.Model.Try.csproj">
+      <Project>{f04fe826-f5aa-41fe-9076-b77e29777272}</Project>
+      <Name>ModuleWorkFlow.Model.Try</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.Unnormal\ModuleWorkFlow.Model.Unnormal.csproj">
+      <Project>{121a7797-8b88-4d23-9603-31d32a6d4696}</Project>
+      <Name>ModuleWorkFlow.Model.Unnormal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkflow.OutSource.BLL.Interface\ModuleWorkflow.OutSource.BLL.Interface.csproj">
+      <Project>{b054ad52-9eff-46b1-a336-8586b53e6a14}</Project>
+      <Name>ModuleWorkflow.OutSource.BLL.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Utility\Utility.csproj">
+      <Project>{aa175b09-1316-4700-9e57-fb4ee7c16cb0}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WebControlLibrary\WebControlLibrary.csproj">
+      <Project>{9f499628-0dfc-4b27-a4a3-af974f14d5f7}</Project>
+      <Name>WebControlLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WebView\WebView.csproj">
+      <Project>{4c7eb345-42a6-4542-8432-2944d95cb2ca}</Project>
+      <Name>WebView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WorkFlow.BLL.Standard\WorkFlow.BLL.Standard.csproj">
+      <Project>{86ed7b3a-c831-4ed1-b4c3-9f7652e9fec2}</Project>
+      <Name>WorkFlow.BLL.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WorkFlow.Standard.Model\WorkFlow.Model.Standard.csproj">
+      <Project>{3633ee98-d983-4d63-9700-4248e7b94969}</Project>
+      <Name>WorkFlow.Model.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\business\business.csproj">
+      <Project>{d63a2045-57a0-460b-8781-fc60d6ef7b36}</Project>
+      <Name>business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModuleWorkFlow.report\ModuleWorkFlow.report.csproj">
+      <Project>{5225136b-8055-43d1-beda-86b1fd1dfa32}</Project>
+      <Name>ModuleWorkFlow.report</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49210</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44316/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

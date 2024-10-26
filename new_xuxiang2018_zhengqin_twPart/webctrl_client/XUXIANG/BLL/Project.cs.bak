@@ -1,0 +1,114 @@
+using System;
+using System.Collections;
+
+using ModuleWorkFlow.IDAL;
+using ModuleWorkFlow.Model;
+
+namespace ModuleWorkFlow.BLL
+{
+	/// <summary>
+	/// Summary description for Project.
+	/// </summary>
+	public class Project
+	{
+		public static string[] PROJECTSTAUS = {"NEW_MODULE","TRY_IN_MOUDLE","CUSTOMER_CHANGE","TRY_OUT_MOUDLE"};
+		
+		public IList GetProject()
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.GetProject();
+		}
+
+		public int GetProjectByModuleid(string moduleid)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.GetProjectByModuleid(moduleid);
+		}
+
+		public void UpdateProjectProcess(ProjectInfo pi)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			dal.UpdateProjectProcess(pi);
+		}
+
+		public ProjectInfo GetProjectByProjectId(int projectid)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.GetProjectByProjectId(projectid);
+		}
+
+		public IList GetProjectByCondition(string key)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.GetProjectByCondition(key);
+		}
+
+		public int getNewProjectId()
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.getNewProjectId();
+		}
+		public bool hasExistModifyID(string modifyid)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.hasExistModifyID(modifyid);
+		}
+
+		public bool AddProject(ProjectInfo pi,IList ippi,IList ipsi)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.AddProject(pi,ippi,ipsi);
+		}
+
+		public bool UpdateProject(ProjectInfo pi,IList ippi,IList ipsi)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.UpdateProject(pi,ippi,ipsi);
+		}
+
+		public bool RemoveProject(int projectid)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.RemoveProject(projectid);
+		}
+
+		public string GetProjectMaxCode(string moduleid,int Tn,int statusid)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			return dal.GetProjectMaxCode(moduleid,Tn,statusid);
+		}
+
+		public string getNewTxy(string moduleid, string status, ref int x, ref int y)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			dal.getCurrentTxy(moduleid, ref x, ref y);
+			switch(status)
+			{
+				case "NEW_MODULE":
+					x = 0;
+					y = 0;
+					break;
+				case "TRY_IN_MOUDLE":
+					x++;
+					break;
+				case "CUSTOMER_CHANGE":
+					y++;
+					break;
+				case "TRY_OUT_MOUDLE":
+					x++;
+					break;
+				default:
+					break;
+			}
+
+			return "T"+x+"-"+y;
+		}
+
+		public string getCurrentTxy(string moduleid, ref int x, ref int y)
+		{
+			IProject dal= ModuleWorkFlow.DALFactory.Project.Create();
+			dal.getCurrentTxy(moduleid, ref x, ref y);
+			return "T"+x+"-"+y;
+		}
+	}
+}

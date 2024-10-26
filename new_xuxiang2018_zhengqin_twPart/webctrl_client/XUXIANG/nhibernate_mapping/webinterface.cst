@@ -1,0 +1,271 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="XML" Description="Generates a very simple business object." %> 
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="??" Description="?????" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="NetRoute.UserManager.RouteNHibernate.Persistent" Optional="True" Category="??" Description="???????" %>
+<%@ Property Name="AssemblyName" Type="System.String" Default="NetRoute.UserManager.NHibernate" Category="??" Description="??????" %>
+<%@ Property Name="ClassName" Type="System.String" Default="" Category="??" Description="???" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+
+
+<asp:Content ID="content" ContentPlaceHolderID="content" Runat="Server">
+<table cellspacing="2" width="100%" border="0">
+	<tr>
+		<td>
+			<div style="left: 0%; float: right;"><asp:Label ID="lab_title" runat="server" Text="lab_title" ></asp:Label></div>
+		</td>
+	</tr>
+</table>
+<hr/>
+<table id="Table1" style="text-align:center; border-color:#ccccff ; border-left-color: #ccccff; border-bottom-color: #ccccff; border-top-style: solid; border-top-color: #ccccff; border-right-style: solid; border-left-style: solid; border-right-color: #ccccff; border-bottom-style: solid;" cellspacing="1"  cellpadding="0"
+	width="100%"  border="1" runat="server" >
+<tr>
+	<td>
+		<table width="100%" align="center" border="0">
+		<% 
+			for(int i = 0; i < SourceTable.Columns.Count; i++) 
+			{ 
+				string dataType = SourceTable.Columns[i].DataType.ToString();
+				string resultType = ConvertNHibernateType(dataType,SourceTable.Columns[i].AllowDBNull);
+				string columnName = SourceTable.Columns[i].Name;
+		%>
+			<tr>
+				<td><asp:Label ID="lab_<%=columnName%>" runat="server"  Text="<%=columnName%>"></asp:Label></td>
+				<td><asp:textbox id="txt_<%=columnName%>" runat="server"></asp:textbox></td>
+			</tr>
+		<%
+			}
+		%>
+		<tr>
+			<td colspan="5"><asp:button id="btn_add" runat="server" Text="add"></asp:button></td>
+			</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<br/>
+<asp:datagrid id="dg_<%=ClassName%>" runat="server" AutoGenerateColumns="False" AllowPaging="True"
+AllowCustomPaging="True">
+							<SelectedItemStyle HorizontalAlign="Center"></SelectedItemStyle>
+							<EditItemStyle HorizontalAlign="Center"></EditItemStyle>
+							<AlternatingItemStyle HorizontalAlign="Center"></AlternatingItemStyle>
+							<ItemStyle HorizontalAlign="Center"></ItemStyle>
+							<HeaderStyle Wrap="False" HorizontalAlign="Center" VerticalAlign="Middle" BackColor="#AAAADD"></HeaderStyle>
+							<Columns>
+							<% 
+								for(int i = 0; i < SourceTable.Columns.Count; i++) 
+								{ 
+									string dataType = SourceTable.Columns[i].DataType.ToString();
+									string resultType = ConvertNHibernateType(dataType,SourceTable.Columns[i].AllowDBNull);
+									string columnName = SourceTable.Columns[i].Name;
+							%>
+							<asp:TemplateColumn HeaderText="<%=columnName%>">
+								<HeaderTemplate>
+								    <asp:Label id="dg_header_<%=columnName%>" runat="server" />
+								
+						           </HeaderTemplate>
+									<ItemTemplate>
+										<asp:Label id="Label5" runat="server" Text='DataBinder.Eval(Container, "DataItem.<%=UpperFirstChar(columnName)%>")'/>
+									</ItemTemplate>
+									<EditItemTemplate>
+										<asp:textbox id="dg_txt_<%=columnName%>" Width="40" runat="server" Text=' DataBinder.Eval(Container, "DataItem.<%=columnName%>") '/>
+									</EditItemTemplate>
+								</asp:TemplateColumn>
+							<%}%>
+					
+								<asp:EditCommandColumn UpdateText="&lt;img  border=0 src=../images/Update.gif&gt;"
+										CancelText="&lt;img border=0 src=../images/Cancel.gif&gt;" EditText="&lt;img border=0 src=../images/Edit.gif&gt;" meta:resourcekey="EditCommandColumnResource1"></asp:EditCommandColumn>
+									<asp:ButtonColumn Text="&lt;img border=0 src=../images/Cancel.gif div onclick=&quot;javascript:return confirm('Are you sure?')&quot;&gt;&lt;/div&gt;" CommandName="Delete" meta:resourcekey="ButtonColumnResource1"></asp:ButtonColumn>
+							</Columns>
+							<PagerStyle Mode="NumericPages"></PagerStyle>
+						</asp:datagrid>
+						<hr  style="color: #ccccff;" />
+						<br />
+						<table style="width:100%;text-align:center; border-color:#000660 ; border-left-color: #000660; border-bottom-color: #000660; border-top-style: solid; border-top-color: #000660; border-right-style: solid; border-left-style: solid; border-right-color: #000660; border-bottom-style: solid;"border="1">
+						    <tr style="vertical-align:middle">
+								<td style="width: 15%;">
+									<div style="text-align:center"><asp:label id="Label_Notice" runat="server">11</asp:label></div>
+								</td>
+								<td class="msg" style="width:85%">&nbsp;&nbsp;
+									<asp:label id="Label_Message" runat="server"></asp:label></td>
+							</tr>
+						</table>
+						</asp:Content>
+<script runat="template">
+/*
+???????
+*/
+public string ConvertNHibernateType(string inType,bool isNullbale)
+{
+	string result = "";
+	switch(inType.ToLower().Trim())
+	{
+		case "text":
+			result = "String";
+			break;
+		case "uniqueidentifier":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt32Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int32";
+			}
+			break;
+		case "tinyint":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt16Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int16";
+			}
+			break;
+		case "smallint":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt16Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int16";
+			}
+			break;
+		case "int":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt32Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int32";
+			}
+			break;
+		case "int32":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt32Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int32";
+			}
+			break;
+		case "smalldatetime":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableDateTimeType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "DateTime";
+			}
+			break;
+		case "real":
+			result = "Float";
+			break;
+		case "money":
+			result = "Decimal";
+			break;
+		case "datetime":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableDateTimeType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "DateTime";
+			}
+			break;
+		case "float":
+			result = "Float";
+			break;
+		case "sql_variant":
+			result = "String";
+			break;
+		case "ntext":
+			result = "String";
+			break;
+		case "bit":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableBooleanType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Boolean";
+			}
+			break;
+		case "decimal":
+			result = "Decimal";
+			break;
+		case "numeric":
+			result = "Decimal";
+			break;
+		case "smallmoney":
+			result = "Decimal";
+			break;
+		case "bigint":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt64Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int64";
+			}
+			break;
+		case "varchar":
+			result = "String";
+			break;
+		case "char":
+			result = "Char";
+			break;
+		case "timestamp":
+			result = "TimeSpan";
+			break;
+		case "nvarchar":
+			result = "String";
+			break;
+		case "nchar":
+			result = "Char";
+			break;
+		case "sysname":
+			result = "String";
+			break;
+		case "boolean":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableBooleanType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Boolean";
+			}
+			break;
+		default:
+			result = "String";
+			break;
+	}
+	return result;
+}
+/*
+????????
+*/
+public string UpperFirstChar(string inputStr)
+{
+	string result = "";
+	if(inputStr.Length >= 2)
+	{
+		string first = inputStr.Substring(0,1);
+		string last	 = inputStr.Substring(1,inputStr.Length - 1);
+		result = first.ToUpper() + last;
+	}
+	else
+	{
+		result = inputStr.ToUpper();	
+	}
+	return result;
+}
+</script>

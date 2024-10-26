@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5225136B-8055-43D1-BEDA-86B1FD1DFA32}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ModuleWorkFlow.report</RootNamespace>
+    <AssemblyName>ModuleWorkFlow.report</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Interop.Excel">
+      <HintPath>..\new_xuxiang2018_zhengqin_twPart\bin\Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.Microsoft.Office.Core">
+      <HintPath>..\new_xuxiang2018_zhengqin_twPart\bin\Interop.Microsoft.Office.Core.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ModulePriceReport.cs" />
+    <Compile Include="OrderPriceReport.cs" />
+    <Compile Include="OrderPriceReportStyle.cs" />
+    <Compile Include="PartBarCodeReport.cs" />
+    <Compile Include="PartBarCodeReportStyle.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL\BLL.csproj">
+      <Project>{47bd34bd-0678-4ac5-aefe-020c468a4648}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.Report\Model.Report.csproj">
+      <Project>{2e752233-bcc9-4e0d-a8db-d557fd51e0fd}</Project>
+      <Name>Model.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model\Model.csproj">
+      <Project>{967d5465-7e73-46c0-b3bd-a921a6b94c89}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Order\ModuleWorkFlow.BLL.NewOrder.csproj">
+      <Project>{dc4d15ba-87cb-4138-a9fc-0041a8084082}</Project>
+      <Name>ModuleWorkFlow.BLL.NewOrder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.Order\ModuleWorkFlow.Model.NewOrder.csproj">
+      <Project>{caacffae-b3f0-405c-8c76-8fdd19a34f57}</Project>
+      <Name>ModuleWorkFlow.Model.NewOrder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Utility\Utility.csproj">
+      <Project>{aa175b09-1316-4700-9e57-fb4ee7c16cb0}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\business\business.csproj">
+      <Project>{d63a2045-57a0-460b-8781-fc60d6ef7b36}</Project>
+      <Name>business</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

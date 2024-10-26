@@ -1,0 +1,213 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="XML" Description="Generates a very simple business object." %> 
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="??" Description="?????" %>
+<%@ Property Name="NameSpace" Type="System.String" Default="NetRoute.UserManager.RouteNHibernate.Persistent" Optional="True" Category="??" Description="???????" %>
+<%@ Property Name="AssemblyName" Type="System.String" Default="NetRoute.UserManager.NHibernate" Category="??" Description="??????" %>
+<%@ Property Name="ClassName" Type="System.String" Default="" Category="??" Description="???" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="<%=NameSpace.Trim()%>" assembly="<%=NameSpace.Trim()%>" >
+
+	<class name="<%=NameSpace.Trim()%>.<%=ClassName.Trim()%>" table="<%=SourceTable.Name%>">
+	
+		<% 
+		for(int i = 0; i < SourceTable.Columns.Count; i++) 
+		{ 
+			string dataType = SourceTable.Columns[i].DataType.ToString();
+			string resultType = ConvertNHibernateType(dataType,SourceTable.Columns[i].AllowDBNull);
+			string columnName = SourceTable.Columns[i].Name;
+			string resultName = UpperFirstChar(columnName);
+			int size = SourceTable.Columns[i].Size;
+		%>
+		<% if (SourceTable.Columns[i].IsPrimaryKeyMember) {%>
+		<id name="<%= resultName %>">
+			<column name ="<%= columnName %>" sql-type="int" not-null="true"/>
+			<generator class="identity" />
+		</id>
+		<%continue;%>
+		<%}%>
+		<property name="<%= resultName %>"/>
+		<%}%>
+		
+	</class>
+	
+</hibernate-mapping>
+<script runat="template">
+/*
+???????
+*/
+public string ConvertNHibernateType(string inType,bool isNullbale)
+{
+	string result = "";
+	switch(inType.ToLower().Trim())
+	{
+		case "text":
+			result = "String";
+			break;
+		case "uniqueidentifier":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt32Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int32";
+			}
+			break;
+		case "tinyint":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt16Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int16";
+			}
+			break;
+		case "smallint":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt16Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int16";
+			}
+			break;
+		case "int":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt32Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int32";
+			}
+			break;
+		case "int32":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt32Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int32";
+			}
+			break;
+		case "smalldatetime":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableDateTimeType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "DateTime";
+			}
+			break;
+		case "real":
+			result = "Float";
+			break;
+		case "money":
+			result = "Decimal";
+			break;
+		case "datetime":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableDateTimeType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "DateTime";
+			}
+			break;
+		case "float":
+			result = "Float";
+			break;
+		case "sql_variant":
+			result = "String";
+			break;
+		case "ntext":
+			result = "String";
+			break;
+		case "bit":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableBooleanType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Boolean";
+			}
+			break;
+		case "decimal":
+			result = "Decimal";
+			break;
+		case "numeric":
+			result = "Decimal";
+			break;
+		case "smallmoney":
+			result = "Decimal";
+			break;
+		case "bigint":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableInt64Type,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Int64";
+			}
+			break;
+		case "varchar":
+			result = "String";
+			break;
+		case "char":
+			result = "Char";
+			break;
+		case "timestamp":
+			result = "TimeSpan";
+			break;
+		case "nvarchar":
+			result = "String";
+			break;
+		case "nchar":
+			result = "Char";
+			break;
+		case "sysname":
+			result = "String";
+			break;
+		case "boolean":
+			if(isNullbale)
+			{
+				result = "Nullables.NHibernate.NullableBooleanType,Nullables.NHibernate";
+			}
+			else
+			{
+				result = "Boolean";
+			}
+			break;
+		default:
+			result = "String";
+			break;
+	}
+	return result;
+}
+/*
+????????
+*/
+public string UpperFirstChar(string inputStr)
+{
+	string result = "";
+	if(inputStr.Length >= 2)
+	{
+		string first = inputStr.Substring(0,1);
+		string last	 = inputStr.Substring(1,inputStr.Length - 1);
+		result = first.ToUpper() + last;
+	}
+	else
+	{
+		result = inputStr.ToUpper();	
+	}
+	return result;
+}
+</script>

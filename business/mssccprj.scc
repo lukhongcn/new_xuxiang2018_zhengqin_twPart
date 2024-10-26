@@ -1,0 +1,5 @@
+SCC = This is a Source Code Control file
+
+[business.csproj]
+SCC_Aux_Path = "\\192.168.102.25\vss"
+SCC_Project_Name = "$/PartMES/business", TDLAAAAA
