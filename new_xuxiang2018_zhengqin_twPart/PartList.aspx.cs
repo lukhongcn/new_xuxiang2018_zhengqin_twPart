@@ -65,8 +65,7 @@ namespace ModuleWorkFlow
         protected string imgpath;
         protected Label lab_color;
 
-        protected System.Web.UI.WebControls.Label lab_productname;
-        protected System.Web.UI.WebControls.TextBox txt_productname;
+       
    
        
         protected string title;
@@ -214,60 +213,16 @@ namespace ModuleWorkFlow
                     //					lab_pagecount.Text="0";
                 }
 
-                IList list = new ControlTable().getControlTableByTableNameByIsVisible("tb_part", -1);
-                Hashtable hlist = new Hashtable();
-                foreach (ControlTableInfo ctin in list)
-                {
-
-                    if (!hlist.Contains(ctin.TableField))
-                    {
-                        hlist.Add(ctin.TableField, ctin);
-                    }
-                }
+                
+              
 
 
 
-                foreach (DataGridColumn dc in MainDataGrid.Columns)
-                {
-                    if (dc is System.Web.UI.WebControls.BoundColumn)
-                    {
-                        string datafield = ((System.Web.UI.WebControls.BoundColumn)dc).DataField;
-                        if (!hlist.Contains(datafield))
-                        {
-                            dc.Visible = false;
-                        }
-                        else
-                        {
-                            dc.HeaderText = (hlist[datafield] as ControlTableInfo).TableValue;
-                        }
-                    }
-
-                    if (dc is System.Web.UI.WebControls.TemplateColumn)
-                    {
-
-                        if (!hlist.Contains(dc.HeaderText) && !dc.HeaderText.Trim().Equals("Select"))
-                        {
-                            dc.Visible = false;
-                        }
-
-                    }
-                }
+               
 
 
 
-
-                lab_productname.Visible = false;
-                txt_productname.Visible = false;
-                foreach (ModuleWorkFlow.Model.ControlTableInfo ctinfo in list)
-                {
-                    if (ctinfo.TableField.Equals("productname"))
-                    {
-                        lab_productname.Visible = true;
-                        txt_productname.Visible = true;
-                        lab_productname.Text = ctinfo.TableValue;
-                    }
-
-                }
+               
 
                 bindDataByModuleId( 0);
                 bindPage();
@@ -332,7 +287,7 @@ namespace ModuleWorkFlow
 
                 //IList parts = part.GetPartLike(moduleid, txt_partno.Text.Trim(), txt_expectedPartno.Text.Trim(), MainDataGrid.CurrentPageIndex, MainDataGrid.PageSize, pi, isModuleLike, txt_productname.Text.Trim(), startdate, enddate, -1, lab_type.Text);
                 //有分頁
-                IList parts = part.GetPartLikebypage(moduleid, txt_partno.Text.Trim(), txt_expectedPartno.Text.Trim(), pagenum, MainDataGrid.PageSize, pi, isModuleLike, txt_productname.Text.Trim(), new DateTime(), new DateTime(), -1, false, lab_type.Text, "");
+                IList parts = part.GetPartLikebypage(moduleid, txt_partno.Text.Trim(), txt_expectedPartno.Text.Trim(), pagenum, MainDataGrid.PageSize, pi, isModuleLike, null, new DateTime(), new DateTime(), -1, false, lab_type.Text, "");
 
                 // 無分頁
                 //IList parts = part.GetPartLike(moduleid, txt_partno.Text.Trim(), txt_expectedPartno.Text.Trim(), -1, -1, pi, isModuleLike, txt_productname.Text.Trim(), startdate, enddate, Convert.ToInt32(dpl_processseted.SelectedValue), false, lab_type.Text);
@@ -369,27 +324,8 @@ namespace ModuleWorkFlow
             }
 
 
-            bool needPicture = false;
-            ModuleWorkFlow.BLL.ControlTable ct = new ControlTable();
-            IList ilist = ct.getControlTableByList("tb_part", -1);
-            foreach (ControlTableInfo cti in ilist)
-            {
-                if (cti.TableField.Equals("PartPicture") && lab_type.Text.Equals(""))
-                {
-                    needPicture = true;
-                    break;
-                }
-            }
-
-            if (needPicture)
-            {
-                MainDataGrid.Columns[7].Visible = true;
-            }
-            else
-            {
-                MainDataGrid.Columns[7].Visible = false;
-            }
-
+           
+            
 
             MainDataGrid.DataBind();
 
@@ -505,28 +441,19 @@ namespace ModuleWorkFlow
         {
             Hashtable hstatus = new Hashtable();
             hstatus = new ModuleWorkFlow.BLL.Status().getKeyStatusInfo();
-           
+
             PartType parttype = new PartType();
-           
+
 
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
 
-                Label dg_lab_productname = e.Item.FindControl("dg_lab_productname") as Label;
+             
                 Label dg_lab_moduleid = e.Item.FindControl("dg_lab_moduleid") as Label;
-                Label dg_lab_processMachineid = e.Item.FindControl("dg_lab_processMachineid") as Label;
+            
                 Label dg_lab_PartCount = e.Item.FindControl("dg_lab_PartCount") as Label;
                 Label dg_lab_PartName = e.Item.FindControl("dg_lab_PartName") as Label;
-                Label dg_lab_DesignProcess = e.Item.FindControl("dg_lab_DesignProcess") as Label;
-                OrderInfo oi = new ModuleWorkFlow.BLL.Order().GetMsOrderInfo(dg_lab_moduleid.Text.Trim());
-                if (oi != null)
-                {
-                    if (oi.PRODUCTNAME != null && oi.PRODUCTNAME.Length > 5)
-                    {
-                        dg_lab_productname.Text = oi.PRODUCTNAME.Trim().Substring(0, 5) + "...";
-                    }
-                    dg_lab_productname.ToolTip = oi.PRODUCTNAME;
-                }
+              
 
                 Label dg_lab_PartNo = e.Item.FindControl("dg_lab_PartNo") as Label;
                 string partno = dg_lab_PartNo.Text;
@@ -567,68 +494,12 @@ namespace ModuleWorkFlow
 
 
 
-                bool needPicture = false;
-                ModuleWorkFlow.BLL.ControlTable ct = new ControlTable();
-                IList ilist = ct.getControlTableByList("tb_part", -1);
-                foreach (ControlTableInfo cti in ilist)
-                {
-                    if (cti.TableField.Equals("PartPicture"))
-                    {
-                        needPicture = true;
-                        break;
-                    }
-                }
-
-
-         
-
-
-                if (needPicture)
-                {
-                    Label picture = (Label)e.Item.FindControl("picture") as Label;
-                    imgpath = "";
-                    Label htmli = (Label)e.Item.FindControl("dg_img_Picture") as Label;
-                    string src = htmli.Text;
-                    string path = Request.ServerVariables["PATH_TRANSLATED"];
-                    Log.WriteLog("path", "Request.ServerVariables[PATH_TRANSLATED]" + Request.ServerVariables["PATH_TRANSLATED"]);
-                    string[] pathquery = path.Split('\\');
-                    path = "";
-                    for (int i =0; i< pathquery.Length - 1; i++)
-                    {
-                        path += pathquery[i] + "\\";
-                    }
-                 
-                    //Log.WriteLog("path", path);
-                    if (File.Exists(path + src))
-                    {
-                        string url = Request.Url.ToString();
-                        string[] newurl = url.Split('/');
-                        string query = "http://" + newurl[2];
-                        for (int im = 3; im < newurl.Length - 1; im++)
-                        {
-                            query += "/" + newurl[im];
-                        }
-                        imgpath = query + "/" + src;
-
-                        picture.Text = "<img src=\"" + imgpath + "\" width=\"50px\" height=\"50px\" />";
-                    }
-                    else
-                    {
-                        picture.Text = "";
-                    }
-                }
+               
 
 
 
-                //if (e.Item.Cells[e.Item.Cells.Count - 1].Text.Equals("01-01-01"))
-                //{
-                //    e.Item.Cells[e.Item.Cells.Count - 1].Text = "";
-                //}
 
-                //if (System.Configuration.ConfigurationSettings.AppSettings["IsPart"] != null && Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["IsPart"]))
-                //{
-                //    e.Item.Cells[14].Visible = false;
-                //}
+              
 
                 Label dg_lab_DataTTid = e.Item.FindControl("dg_lab_DataTTid") as Label;
                 Label dg_lab_ParentDataTTid = e.Item.FindControl("dg_lab_ParentDataTTid") as Label;
@@ -636,77 +507,11 @@ namespace ModuleWorkFlow
                 e.Item.Attributes.Add("data-tt-id", dg_lab_DataTTid.Text);
                 e.Item.Attributes.Add("data-tt-parent-id", dg_lab_ParentDataTTid.Text);
 
-                Label dg_currentstatusid = e.Item.FindControl("dg_currentstatusid") as Label;
-                IList ppis = new ModuleWorkFlow.BLL.PartProcess().getPartProcessInfo(dg_lab_moduleid.Text.Trim(), partno + "-1");
-                string ProcessNeedMinutes = "";
-                int currentOrder = 0;
-                if (ppis.Count > 0)
-                {
-                    foreach (PartProcessInfo ppinfo in ppis)
-                    {
-                        if (Math.Round(Convert.ToDouble(ppinfo.ProcessNeedMinutes / 60.0), 1) == 0)
-                        {
-                            ProcessNeedMinutes += ppinfo.ProcessName + "(0.1)-";
-                        }
-                        else
-                        {
-                            ProcessNeedMinutes += ppinfo.ProcessName + "(" + (Math.Round(Convert.ToDouble(ppinfo.ProcessNeedMinutes / 60.0), 1)).ToString() + ")-";
-                        }
-                        if (ppinfo.PartNo_Id.IndexOf("-1") > 0 && !ppinfo.StatusId.Equals("Pending") && !ppinfo.StatusId.Equals("XIAODAN") && currentOrder == 0)
-                        {
-                            currentOrder = ppinfo.ProcessOrder;
-                            dg_currentstatusid.Text = ppinfo.StatusId;
-                        }
+            
+             
+              
 
-                        if (ppinfo.StatusId.Equals("XIAODAN") && ppis.IndexOf(ppinfo) == ppis.Count - 1)
-                        {
-                            currentOrder = ppinfo.ProcessOrder;
-                            dg_currentstatusid.Text = ppinfo.StatusId;
-                        }
-
-                        if (ppinfo.PartNo_Id.IndexOf("-1") > 0 && currentOrder > 0 && ppinfo.ProcessOrder == currentOrder)
-                        {
-                            Label dg_lab_currentselfDate = e.Item.FindControl("dg_lab_currentselfDate") as Label;
-                            Label dg_lab_currentfactDate = e.Item.FindControl("dg_lab_currentfactDate") as Label;
-                            string strSelf = "";
-                            string strfact = "";
-                            if (ppinfo.SelfStartDate.Ticks > 0)
-                            {
-                                strSelf = ppinfo.SelfStartDate.ToString("MM-dd HH:mm");
-                            }
-                            if (ppinfo.SelfEndDate.Ticks > 0)
-                            {
-                                strSelf += "<br>" + ppinfo.SelfEndDate.ToString("MM-dd HH:mm");
-                            }
-                            if (ppinfo.FactStartDate.Ticks > 0)
-                            {
-                                strfact = ppinfo.FactStartDate.ToString("MM-dd HH:mm");
-                            }
-                            if (ppinfo.FactEndDate.Ticks > 0)
-                            {
-                                strfact += "<br>" + ppinfo.FactEndDate.ToString("MM-dd HH:mm");
-                            }
-                            dg_lab_currentselfDate.Text = strSelf;
-                            dg_lab_currentfactDate.Text = strfact;
-                        }
-                    }
-                }
-                Label dg_lab_ProcessNeedMinutes = e.Item.FindControl("dg_lab_ProcessNeedMinutes") as Label;
-                if (ProcessNeedMinutes.Length > 0)
-                {
-                    dg_lab_ProcessNeedMinutes.Text = ProcessNeedMinutes.Substring(0, ProcessNeedMinutes.Length - 1);
-                }
-
-                if (hstatus[dg_currentstatusid.Text] as StatusInfo != null)
-                {
-                    //dg_lab_ProcessNeedMinutes.Text = Utility.tools.processListWithColor(Utility.tools.textAutoWrap(dg_lab_ProcessNeedMinutes.Text, 20), currentOrder, (hstatus[dg_currentstatusid.Text] as StatusInfo).StatusColor);
-                    dg_lab_ProcessNeedMinutes.Text = Utility.tools.processListWithColor(dg_lab_ProcessNeedMinutes.Text, currentOrder, (hstatus[dg_currentstatusid.Text] as StatusInfo).StatusColor);
-                }
-                //else
-                //{
-                //    dg_lab_ProcessNeedMinutes.Text = Utility.tools.textAutoWrap(dg_lab_ProcessNeedMinutes.Text, 20);
-                //}
-
+                
 
                 Label dg_lab_sendDate = (Label)e.Item.FindControl("dg_lab_sendDate");
                 if (dg_lab_sendDate.Text.Equals("01-01 0:00"))
@@ -726,10 +531,7 @@ namespace ModuleWorkFlow
                     e.Item.Cells[e.Item.Cells.Count - 1].Text = "";
                 }
 
-                if (System.Configuration.ConfigurationSettings.AppSettings["IsPart"] != null && Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["IsPart"]))
-                {
-                    e.Item.Cells[14].Visible = false;
-                }
+              
 
 
 

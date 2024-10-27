@@ -40,6 +40,11 @@
                 width: 200px;
             }
 
+           .custom-htight {
+               height: 20px; /* Set your desired height */
+              
+           }
+
          .custom-number-width {
             height: 25px; /* Set your desired height */
             padding: 6px 12px; /* Adjust padding as necessary */
@@ -47,9 +52,20 @@
             width: 60px;
         }
 
+          .custom-heighter-width {
+                height: 30px; /* Set your desired height */
+                padding: 6px 12px; /* Adjust padding as necessary */
+                font-size: 14px; /* Adjust font size if needed */
+                width: 160px;
+            }
+
          .me-10 {
             margin-right: 10px; /* Set your desired right margin */
-        }
+          }
+
+           .ml-10 {
+                 margin-left: 10px; /* Set your desired right margin */
+             }
 
          table.treetable tbody tr td {
              position: relative;
@@ -64,6 +80,8 @@
              word-break: break-all;
              word-wrap: break-word
          }
+
+
     </style>
 </head>
 <body>

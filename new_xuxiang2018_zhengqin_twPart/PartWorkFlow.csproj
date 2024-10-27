@@ -172,6 +172,7 @@
     <Content Include="order\OrderDesignList.aspx" />
     <Content Include="order\OrderDesignView.aspx" />
     <Content Include="PartList.aspx" />
+    <Content Include="PartModifyEditall.aspx" />
     <Content Include="ProjectAdd.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -402,6 +403,13 @@
       <DependentUpon>PartList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="PartModifyEditall.aspx.cs">
+      <DependentUpon>PartModifyEditall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PartModifyEditall.aspx.designer.cs">
+      <DependentUpon>PartModifyEditall.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ProjectAdd.aspx.cs">
       <DependentUpon>ProjectAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -504,6 +512,10 @@
       <Project>{ac912214-ef60-46fd-a444-d27b6a989025}</Project>
       <Name>IDAL.Report</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.Outsource\Model.Outsource.csproj">
+      <Project>{ccdb26c6-beba-4b4b-87e3-f70f3050d8b0}</Project>
+      <Name>Model.Outsource</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.StupidReport\Model.StupidReport.csproj">
       <Project>{19920b12-7ac3-45a8-aa33-752e7c131be5}</Project>
       <Name>Model.StupidReport</Name>
@@ -524,6 +536,10 @@
       <Project>{721a82a4-ac3b-47a7-8d21-20f6872d435a}</Project>
       <Name>ModuleWorkFlow.BLL.Config</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Interface\ModuleWorkFlow.BLL.Interface.csproj">
+      <Project>{211509ef-1334-465d-b352-bfc792bc936f}</Project>
+      <Name>ModuleWorkFlow.BLL.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.InventorySystem\ModuleWorkFlow.BLL.InventorySystem.csproj">
       <Project>{9d014865-e3d6-4004-ad1f-a346b0d61fa8}</Project>
       <Name>ModuleWorkFlow.BLL.InventorySystem</Name>
@@ -535,6 +551,10 @@
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Order\ModuleWorkFlow.BLL.NewOrder.csproj">
       <Project>{dc4d15ba-87cb-4138-a9fc-0041a8084082}</Project>
       <Name>ModuleWorkFlow.BLL.NewOrder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.System.Interface\ModuleWorkFlow.BLL.System.Interface.csproj">
+      <Project>{95d965c2-7458-4297-b8a1-c9571748df9b}</Project>
+      <Name>ModuleWorkFlow.BLL.System.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Try\ModuleWorkFlow.BLL.Try.csproj">
       <Project>{0d2febb4-a1d0-402a-a2c0-118ba671a198}</Project>

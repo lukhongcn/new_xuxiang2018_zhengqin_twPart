@@ -109,10 +109,10 @@
     
                            
                           
-                        <asp:TemplateColumn HeaderText="PartNo" HeaderStyle-Width="30px"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
+                        <asp:TemplateColumn HeaderText="PartNo" HeaderStyle-Width="30px"  HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Middle">
 	                        <HeaderTemplate>
 		                        <%--<asp:label id="dg_header_moduleid" runat="server" Text='零件編號'/>--%>
-                                產品編號
+                                圖號/版次
 	                        </HeaderTemplate>
 	                        <ItemTemplate>
 		                        <asp:Label runat="server" ID="dg_lab_PartNo" Text='<%# DataBinder.Eval(Container, "DataItem.PartNo") %>'  >
@@ -135,7 +135,7 @@
 
                             <HeaderTemplate>
                                 <%--<asp:Label id="dg_header_PartName" runat="server" text="零件名稱" ></asp:Label>--%>
-                                產品名稱
+                                圖名
                         </HeaderTemplate>
                             <ItemTemplate >
                                 <asp:Label id="dg_lab_PartName" runat="server"   Text='<%# DataBinder.Eval(Container, "DataItem.PartName") %>'/>
