@@ -322,3 +322,4 @@ D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\bin\M
 D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\bin\ModuleWorkFlow.MsSQL.Schedule.pdb
 D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\Debug\ModuleWorkFlow.ProjectAdd.aspx.resources
 D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\Debug\ModuleWorkFlow.PartList.aspx.resources
+D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\Debug\ModuleWorkFlow.ProjectList.aspx.resources

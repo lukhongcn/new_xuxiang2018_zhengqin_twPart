@@ -2,20 +2,20 @@
 
 <!DOCTYPE html>
 
-<html>
+
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=big5" />
     <title><%=menuname %></title>
     <link href="css/amd.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="css/jquery.treetable.css" />
-    <link rel="stylesheet" href="css/jquery.treetable.theme.default.css" />
-    <link rel="stylesheet" href="plugins/bootstrap.5.2.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="plugins/jQuery-datetimepicker.2.4.5/jquery.datetimepicker.css" type="text/css" />
-    <script language="javascript" src="js/lib.js"></script>
-    <script type="text/javascript" src="plugins/JQuery.3.4.1/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/css/jquery.treetable.css" />
+    <link rel="stylesheet" href="/css/jquery.treetable.theme.default.css" />
+    <link rel="stylesheet" href="/plugins/bootstrap.5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/plugins/jQuery-datetimepicker.2.4.5/jquery.datetimepicker.css" type="text/css" />
+    <script language="javascript" src="/js/lib.js"></script>
+    <script type="text/javascript" src="/plugins/JQuery.3.4.1/jquery-3.4.1.min.js"></script>
   
-    <script type="text/javascript" src="plugins/jQuery-datetimepicker.2.4.5/jquery.datetimepicker.js"></script>
-    <script type="text/Javascript" src="js/jquery.treetable.js"></script>
+    <script type="text/javascript" src="/plugins/jQuery-datetimepicker.2.4.5/jquery.datetimepicker.js"></script>
+    <script type="text/Javascript" src="/js/jquery.treetable.js"></script>
    
      <style>
         /* Custom styles for the date picker input */
@@ -38,6 +38,13 @@
                 padding: 6px 12px; /* Adjust padding as necessary */
                 font-size: 14px; /* Adjust font size if needed */
                 width: 200px;
+            }
+
+           .custom-full-width {
+                height: 25px; /* Set your desired height */
+                padding: 6px 12px; /* Adjust padding as necessary */
+                font-size: 14px; /* Adjust font size if needed */
+                width: 800px;
             }
 
            .custom-htight {

@@ -84,6 +84,7 @@
 </style>
 </head>
 <form id="Form1" method="post" runat="server">
+<body>
 <div id="Wrapper">
 <div id="Header">
     <div class="headbox">
@@ -293,8 +294,8 @@
                 </ItemTemplate>
             </asp:TemplateColumn>
             <asp:TemplateColumn HeaderText="DueDate"  HeaderStyle-Width="35px" ItemStyle-Width="35px" ItemStyle-VerticalAlign="Middle" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
-                 <HeaderTemplate><asp:Label id="dg_header_dueDate" runat="server" text="需求日期"></asp:Label></HeaderTemplate>
-                <ItemTemplate><asp:Label id="dg_lab_dueDate" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.DueDate", "{0:MM-dd H:mm}") %>' Style="white-space:normal; word-wrap:break-word; display:block;"/>
+                 <HeaderTemplate><asp:Label id="dg_header_dueDate" runat="server" Style="white-space:normal; word-wrap:break-word; display:block;">需求</br>日期</asp:Label></HeaderTemplate>
+                <ItemTemplate><asp:Label id="dg_lab_dueDate" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.DueDate", "{0:MM-dd HH:mm}") %>' Style="white-space:normal; word-wrap:break-word; display:block;"/>
             </ItemTemplate>
             </asp:TemplateColumn>
 
@@ -359,6 +360,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 
     <script >
@@ -452,6 +454,6 @@
         });*/
 
     </script>
+    </body>
 </form>
-</body>
 </html>

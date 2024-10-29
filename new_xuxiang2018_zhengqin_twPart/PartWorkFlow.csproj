@@ -171,9 +171,13 @@
     <Content Include="order\controls\OrderDesignView.ascx" />
     <Content Include="order\OrderDesignList.aspx" />
     <Content Include="order\OrderDesignView.aspx" />
+    <Content Include="order\WebForm1.aspx" />
+    <Content Include="outsource\OutSourceConfirmView.aspx" />
+    <Content Include="outsource\OutSourceDetailList.aspx" />
     <Content Include="PartList.aspx" />
     <Content Include="PartModifyEditall.aspx" />
     <Content Include="ProjectAdd.aspx" />
+    <Content Include="ProjectList.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -399,6 +403,21 @@
       <DependentUpon>OrderDesignView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="order\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="order\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="outsource\OutSourceConfirmView.aspx.cs">
+      <DependentUpon>OutSourceConfirmView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="outsource\OutSourceDetailList.aspx.cs">
+      <DependentUpon>OutSourceDetailList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="PartList.aspx.cs">
       <DependentUpon>PartList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -412,6 +431,10 @@
     </Compile>
     <Compile Include="ProjectAdd.aspx.cs">
       <DependentUpon>ProjectAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProjectList.aspx.cs">
+      <DependentUpon>ProjectList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -482,6 +505,7 @@
     <EmbeddedResource Include="order\OrderDesignView.aspx.resx" />
     <EmbeddedResource Include="PartList.aspx.resx" />
     <EmbeddedResource Include="ProjectAdd.aspx.resx" />
+    <EmbeddedResource Include="ProjectList.aspx.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.Alert\BLL.Alert.csproj">

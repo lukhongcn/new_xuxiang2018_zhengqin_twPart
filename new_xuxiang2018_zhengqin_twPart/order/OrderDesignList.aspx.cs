@@ -62,8 +62,8 @@ namespace ModuleWorkFlow
         protected System.Web.UI.WebControls.Button btn_printReferencePictureDate;
         protected System.Web.UI.WebControls.DropDownList dpl_customer;
         protected System.Web.UI.WebControls.DropDownList dpl_datetime;
-        protected WebControlLibrary.InputCalendar txt_startdatetime;
-        protected WebControlLibrary.InputCalendar txt_endstartdatetime;
+        protected TextBox txt_startdatetime;
+        protected TextBox txt_endstartdatetime;
         protected System.Web.UI.WebControls.DataGrid DataGridDate;
         protected System.Web.UI.WebControls.DataGrid MainDataGrid;
         protected System.Web.UI.WebControls.DropDownList dpl_productTypeId;
@@ -147,14 +147,17 @@ namespace ModuleWorkFlow
                 switch (cti.TableDateField)
                 {
                     case "string":
-
-
+                     
                         break;
                     case "DateTime":
                         if (!cti.TableField.Equals("tryDate0"))
-                            bc.DataFormatString = "{0:d}";
+                            bc.DataFormatString = "{0:yyyy-MM-dd HH:mm}";
+                           
 
-
+                        break;
+                    case "DateTimePick":
+                        bc.DataFormatString = "{0:yyyy-MM-dd HH:mm}";
+                      
                         break;
                     case "Int":
                         //iserr = selectUserNo(content);
@@ -170,6 +173,26 @@ namespace ModuleWorkFlow
 
 
                 }
+                bc.HeaderStyle.Width = cti.TableValue.Length * 10;
+                if (cti.ListShowWidth > 0)
+                {
+                    bc.ItemStyle.Width = cti.ListShowWidth;
+                    bc.HeaderStyle.Width = cti.ListShowWidth;
+                }
+                else
+                {
+                    if (cti.TableDateField.Equals("DateTime") || cti.TableDateField.Equals("DateTimePick"))
+                    {
+                        bc.ItemStyle.Width = 60;
+                    }
+                    else
+                    {
+                        bc.ItemStyle.Width = bc.HeaderStyle.Width;
+                    }
+                   
+                }
+                  
+               
                 MainDataGrid.Columns.AddAt(i, bc);
                 //DataGridDate.Columns.AddAt(i-1, bc);
                 i++;
@@ -786,13 +809,15 @@ namespace ModuleWorkFlow
                         try
                         {
                             DateTime date = Convert.ToDateTime(e.Item.Cells[i].Text);
-                            if (date.Ticks == 0)
+                            if (date.Ticks == 0 )
                             {
                                 e.Item.Cells[i].Text = "";
                             }
 
                         }
-                        catch { }
+                        catch {
+                            e.Item.Cells[i].Text = "";
+                        }
                     }
 
                     if (cti.TableField.Equals("difficultlevel"))

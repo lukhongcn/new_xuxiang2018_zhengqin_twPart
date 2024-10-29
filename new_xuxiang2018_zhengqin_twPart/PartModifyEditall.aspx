@@ -1,4 +1,4 @@
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+Ôªø<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
 <%@ Page Language="c#" CodeBehind="PartModifyEditall.aspx.cs" MasterPageFile="~/DefaultSub.Master"AutoEventWireup="True" Inherits="ModuleWorkFlow.PartModifyEditall" MaintainScrollPositionOnPostback="True" %>
 
@@ -11,12 +11,12 @@
             <div id="Header">
                 
                     <div class="linebox">
-                        <a href="#"><%=Utility.Translate.translateString("•Õ≤£∫ﬁ≤z")%></a>
+                        <a href="#"><%=Utility.Translate.translateString("ÁîüÁî¢ÁÆ°ÁêÜ")%></a>
                         <img src="images/arrow.png" />
                         <a href="#"><%=str_MenuName%></a>
                     </div>
                     <div class="logout">
-                        <a href="login.aspx"><%=Utility.Translate.translateString("µn•X")%></a>
+                        <a href="login.aspx"><%=Utility.Translate.translateString("ÁôªÂá∫")%></a>
                     </div>
                     <div class="clearbox"></div>
                 </div>
@@ -31,13 +31,13 @@
                              <div class="mod1">
                                  <ul>
                                      <li class="btn3">
-                                         <asp:LinkButton ID="lnkbutton_save" runat="server" ToolTip="¿x¶s/save" OnClick="lnkbutton_save_Click">¿x¶s/save</asp:LinkButton>
+                                         <asp:LinkButton ID="lnkbutton_save" runat="server" ToolTip="ÂÑ≤Â≠ò/save" OnClick="lnkbutton_save_Click">ÂÑ≤Â≠ò/save</asp:LinkButton>
                                      </li>
                                      <li class="btn5">
-                                         <asp:LinkButton ID="lnkbutton_view" runat="server" ToolTip="¿Àµ¯"
+                                         <asp:LinkButton ID="lnkbutton_view" runat="server" ToolTip="Ê™¢Ë¶ñ"
                                              OnClick="lnkbutton_view_Click"></asp:LinkButton></li>
                                      <li class="btn2">
-                                         <asp:LinkButton ID="lnkbutton_edit" runat="server" OnClick="lnkbutton_edit_Click" Visible="false" ToolTip="ΩsøË/edit">ΩsøË/edit</asp:LinkButton>
+                                         <asp:LinkButton ID="lnkbutton_edit" runat="server" OnClick="lnkbutton_edit_Click" Visible="false" ToolTip="Á∑®ËºØ/edit">Á∑®ËºØ/edit</asp:LinkButton>
                                      </li>
                                  </ul>
                              </div>
@@ -70,7 +70,7 @@
                                 </div>
 
                                 <div class="col-lg-8  d-flex">
-                                    <asp:Label ID="Label3" runat="server"  CssClass="me-10">πœ¶W</asp:Label>°G
+                                    <asp:Label ID="Label3" runat="server"  CssClass="me-10">ÂúñÂêç</asp:Label>Ôºö
                                
                                     <asp:Label ID="Label_partName" runat="server"></asp:Label>
                                 </div>
@@ -81,21 +81,21 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-lg-4  d-flex">
-                                    <asp:Label ID="Label9" runat="server"  CssClass="me-10">™¨∫A</asp:Label>
+                                    <asp:Label ID="Label9" runat="server"  CssClass="me-10">ÁãÄÊÖã</asp:Label>
                                     <asp:DropDownList ID="dpl_status" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
                                 </div>
                                 <div class="col-lg-4  d-flex">
-                                    <asp:Label ID="Label4" runat="server"  CssClass="me-10">µ•Ø≈</asp:Label>:
+                                    <asp:Label ID="Label4" runat="server"  CssClass="me-10">Á≠âÁ¥ö</asp:Label>:
                                     <asp:DropDownList ID="ListBox_Priority" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
                                 </div>
                                 <div class="col-lg-4  d-flex">
-                                    <asp:Label ID="Label5" runat="server"  CssClass="me-10">√¯´◊</asp:Label>:
+                                    <asp:Label ID="Label5" runat="server"  CssClass="me-10">Èõ£Â∫¶</asp:Label>:
                                      <asp:DropDownList ID="dpl_difficuleLevel" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
                                 </div>
                             </div>
                             <div class="row mb-3">
                               <div class="col-lg-1  d-flex">
-                                <asp:Label ID="Label6" runat="server" CssClass="me-10">πs•ÛΩs∏π</asp:Label>
+                                <asp:Label ID="Label6" runat="server" CssClass="me-10">Èõ∂‰ª∂Á∑®Ëôü</asp:Label>
                               </div>
                               <div class="col-lg-11  d-flex">
                                     
@@ -110,7 +110,7 @@
                             <div class="row mb-3">
 
                                  <div class="col-lg-6  d-flex">
-                                    <asp:Label ID="lab_dueDate" runat="server" Text="ª›®D§È¥¡°G" CssClass="me-10"/>
+                                    <asp:Label ID="lab_dueDate" runat="server" Text="ÈúÄÊ±ÇÊó•Êúü" CssClass="me-10"/>
                                
                                     <asp:TextBox ID="txt_dueDate" runat="server" CssClass="datetime-picker form-control custom-height-width text-start border-primary"></asp:TextBox>
                                  </div>
@@ -118,7 +118,7 @@
 
 
                                    <div class="col-lg-6  d-flex">
-                                       <asp:Label ID="Label22" runat="server" Text="≥∆µ˘:" CssClass="me-10"></asp:Label>
+                                       <asp:Label ID="Label22" runat="server" Text="ÂÇôË®ª" CssClass="me-10"></asp:Label>
                                   
 
                                        <asp:TextBox ID="txt_comment" runat="server" CssClass="form-control custom-height-width text-start border-primary"></asp:TextBox>
@@ -151,8 +151,8 @@
                                                 <asp:DataGrid ID="MainDataGrid" runat="server" CssClass="table table-striped table-bordered table-hover table-sm" style="height: 40px; overflow-y: auto;"  AutoGenerateColumns="False" OnItemDataBound="MainDataGrid_ItemDataBound">
                                                     <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary"  Wrap="true"></HeaderStyle>
                                                     <Columns>
-                                                        <asp:ButtonColumn Text="øÔæ‹" ButtonType="PushButton"  CommandName="Select" ></asp:ButtonColumn>
-                                                        <asp:TemplateColumn HeaderText="•[§u∂∂ß«">
+                                                        <asp:ButtonColumn Text="ÈÅ∏Êìá" ButtonType="PushButton"  CommandName="Select" ></asp:ButtonColumn>
+                                                        <asp:TemplateColumn HeaderText="">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="Label_OrderNo" runat="server" Text='<%# DataBinder.Eval(Container,"DataItem.processorder") %>'></asp:Label>
                                                                 <asp:Label ID="Label_processno" runat="server" Text='<%# DataBinder.Eval(Container,"DataItem.processno") %>' Visible="false"></asp:Label>
@@ -161,7 +161,7 @@
 
                                                         <asp:TemplateColumn Visible="false">
                                                             <HeaderTemplate>
-                                                                <asp:Label ID="lab_cbxrelation" runat="server" Text='<%# Utility.Translate.translateString("±ææa§ƒøÔ") %>'></asp:Label>
+                                                                <asp:Label ID="lab_cbxrelation" runat="server" Text='<%# Utility.Translate.translateString("ÊéõÈù†ÂãæÈÅ∏") %>'></asp:Label>
                                                             </HeaderTemplate>
                                                             <ItemTemplate>
                                                                 <asp:CheckBox ID="cbx_relation" Text="" runat="server"></asp:CheckBox>
@@ -170,87 +170,87 @@
 
 
 
-                                                        <asp:TemplateColumn Visible="false" HeaderText="§uß«Ωs∏π">
+                                                        <asp:TemplateColumn Visible="false" HeaderText="Â∑•Â∫èÁ∑®Ëôü">
                                                             <ItemTemplate>
                                                                 <asp:Label runat="server" ID="Label_ProcessID" Text='<%# DataBinder.Eval(Container,"DataItem.ProcessID") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn Visible="false" HeaderText="©w∏q§uß«Ωs∏π">
+                                                        <asp:TemplateColumn Visible="false" HeaderText="ÂÆöÁæ©Â∑•Â∫èÁ∑®Ëôü">
                                                             <ItemTemplate>
                                                                 <asp:Label runat="server" ID="Label_CustomerProcessID" Text='<%# DataBinder.Eval(Container,"DataItem.CustomerProcessID") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="§uß«¶W∫Ÿ">
+                                                        <asp:TemplateColumn HeaderText="Â∑•Â∫è">
                                                             <ItemTemplate>
                                                                 <asp:Label runat="server" ID="Label_CustomerProcessName" Text='<%# DataBinder.Eval(Container,"DataItem.CustomerProcessName") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="§—">
+                                                        <asp:TemplateColumn HeaderText="Â§©">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="Dropdownlist_Day" CssClass="border-primary"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="§pÆ…">
+                                                        <asp:TemplateColumn HeaderText="Â∞èÊôÇ">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="DropDownList_Hour" CssClass="border-primary"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="§¿ƒ¡">
+                                                        <asp:TemplateColumn HeaderText="ÂàÜÈêò">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="Dropdownlist_Minute" CssClass="border-primary"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="∂}©l§È¥¡" Visible="false">
+                                                        <asp:TemplateColumn HeaderText="ÈñãÂßãÊó•Êúü" Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txt_startDate" runat="server" Width="80"></asp:TextBox>
                                                                 <ajaxToolkit:CalendarExtender ID="cal_startDate" runat="server" TargetControlID="txt_startDate"></ajaxToolkit:CalendarExtender>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="Æ…"  Visible="false">
+                                                        <asp:TemplateColumn HeaderText="ÊôÇ"  Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="dpl_startHour"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="µ≤ßÙ§È¥¡"  Visible="false">
+                                                        <asp:TemplateColumn HeaderText="ÁµêÊùüÊó•Êúü"  Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txt_endDate" runat="server" Width="80"></asp:TextBox>
                                                                 <ajaxToolkit:CalendarExtender ID="cal_endDate" runat="server" TargetControlID="txt_endDate"></ajaxToolkit:CalendarExtender>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="Æ…" Visible="false">
+                                                        <asp:TemplateColumn HeaderText="ÊôÇ" Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="dpl_endHour"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="™≠◊" Visible="false">
+                                                        <asp:TemplateColumn HeaderText="Ëøî‰øÆ" Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:CheckBox ID="cbl_isunnormal" Text="" runat="server"></asp:CheckBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="™`∑N®∆∂µ">
+                                                        <asp:TemplateColumn HeaderText="Ê≥®ÊÑè‰∫ãÈ†Ö">
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txt_processComment" runat="server" CssClass="form-control custom-htight border-primary"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="æ˜•x" Visible="false">
+                                                        <asp:TemplateColumn HeaderText="Ê©üÂè∞" Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList ID="dpl_processMachineid" runat="server"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:ButtonColumn Text="§W≤æ" ButtonType="PushButton" HeaderText="" CommandName="Upper"></asp:ButtonColumn>
-                                                        <asp:ButtonColumn Text="§U≤æ" ButtonType="PushButton" CommandName="Lower"></asp:ButtonColumn>
-                                                        <asp:ButtonColumn Text="ßR∞£" ButtonType="PushButton" CommandName="Delete"></asp:ButtonColumn>
+                                                        <asp:ButtonColumn Text="‰∏äÁßª" ButtonType="PushButton" HeaderText="" CommandName="Upper"></asp:ButtonColumn>
+                                                        <asp:ButtonColumn Text="‰∏ãÁßª" ButtonType="PushButton" CommandName="Lower"></asp:ButtonColumn>
+                                                        <asp:ButtonColumn Text="Âà™Èô§" ButtonType="PushButton" CommandName="Delete"></asp:ButtonColumn>
                                                         <asp:TemplateColumn HeaderText="processno" Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="dg_lab_processno" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.processno") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn Visible="false" HeaderText="§uß«Ωs∏π">
+                                                        <asp:TemplateColumn Visible="false" HeaderText="Â∑•Â∫èÁ∑®Ëôü">
                                                             <ItemTemplate>
                                                                 <asp:Label runat="server" ID="dg_lab_StatusID" Text='<%# DataBinder.Eval(Container, "DataItem.StatusID") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn Visible="false" HeaderText="§uß«√˛´¨">
+                                                        <asp:TemplateColumn Visible="false" HeaderText="Â∑•Â∫èÈ°ûÂûã">
                                                             <ItemTemplate>
                                                                 <asp:Label runat="server" ID="dg_lab_pricetype" Text='<%# DataBinder.Eval(Container, "DataItem.pricetype") %>'></asp:Label>
                                                             </ItemTemplate>
@@ -273,7 +273,7 @@
                                         <b>
                                             <div align="center">
                                                 <b>
-                                                    <asp:Label ID="Label8" runat="server">¥£•‹</asp:Label></b>
+                                                    <asp:Label ID="Label8" runat="server">ÊèêÁ§∫</asp:Label></b>
                                             </div>
                                         </b>
                                     </div>
@@ -294,7 +294,7 @@
                     </div>
                 </div>
             </div>
-   
+        </div>
     </asp:Content>
   <asp:Content ID="Content2" ContentPlaceHolderID="JSHolder" runat="server">
    

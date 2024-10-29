@@ -13,6 +13,7 @@
 		<frameset cols="220,12,*">
 			<frame id="left" src="Controls/newleft.aspx" bordercolor="#ccffff" name="left">
 			<frame id="middle" src="middle.aspx" frameborder="0" scrolling="no" marginwidth="0" name="middle">
+			<frame id="main" src="" name="main">
 			<frame>
 		</frameset>
 	
