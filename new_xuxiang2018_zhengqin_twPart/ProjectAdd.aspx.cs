@@ -139,11 +139,16 @@ namespace ModuleWorkFlow
             {
                 ModuleWorkFlow.BLL.NewOrder.OrderDesign order = new ModuleWorkFlow.BLL.NewOrder.OrderDesign();
                 ModuleWorkFlow.Model.NewOrder.OrderDesignInfo oi = order.GetOrderDesignByModuleId(moduleid);
-                if (oi != null)
+                if (oi != null && oi.IsModifyModuleOrder == 0)
                 {
                     txt_trydate0time.Text = oi.TryDate0.ToShortDateString();
                     txt_productEndDate.Text = oi.ProductEndDate.ToString();
-                    
+
+                }
+                else
+                {
+                    Label_Message.Text = Translate.translateString("只能對產批進行返修");
+                    return;
                 }
 
                 IList orders = order.GetNewOrderLike(moduleid + "(FW");
@@ -243,6 +248,7 @@ namespace ModuleWorkFlow
             if (oi == null)
             {
                 Label_Message.Text = Lang.TXT_PARTMODULEID_NO_EXISTED;
+                return;
             }
 
 
@@ -344,8 +350,19 @@ namespace ModuleWorkFlow
                 }
             }
 
+            if (parts.Count == 0)
+            {
+                Label_Message.Text = Translate.translateString("請至少選擇一個需要生產的產品");
+                return;
+            }
+
             //講原廠批複製到返修廠批中
             OrderDesignInfo sourceOI = order.GetOrderDesignByModuleId(moduleid);
+            if (sourceOI.IsModifyModuleOrder == 1)
+            {
+                Label_Message.Text = Translate.translateString("只能對產批進行返修");
+                return;
+            }
             OrderDesignInfo RWOI = order.GetOrderDesignByModuleId(Textbox_XIUMOBIANHAO.Text);
 
             PartOrderDesign partOrder = new PartOrderDesign();

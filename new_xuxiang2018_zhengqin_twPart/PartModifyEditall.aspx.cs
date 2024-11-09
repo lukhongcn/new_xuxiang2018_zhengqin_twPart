@@ -590,16 +590,16 @@ namespace ModuleWorkFlow
         /// </summary>
         private void InitializeComponent()
         {
-            this.CheckBoxList_Process.SelectedIndexChanged += new System.EventHandler(this.CheckBoxList_Process_SelectedIndexChanged);
-            this.MainDataGrid.ItemCommand += new System.Web.UI.WebControls.DataGridCommandEventHandler(this.MainDataGrid_ItemCommand);
+            //this.CheckBoxList_Process.SelectedIndexChanged += new System.EventHandler(this.CheckBoxList_Process_SelectedIndexChanged);
+            //this.MainDataGrid.ItemCommand += new System.Web.UI.WebControls.DataGridCommandEventHandler(this.MainDataGrid_ItemCommand);
             this.MainDataGrid.DeleteCommand += new System.Web.UI.WebControls.DataGridCommandEventHandler(this.MainDataGrid_DeleteCommand);
-            //this.Button_AddEdit.Click += new System.EventHandler(this.Button_AddEdit_Click);
-            this.Load += new System.EventHandler(this.Page_Load);
+            ////this.Button_AddEdit.Click += new System.EventHandler(this.Button_AddEdit_Click);
+            //this.Load += new System.EventHandler(this.Page_Load);
 
         }
         #endregion
 
-        private void MainDataGrid_ItemCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
+        protected void MainDataGrid_ItemCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
         {
             int index = e.Item.ItemIndex;
             switch (((Button)e.CommandSource).CommandName)//080901
@@ -905,12 +905,22 @@ namespace ModuleWorkFlow
                     break;
 
                 case "Select":
+                    var originalColor = e.Item.BackColor;
                     for (int i = 0; i < MainDataGrid.Items.Count; i++)
                     {
                         MainDataGrid.Items[i].BackColor = Color.White;
                     }
-                    e.Item.BackColor = Setting.SELECTCOLOR;
-                    Label_HiddenSelectRow.Text = Convert.ToString(e.Item.ItemIndex);
+                    if (originalColor != Setting.SELECTCOLOR)
+                    {
+                        e.Item.BackColor = Setting.SELECTCOLOR;
+                        Label_HiddenSelectRow.Text = Convert.ToString(e.Item.ItemIndex);
+                    }
+                    else
+                    {
+                        Label_HiddenSelectRow.Text = "-1";
+                    }
+                        
+                   
 
                     break;
                 case "Delete":
@@ -943,10 +953,12 @@ namespace ModuleWorkFlow
                     break;
 
             }
+          
             disableProductedProcess();
+            UpdatePanel1.Update();
         }
 
-        private void CheckBoxList_Process_SelectedIndexChanged(object sender, System.EventArgs e)
+        protected void CheckBoxList_Process_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             hprocess = (Hashtable)Session["hprocess"];
             string processid = CheckBoxList_Process.SelectedValue;
@@ -1604,9 +1616,11 @@ namespace ModuleWorkFlow
             disableProductedProcess();
         }
 
-        private void MainDataGrid_DeleteCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
+        protected void MainDataGrid_DeleteCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
         {
             DeleteDataSource(e.Item.ItemIndex);
+            UpdatePanel1.Update();
+
         }
 
 

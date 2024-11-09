@@ -57,7 +57,14 @@ namespace ModuleWorkFlow
         protected string menuname = "";
         private void Page_Load(object sender, System.EventArgs e)
         {
-            menuname = new Tmenu().findbykey(menuid).Menuname;
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+                TmenuInfo mi = new Tmenu().findbykey(menuid);
+                master.Menuname = mi.Menuname;
+                menuname = mi.Menuname;
+            }
+           
             if (Request.Params["pricetype"] != null)
             {
                 lab_pricetype.Text = Request.Params["pricetype"];

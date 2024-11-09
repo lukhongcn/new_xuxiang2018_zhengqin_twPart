@@ -24,6 +24,7 @@ using ModuleWorkFlow.BLL.InventorySystem;
 using ModuleWorkFlow.Model.InventorySystem;
 using ModuleWorkflow.OutSource.BLL.Interface;
 using Utility;
+using Part = ModuleWorkFlow.BLL.Part;
 
 
 namespace ModuleWorkFlow
@@ -57,9 +58,14 @@ namespace ModuleWorkFlow
         private void Page_Load(object sender, System.EventArgs e)
         {
 
-
-            TmenuInfo mi = new Tmenu().findbykey("D811");
-            title = mi.Menuname;
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+                TmenuInfo mi = new Tmenu().findbykey(menuid);
+                master.Menuname = mi.Menuname;
+                title = mi.Menuname;
+            }
+           
 
             outSourceDetail = new OutSourceDetail();
 
@@ -221,12 +227,12 @@ namespace ModuleWorkFlow
                 TextBox dg_lab_confirmDate = e.Item.FindControl("dg_lab_confirmDate") as TextBox;
 
 
-                if (dg_lab_requireDate.Text.Equals("01-1-1") || dg_lab_requireDate.Text.Equals("0001/1/1"))
+                if (dg_lab_requireDate.Text.IndexOf("0001") >-1)
                 {
                     dg_lab_requireDate.Text = "";
                 }
 
-                if (dg_lab_confirmDate.Text.Equals("01-1-1") || dg_lab_confirmDate.Text.Equals("0001/1/1"))
+                if ( dg_lab_confirmDate.Text.IndexOf("0001") > -1)
                 {
                     dg_lab_confirmDate.Text = "";
                 }
@@ -306,7 +312,19 @@ namespace ModuleWorkFlow
                         }
                         catch
                         {
-                            Label_Message.Text = Translate.translateString("第") + item.ItemIndex.ToString() + Translate.translateString("請填寫日期");
+                            Label_Message.Text = Translate.translateString("第") + item.ItemIndex.ToString() + Translate.translateString("請填寫正確日期");
+                            return;
+                        }
+
+                        try
+                        {
+
+                            TextBox dg_txt_confirmCount = item.FindControl("dg_txt_confirmCount") as TextBox;
+                            odi.ConfirmCount = Convert.ToInt32(dg_txt_confirmCount.Text);
+                        }
+                        catch
+                        {
+                            Label_Message.Text = Translate.translateString("第") + item.ItemIndex.ToString() + Translate.translateString("請填寫正確數量");
                             return;
                         }
 
@@ -317,7 +335,7 @@ namespace ModuleWorkFlow
                         }
 
 
-
+                        details.Add(odi);
 
                     }
                     else
@@ -326,24 +344,78 @@ namespace ModuleWorkFlow
                         odi.SupplyId = 0;
                     }
 
-                    details.Add(odi);
+                   
 
                 }
 
             }
 
-            IList source = new ArrayList();
+            if (details.Count == 0)
+            {
+                Label_Message.Text = Translate.translateString("請至少選擇一個需要確認的產品");
+                return;
+            }
+            ArrayList source = new ArrayList();
+            IList addDetailSource = new ArrayList();
+            PartSubPart partSubPart = new PartSubPart();
+            PartPart partPart = new PartPart();
+            PartPartProcess partPartProcess = new PartPartProcess();
             foreach (OutSourceDetailInfo osdi in details)
             {
-                if (osdi.ProcessOrder == 1)
+                if (osdi.ProcessOrder == 1 )
                 {
+                    PartInfo partInfo = new Part().getPartInfo(osdi.ModuleId, osdi.PartNo);
                     //產生箱號，檢查數量是否合法，如果合法執行下面操作
+                    string msg = partSubPart.checkChangeSubPartCount(partInfo,osdi.PartNo_Id, osdi.ConfirmCount);
+                    if (!msg.Equals(Lang.SAVE_SUCCESS))
+                    {
+                        Label_Message.Text = msg;
+                        return;
+                    }
+                    int totalCount = partInfo.LeastCount + partInfo.EachBatchCount;
+                    if (totalCount - osdi.ConfirmCount >0)
+                    {
+                        //update EachBatchCount,LeastCount for part
+                        partInfo.EachBatchCount = osdi.ConfirmCount;
+                        partInfo.LeastCount = totalCount - partInfo.EachBatchCount;
+
+                        PartProcessInfo ppi = partPartProcess.getPartProcessInfo(osdi.ModuleId, osdi.PartNo_Id, osdi.ProcessOrder);
+                        if (ppi.EachBatchCount == 0)
+                        {
+                            partInfo.PartCount++;
+
+                            OutSourceDetailInfo addOsdi = new OutSourceDetailInfo();
+                            tools.CopyObject(osdi, addOsdi);
+                            addOsdi.ConfirmCount = 0;
+                            addOsdi.ConfirmDate = new DateTime();
+
+                            addOsdi.PartNo_Id = osdi.PartNo + "-" + partInfo.PartCount;
+                            addDetailSource.Add(addOsdi);
+                        }
+                            
+                        source.Add(partPart.UpdateAllParts(partInfo));
+                        //update EachBatchCount for partNoId
+                       
+                        source.Add(partPartProcess.UpdataBeachCount(osdi.ModuleId,osdi.PartNo_Id,osdi.ConfirmCount));
+                        //add partcount++
+
+                        source.AddRange
+                            (partPart.UpdateAllPartPart(partInfo, new OutSourceDetail(), new OutsourceApplyDesignInfo()));
+                        
+
+                    }
                 }
             }
+
             source.Add(outSourceDetail.updateAllOutSourceDetail(details));
+            source.Add(outSourceDetail.insertAllOutSourceDetail(addDetailSource));
+
+
            
             if (new Schedule().SaveSchedule(source))
             {
+                //add outsource for new 
+                
                 Label_Message.Text = Lang.SAVE_SUCCESS;
             }
             else

@@ -85,17 +85,17 @@
                                     <asp:DropDownList ID="dpl_status" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
                                 </div>
                                 <div class="col-lg-4  d-flex">
-                                    <asp:Label ID="Label4" runat="server"  CssClass="me-10">等級</asp:Label>:
+                                    <asp:Label ID="Label4" runat="server"  CssClass="me-10">等級</asp:Label>
                                     <asp:DropDownList ID="ListBox_Priority" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
                                 </div>
                                 <div class="col-lg-4  d-flex">
-                                    <asp:Label ID="Label5" runat="server"  CssClass="me-10">難度</asp:Label>:
+                                    <asp:Label ID="Label5" runat="server"  CssClass="me-10">難度</asp:Label>
                                      <asp:DropDownList ID="dpl_difficuleLevel" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
                                 </div>
                             </div>
                             <div class="row mb-3">
                               <div class="col-lg-1  d-flex">
-                                <asp:Label ID="Label6" runat="server" CssClass="me-10">零件編號</asp:Label>
+                                <asp:Label ID="Label6" runat="server" CssClass="me-10">圖號</asp:Label>
                               </div>
                               <div class="col-lg-11  d-flex">
                                     
@@ -135,20 +135,24 @@
                             
                             <div class="row mb-3">
                                <div class="col-lg-12  d-flex">
+                                   <asp:ScriptManager ID="script" runat="server" EnableScriptGlobalization="true" EnableScriptLocalization="true"></asp:ScriptManager>
+                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
                                      <div class="container mt-3">
                                         <div class="row g-0 mb-3">
+                                            
                                             <div class="col-lg-3  d-flex">
                                                 <div class="overflow-auto border border-primary" style="height: 360px; width:220px;">
                                                     <div class="mt-3 ml-10 "> <!-- Bootstrap class for margin-top -->
                                                         
-                                                            <asp:CheckBoxList ID="CheckBoxList_Process" runat="server" AutoPostBack="True" RepeatDirection="Vertical"  repeatcolumns="1" Width="200px"  RepeatLayout="Table" ></asp:CheckBoxList>
+                                                            <asp:CheckBoxList ID="CheckBoxList_Process" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CheckBoxList_Process_SelectedIndexChanged" RepeatDirection="Vertical"  repeatcolumns="1" Width="200px"  RepeatLayout="Table" ></asp:CheckBoxList>
                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-9  d-flex">
-                                                <asp:ScriptManager ID="script" runat="server" EnableScriptGlobalization="true" EnableScriptLocalization="true"></asp:ScriptManager>
-                                                <asp:DataGrid ID="MainDataGrid" runat="server" CssClass="table table-striped table-bordered table-hover table-sm" style="height: 40px; overflow-y: auto;"  AutoGenerateColumns="False" OnItemDataBound="MainDataGrid_ItemDataBound">
+                                                
+                                                <asp:DataGrid ID="MainDataGrid" runat="server" CssClass="table table-striped table-bordered table-hover table-sm" style="height: 40px; overflow-y: auto;"  AutoGenerateColumns="False" AutoPostBack="True"  OnItemDataBound="MainDataGrid_ItemDataBound" OnItemCommand="MainDataGrid_ItemCommand" >
                                                     <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary"  Wrap="true"></HeaderStyle>
                                                     <Columns>
                                                         <asp:ButtonColumn Text="選擇" ButtonType="PushButton"  CommandName="Select" ></asp:ButtonColumn>
@@ -259,8 +263,15 @@
                                                     </Columns>
                                                 </asp:DataGrid>
                                             </div>
+                                           
                                         </div>
                                     </div>
+                                  </ContentTemplate>
+                                  <Triggers>
+                                         <asp:AsyncPostBackTrigger ControlID="MainDataGrid" EventName="ItemCommand" />
+                                         <asp:AsyncPostBackTrigger ControlID="CheckBoxList_Process" EventName="SelectedIndexChanged" />
+                                  </Triggers>
+                                  </asp:UpdatePanel>
                                 </div>
                             </div>
                         </div>

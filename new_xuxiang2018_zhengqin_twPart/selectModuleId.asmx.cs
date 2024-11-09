@@ -47,6 +47,24 @@ namespace ModuleWorkFlow
         }
 
         [WebMethod]
+        public string[] GetCompleteNewOrderListNeedOver(string prefixText, int count)
+        {
+            ModuleWorkFlow.BLL.Order order = new ModuleWorkFlow.BLL.Order();
+            List<string> items = new List<string>(count);
+            IList list = new ArrayList();
+            list = order.getListOrderInfoByNeedOver(prefixText, count);
+            foreach (ModuleWorkFlow.Model.OrderInfo oi in list)
+            {
+                if (!oi.IsModifyModuleOrder)
+                {
+                    items.Add(oi.Id);
+                }
+               
+            }
+            return items.ToArray();
+        }
+
+        [WebMethod]
         public string[] GetCompleteListNeedBusinessOver(string prefixText, int count)
         {
             ModuleWorkFlow.BLL.Order order = new ModuleWorkFlow.BLL.Order();

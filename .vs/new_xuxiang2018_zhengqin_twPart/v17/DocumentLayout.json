@@ -3,228 +3,58 @@
   "WorkspaceRootPath": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|d:\\project\\new_xuxiang2018_zhengqin_twpart\\new_xuxiang2018_zhengqin_twpart\\projectadd.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\projectadd.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|d:\\project\\new_xuxiang2018_zhengqin_twpart\\new_xuxiang2018_zhengqin_twpart\\partmodifylist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\partmodifylist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B90FCEC2-EF99-4769-840A-A3A8C2E135CD}|..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.MsSQL.Order\\ModuleWorkFlow.MsSQL.NewOrder.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\moduleworkflow.mssql.order\\orderdesign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\partmodifyedit.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\partmodifyedit.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6CB46384-3A0C-4A68-B402-161D8001F05A}|..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.IDAL.Order\\ModuleWorkFlow.IDAL.NewOrder.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\moduleworkflow.idal.order\\iorderdesign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|d:\\project\\new_xuxiang2018_zhengqin_twpart\\new_xuxiang2018_zhengqin_twpart\\partmodifyedit.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\partmodifyedit.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DC4D15BA-87CB-4138-A9FC-0041A8084082}|..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\ModuleWorkFlow.BLL.NewOrder.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\moduleworkflow.bll.order\\orderdesign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AA175B09-1316-4700-9E57-FB4EE7C16CB0}|..\\new_xuxiang2018_zhengqin_twNJ\\Utility\\Utility.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\utility\\tools.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DC4D15BA-87CB-4138-A9FC-0041A8084082}|..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\ModuleWorkFlow.BLL.NewOrder.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\moduleworkflow.bll.order\\partorderdesign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\partmodifymodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4D6FC33-6476-4D73-8BF5-002D3E70C15F}|..\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IDAL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\idal\\ipartmodifymodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{47BD34BD-0678-4AC5-AEFE-020C468A4648}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BLL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll\\partmodifymodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AA175B09-1316-4700-9E57-FB4EE7C16CB0}|..\\new_xuxiang2018_zhengqin_twNJ\\Utility\\Utility.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\utility\\lang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{47BD34BD-0678-4AC5-AEFE-020C468A4648}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BLL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll\\partbomdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|d:\\project\\new_xuxiang2018_zhengqin_twpart\\new_xuxiang2018_zhengqin_twpart\\projectadd.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\projectadd.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{47BD34BD-0678-4AC5-AEFE-020C468A4648}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BLL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\partbomdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Lenovo\\AppData\\Local\\Temp\\.vsdbgsrc\\4d6c7d96f1dbb72e096f390b3519c056f7f042b92975b4c5c3de4cc465c6f831\\Page.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{60A187B4-40F8-4EEF-B790-0CF7B7057855}|..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\DALFactory.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\dalfactory\\partmodifymodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{60A187B4-40F8-4EEF-B790-0CF7B7057855}|..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\DALFactory.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\dalfactory\\partbomdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\partmodifyeditall.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\partmodifyeditall.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\partlist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
       "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\partlist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{967D5465-7E73-46C0-B3BD-A921A6B94C89}|..\\new_xuxiang2018_zhengqin_twNJ\\Model\\Model.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\model\\projectinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\partmodifyeditall.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\partmodifyeditall.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\outsource\\outsourceview.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\outsource\\outsourceview.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\defaultsub.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\defaultsub.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\partdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{47BD34BD-0678-4AC5-AEFE-020C468A4648}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BLL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll\\bomdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\bomdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{47BD34BD-0678-4AC5-AEFE-020C468A4648}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BLL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll\\bomdesign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{60A187B4-40F8-4EEF-B790-0CF7B7057855}|..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\DALFactory.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\dalfactory\\bomdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4D6FC33-6476-4D73-8BF5-002D3E70C15F}|..\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IDAL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\idal\\ipartbomdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\modifymodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\defaultsub.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\defaultsub.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\partlist.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\partlist.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|\\\\192.168.102.10\\wwwroot\\JUTENG_TEST\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admin\\materiallist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admin\\materiallist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admin\\modelview.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admin\\modelview.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\partprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\partprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\site.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\site.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADB0A4A5-30C4-40A4-A9ED-137BC7A9EF58}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\BLL.System.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll.system\\productparttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADB0A4A5-30C4-40A4-A9ED-137BC7A9EF58}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\BLL.System.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll.system\\parttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{394E5562-9488-4923-87EF-F9EEC875AE66}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL.System\\MsSQL.System.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql.system\\parttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DBC55B97-7848-4446-BD2C-816807B982C7}|..\\new_xuxiang2018_zhengqin_twNJ\\Model.System\\Model.System.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\model.system\\parttypeinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\order\\orderdesignlist.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\order\\orderdesignlist.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\order\\orderdesignlist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\order\\orderdesignlist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DC4D15BA-87CB-4138-A9FC-0041A8084082}|..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\ModuleWorkFlow.BLL.NewOrder.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\moduleworkflow.bll.order\\ordercreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DC4D15BA-87CB-4138-A9FC-0041A8084082}|..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\ModuleWorkFlow.BLL.NewOrder.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\moduleworkflow.bll.order\\tjbcreateorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\order\\orderdesignview.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\order\\orderdesignview.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADB0A4A5-30C4-40A4-A9ED-137BC7A9EF58}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\BLL.System.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll.system\\customerdesign.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ADB0A4A5-30C4-40A4-A9ED-137BC7A9EF58}|..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\BLL.System.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\bll.system\\systeminterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8AD554AF-4EF4-494F-804D-A2294C618312}|..\\new_xuxiang2018_zhengqin_twNJ\\IDAL.System\\IDAL.System.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\idal.system\\isysteminterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admininventory\\productcodetypelist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admininventory\\productcodetypelist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admininventory\\materialcodeview.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admininventory\\materialcodeview.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admininventory\\materialcodelist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admininventory\\materialcodelist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admin\\userprivilegeaddedit.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admin\\userprivilegeaddedit.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5225136B-8055-43D1-BEDA-86B1FD1DFA32}|ModuleWorkFlow.report\\ModuleWorkFlow.report.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\moduleworkflow.report\\orderpricereport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5225136B-8055-43D1-BEDA-86B1FD1DFA32}|ModuleWorkFlow.report\\ModuleWorkFlow.report.csproj|solutionrelative:moduleworkflow.report\\orderpricereport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5225136B-8055-43D1-BEDA-86B1FD1DFA32}|ModuleWorkFlow.report\\ModuleWorkFlow.report.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\moduleworkflow.report\\modulepricereport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5225136B-8055-43D1-BEDA-86B1FD1DFA32}|ModuleWorkFlow.report\\ModuleWorkFlow.report.csproj|solutionrelative:moduleworkflow.report\\modulepricereport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\util.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\util.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\process.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\process.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5225136B-8055-43D1-BEDA-86B1FD1DFA32}|ModuleWorkFlow.report\\ModuleWorkFlow.report.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\moduleworkflow.report\\partbarcodereport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5225136B-8055-43D1-BEDA-86B1FD1DFA32}|ModuleWorkFlow.report\\ModuleWorkFlow.report.csproj|solutionrelative:moduleworkflow.report\\partbarcodereport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\order\\controls\\orderdesignview.ascx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\order\\controls\\orderdesignview.ascx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admin\\emailgrouplist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admin\\emailgrouplist.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\priority.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\priority.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\convertstring.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D63A2045-57A0-460B-8781-FC60D6EF7B36}|business\\business.csproj|solutionrelative:business\\convertstring.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admin\\departprivilegeaddedit.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admin\\departprivilegeaddedit.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\admin\\userpasswordchange.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\admin\\userpasswordchange.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twpart\\defaultsub.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0120DA78-C437-41F8-9F22-D16726F75D3C}|new_xuxiang2018_zhengqin_twPart\\PartWorkFlow.csproj|solutionrelative:new_xuxiang2018_zhengqin_twpart\\defaultsub.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{31A2F33F-E84C-4341-B8A8-431616F816B6}|..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\MsSQL.csproj|d:\\project\\new_xuxiang2018_zhengqin_twnj\\mssql\\part.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -234,825 +64,179 @@
       "DocumentGroups": [
         {
           "DockedHeight": 353,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ProjectAdd.aspx.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx.cs",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx.cs",
-              "ViewState": "AQIAAL8BAAAAAAAAAIBFwNgBAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T09:15:26.607Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Part.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs [Read Only]",
-              "ViewState": "AQIAAEgIAAAAAAAAAIA4wFgIAAA6AQAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T08:10:27.937Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Lang.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Utility\\Lang.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\Utility\\Lang.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Utility\\Lang.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\Utility\\Lang.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAwAAAA4AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T13:09:19.858Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "PartModifyModule.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartModifyModule.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartModifyModule.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartModifyModule.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartModifyModule.cs",
-              "ViewState": "AQIAACAAAAAAAAAAAABAwEcAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T03:41:48.73Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "PartBomDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartBomDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartBomDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartBomDetail.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartBomDetail.cs [Read Only]",
-              "ViewState": "AQIAAAcAAAAAAAAAAAAAAA8AAABDAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T07:43:25.529Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "Order.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs [Read Only]",
-              "ViewState": "AQIAAJ0FAAAAAAAAAAA8wKwFAAAWAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T02:23:16.035Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Project.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Project.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Project.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Project.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Project.cs [Read Only]",
-              "ViewState": "AQIAAKIBAAAAAAAAAAAWwBQCAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T03:23:26.905Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "tools.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Utility\\tools.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\Utility\\tools.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Utility\\tools.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\Utility\\tools.cs",
-              "ViewState": "AQIAAL4FAAAAAAAAAAAuwMQFAABKAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-21T13:58:22.646Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "OrderDesign.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderDesign.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderDesign.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderDesign.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderDesign.cs [Read Only]",
-              "ViewState": "AQIAALQDAAAAAAAAAAAwwMYDAAAmAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T14:12:43.414Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IOrderDesign.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.IDAL.Order\\IOrderDesign.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.IDAL.Order\\IOrderDesign.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.IDAL.Order\\IOrderDesign.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.IDAL.Order\\IOrderDesign.cs",
-              "ViewState": "AQIAAGkAAAAAAAAAAABDwHgAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-22T14:26:16.944Z",
+              "Title": "PartModifyList.aspx",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyList.aspx",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\PartModifyList.aspx",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyList.aspx",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartModifyList.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2024-11-07T01:19:37.805Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "OrderDesign.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.MsSQL.Order\\OrderDesign.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.MsSQL.Order\\OrderDesign.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.MsSQL.Order\\OrderDesign.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.MsSQL.Order\\OrderDesign.cs",
-              "ViewState": "AQIAAMcAAAAAAAAAAAA8wOMAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-22T14:26:22.573Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Part.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\Part.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\Part.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\Part.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\Part.cs [Read Only]",
-              "ViewState": "AQIAAOkGAAAAAAAAAAAWwPoGAAAkAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T08:07:28.402Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ProjectAdd.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\ProjectAdd.aspx",
+              "Title": "PartModifyEdit.aspx",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-25T03:48:20.227Z",
+              "WhenOpened": "2024-11-05T05:52:20.006Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PartOrderDesign.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\PartOrderDesign.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\PartOrderDesign.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\PartOrderDesign.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\PartOrderDesign.cs",
-              "ViewState": "AQIAAF0AAAAAAAAAAABAwG8AAAAMAAAA",
+              "DocumentIndex": 6,
+              "Title": "OutSourceView.aspx.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\outsource\\OutSourceView.aspx.cs",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\outsource\\OutSourceView.aspx.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\outsource\\OutSourceView.aspx.cs [Read Only]",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\outsource\\OutSourceView.aspx.cs [Read Only]",
+              "ViewState": "AQIAANwAAAAAAAAAAAAwwOkAAAA4AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-22T14:26:46.333Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "PartModifyModule.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartModifyModule.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartModifyModule.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartModifyModule.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\PartModifyModule.cs",
-              "ViewState": "AQIAAAIAAAAAAAAAAADwvxQAAAAxAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T06:25:56.779Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-06T07:56:46.377Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "IPartModifyModule.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartModifyModule.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartModifyModule.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartModifyModule.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartModifyModule.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAsAAAAnAAAA",
+              "Title": "Order.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs",
+              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs [Read Only]",
+              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Order.cs [Read Only]",
+              "ViewState": "AQIAABEDAAAAAAAAAADgv70CAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T03:51:35.087Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-06T07:56:07.058Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "PartBomDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartBomDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartBomDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartBomDetail.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartBomDetail.cs [Read Only]",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAiwC8AAAAQAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T07:09:18.368Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "ProjectInfo.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Model\\ProjectInfo.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\Model\\ProjectInfo.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Model\\ProjectInfo.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\Model\\ProjectInfo.cs",
-              "ViewState": "AQIAAOYCAAAAAAAAAAAAAPgCAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T03:42:14.99Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "PartBomDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartBomDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartBomDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartBomDetail.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartBomDetail.cs [Read Only]",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABAAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T07:37:20.117Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Page.cs",
-              "DocumentMoniker": "C:\\Users\\Lenovo\\AppData\\Local\\Temp\\.vsdbgsrc\\4d6c7d96f1dbb72e096f390b3519c056f7f042b92975b4c5c3de4cc465c6f831\\Page.cs",
-              "ToolTip": "C:\\Users\\Lenovo\\AppData\\Local\\Temp\\.vsdbgsrc\\4d6c7d96f1dbb72e096f390b3519c056f7f042b92975b4c5c3de4cc465c6f831\\Page.cs [Read Only]",
-              "ViewState": "AQIAAMUTAAAAAAAAAABAwNcTAAATAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T06:56:57.919Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "PartModifyModule.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartModifyModule.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartModifyModule.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartModifyModule.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\PartModifyModule.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-25T03:54:32.783Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "BomDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\BomDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\BomDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\BomDetail.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\BomDetail.cs [Read Only]",
-              "ViewState": "AQIAABQBAAAAAAAAAIA1wBMBAAAcAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T06:41:25.926Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 4,
               "Title": "PartList.aspx",
               "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartList.aspx",
               "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\PartList.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartList.aspx",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartList.aspx",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartList.aspx [Read Only]",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartList.aspx [Read Only]",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-23T01:40:57.309Z"
+              "WhenOpened": "2024-11-06T06:14:51.279Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "web.config",
-              "DocumentMoniker": "\\\\192.168.102.10\\wwwroot\\JUTENG_TEST\\web.config",
-              "ToolTip": "\\\\192.168.102.10\\wwwroot\\JUTENG_TEST\\web.config",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACYAAABZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2024-10-23T06:40:16.536Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "BomDesign.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDesign.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDesign.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDesign.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDesign.cs [Read Only]",
-              "ViewState": "AQIAAJsBAAAAAAAAAAAowAAAAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "PartModifyEdit.aspx.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx.cs",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx.cs",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartModifyEdit.aspx.cs",
+              "ViewState": "AQIAAFMAAAAAAAAAAAAAAF8AAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T13:11:04.195Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "BomDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDetail.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL\\BomDetail.cs [Read Only]",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAUwCkAAAApAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T06:41:46.107Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "DefaultSub.Master",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-22T07:56:04.129Z",
+              "WhenOpened": "2024-11-06T13:29:30.857Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "PartDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartDetail.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\PartDetail.cs",
-              "ViewState": "AQIAADUAAAAAAAAAAIA3wA8AAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T13:22:30.047Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "BomDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\BomDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\BomDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\BomDetail.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\DALFactory\\BomDetail.cs [Read Only]",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABMAAAADAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T07:36:49.476Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "IPartBomDetail.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartBomDetail.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartBomDetail.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartBomDetail.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\IDAL\\IPartBomDetail.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T07:33:48.656Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "ModifyModule.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\ModifyModule.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\ModifyModule.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\ModifyModule.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\ModifyModule.cs [Read Only]",
-              "ViewState": "AQIAAAQAAAAAAAAAAAAYwBEAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T13:56:12.072Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "MaterialList.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\MaterialList.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\admin\\MaterialList.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\MaterialList.aspx [Read Only]",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\admin\\MaterialList.aspx [Read Only]",
+              "DocumentIndex": 3,
+              "Title": "PartModifyEditall.aspx",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx [Read Only]",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx [Read Only]",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-22T14:50:30.007Z"
+              "WhenOpened": "2024-11-05T05:52:14.678Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 5,
+              "Title": "PartModifyEditall.aspx.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx.cs",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx.cs",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartModifyEditall.aspx.cs",
+              "ViewState": "AQIAAHEAAAAAAAAAAAAgwHkAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-06T13:29:19.686Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DefaultSub.Master.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs [Read Only]",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs [Read Only]",
+              "ViewState": "AQIAAAoAAAAAAAAAAAA+wBMAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-05T06:13:44.843Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "PartList.aspx.cs",
               "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartList.aspx.cs",
               "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\PartList.aspx.cs",
               "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\PartList.aspx.cs",
               "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\PartList.aspx.cs",
-              "ViewState": "AQIAAGoAAAAAAAAAAIAwwHMAAAAAAAAA",
+              "ViewState": "AQIAAIwAAAAAAAAAAAAuwJoAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T01:18:00.274Z"
+              "WhenOpened": "2024-11-06T06:59:58.952Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "Site.Master",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\Site.Master",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\Site.Master",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\Site.Master",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\Site.Master",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-22T07:56:38.641Z"
+              "DocumentIndex": 10,
+              "Title": "Web.config",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\Web.config",
+              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\Web.config",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\Web.config",
+              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\Web.config",
+              "ViewState": "AQIAAGwAAAAAAAAAAAAAAH4AAABzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-11-06T01:20:52.518Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
-              "Title": "DefaultSub.Master.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\DefaultSub.Master.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAsAAAAiAAAA",
+              "DocumentIndex": 11,
+              "Title": "Part.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Part.cs",
+              "RelativeDocumentMoniker": "business\\Part.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Part.cs [Read Only]",
+              "RelativeToolTip": "business\\Part.cs [Read Only]",
+              "ViewState": "AQIAAC4AAAAAAAAAAAA/wAMAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-22T08:04:57.337Z"
+              "WhenOpened": "2024-11-05T05:49:28.449Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "ProductPartType.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\ProductPartType.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\ProductPartType.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\ProductPartType.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\ProductPartType.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAAAIwCMAAACJAAAA",
+              "DocumentIndex": 12,
+              "Title": "PartProcess.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\PartProcess.cs",
+              "RelativeDocumentMoniker": "business\\PartProcess.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\PartProcess.cs [Read Only]",
+              "RelativeToolTip": "business\\PartProcess.cs [Read Only]",
+              "ViewState": "AQIAABwDAAAAAAAAAIAzwCcDAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:32:26.208Z"
+              "WhenOpened": "2024-11-05T05:43:01.857Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "PartType.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL.System\\PartType.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL.System\\PartType.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL.System\\PartType.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL.System\\PartType.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAwwA0AAAAZAAAA",
+              "DocumentIndex": 13,
+              "Title": "Part.cs",
+              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs",
+              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs",
+              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs",
+              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\MsSQL\\Part.cs",
+              "ViewState": "AQIAAC0JAAAAAAAAAAAkwFIJAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:29:59.998Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "ModelView.aspx.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\ModelView.aspx.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\admin\\ModelView.aspx.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\ModelView.aspx.cs [Read Only]",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\admin\\ModelView.aspx.cs [Read Only]",
-              "ViewState": "AQIAAEYAAAAAAAAAAAAAwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-22T12:45:34.492Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "PartTypeInfo.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Model.System\\PartTypeInfo.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\Model.System\\PartTypeInfo.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\Model.System\\PartTypeInfo.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\Model.System\\PartTypeInfo.cs",
-              "ViewState": "AQIAAOEAAAAAAAAAAABCwOcAAAAeAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:28:28.142Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "PartType.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\PartType.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\PartType.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\PartType.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\PartType.cs [Read Only]",
-              "ViewState": "AQIAAIcAAAAAAAAAAAAiwI0AAAArAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-19T09:20:48.696Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 40,
-              "Title": "OrderDesignList.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-17T15:01:22.538Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "TJBCreateOrder.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\TJBCreateOrder.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\TJBCreateOrder.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\TJBCreateOrder.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\TJBCreateOrder.cs [Read Only]",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAA0AAAAzAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T14:14:43.451Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "OrderCreate.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderCreate.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderCreate.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderCreate.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\ModuleWorkFlow.BLL.Order\\OrderCreate.cs [Read Only]",
-              "ViewState": "AQIAAAcAAAAAAAAAAAAMwB4AAAAoAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T14:19:50.94Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 39,
-              "Title": "OrderDesignList.aspx.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx.cs",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignList.aspx.cs",
-              "ViewState": "AQIAADQCAAAAAAAAAAAYwD4CAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T13:06:57.761Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 56,
-              "Title": "PartBarCodeReport.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\ModuleWorkFlow.report\\PartBarCodeReport.cs",
-              "RelativeDocumentMoniker": "ModuleWorkFlow.report\\PartBarCodeReport.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\ModuleWorkFlow.report\\PartBarCodeReport.cs [Read Only]",
-              "RelativeToolTip": "ModuleWorkFlow.report\\PartBarCodeReport.cs [Read Only]",
-              "ViewState": "AQIAADAAAAAAAAAAAIAzwEoAAAA6AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T14:15:57.532Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
-              "Title": "CustomerDesign.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\CustomerDesign.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\CustomerDesign.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\CustomerDesign.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\CustomerDesign.cs [Read Only]",
-              "ViewState": "AQIAAIUAAAAAAAAAAAAcwJUAAAAuAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T07:13:38.236Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 47,
-              "Title": "ProductCodeTypeList.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\adminInventory\\ProductCodeTypeList.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\adminInventory\\ProductCodeTypeList.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\adminInventory\\ProductCodeTypeList.aspx [Read Only]",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\adminInventory\\ProductCodeTypeList.aspx [Read Only]",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-17T13:41:32.216Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
-              "Title": "OrderDesignView.aspx.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignView.aspx.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignView.aspx.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignView.aspx.cs",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\order\\OrderDesignView.aspx.cs",
-              "ViewState": "AQIAAMoLAAAAAAAAAAAAAHELAABaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T12:51:07.99Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 55,
-              "Title": "Order.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Order.cs",
-              "RelativeDocumentMoniker": "business\\Order.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Order.cs",
-              "RelativeToolTip": "business\\Order.cs",
-              "ViewState": "AQIAAPYBAAAAAAAAAIAzwAUCAAAfAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T14:28:37.502Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 52,
-              "Title": "ModulePriceReport.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\ModuleWorkFlow.report\\ModulePriceReport.cs",
-              "RelativeDocumentMoniker": "ModuleWorkFlow.report\\ModulePriceReport.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\ModuleWorkFlow.report\\ModulePriceReport.cs",
-              "RelativeToolTip": "ModuleWorkFlow.report\\ModulePriceReport.cs",
-              "ViewState": "AQIAAKEAAAAAAAAAAAASwLQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T14:33:18.228Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 53,
-              "Title": "util.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\util.cs",
-              "RelativeDocumentMoniker": "business\\util.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\util.cs",
-              "RelativeToolTip": "business\\util.cs",
-              "ViewState": "AQIAALYFAAAAAAAAAIAzwMMFAAAhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T14:41:00.267Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 54,
-              "Title": "Process.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Process.cs",
-              "RelativeDocumentMoniker": "business\\Process.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Process.cs [Read Only]",
-              "RelativeToolTip": "business\\Process.cs [Read Only]",
-              "ViewState": "AQIAAB8AAAAAAAAAAIAywC0AAAAQAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T14:41:05.768Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 46,
-              "Title": "ISystemInterFace.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\IDAL.System\\ISystemInterFace.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\IDAL.System\\ISystemInterFace.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\IDAL.System\\ISystemInterFace.cs",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\IDAL.System\\ISystemInterFace.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T02:47:03.716Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 45,
-              "Title": "SystemInterFace.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\SystemInterFace.cs",
-              "RelativeDocumentMoniker": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\SystemInterFace.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\SystemInterFace.cs [Read Only]",
-              "RelativeToolTip": "..\\new_xuxiang2018_zhengqin_twNJ\\BLL.System\\SystemInterFace.cs [Read Only]",
-              "ViewState": "AQIAABkAAAAAAAAAAAASwCoAAAAXAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T02:47:10.546Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 51,
-              "Title": "OrderPriceReport.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\ModuleWorkFlow.report\\OrderPriceReport.cs",
-              "RelativeDocumentMoniker": "ModuleWorkFlow.report\\OrderPriceReport.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\ModuleWorkFlow.report\\OrderPriceReport.cs",
-              "RelativeToolTip": "ModuleWorkFlow.report\\OrderPriceReport.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAGAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T14:50:03.51Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 50,
-              "Title": "UserPrivilegeAddEdit.aspx.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\UserPrivilegeAddEdit.aspx.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\admin\\UserPrivilegeAddEdit.aspx.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\UserPrivilegeAddEdit.aspx.cs",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\admin\\UserPrivilegeAddEdit.aspx.cs",
-              "ViewState": "AQIAAMwAAAAAAAAAAAASwNUAAAA9AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T13:29:29.443Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 49,
-              "Title": "MaterialCodeList.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeList.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeList.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeList.aspx [Read Only]",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeList.aspx [Read Only]",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-17T13:39:33.709Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 48,
-              "Title": "MaterialCodeView.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeView.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeView.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeView.aspx [Read Only]",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\adminInventory\\MaterialCodeView.aspx [Read Only]",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-17T13:41:01.333Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 57,
-              "Title": "OrderDesignView.ascx.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\controls\\OrderDesignView.ascx.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\order\\controls\\OrderDesignView.ascx.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\order\\controls\\OrderDesignView.ascx.cs",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\order\\controls\\OrderDesignView.ascx.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T14:08:16.837Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 59,
-              "Title": "Priority.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Priority.cs",
-              "RelativeDocumentMoniker": "business\\Priority.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Priority.cs",
-              "RelativeToolTip": "business\\Priority.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T13:01:43.472Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 60,
-              "Title": "Employee.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Employee.cs",
-              "RelativeDocumentMoniker": "business\\Employee.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\Employee.cs [Read Only]",
-              "RelativeToolTip": "business\\Employee.cs [Read Only]",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T12:58:03.473Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 61,
-              "Title": "ConvertString.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\ConvertString.cs",
-              "RelativeDocumentMoniker": "business\\ConvertString.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\business\\ConvertString.cs",
-              "RelativeToolTip": "business\\ConvertString.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T12:57:07.704Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 58,
-              "Title": "EmailGroupList.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\EmailGroupList.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\admin\\EmailGroupList.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\EmailGroupList.aspx",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\admin\\EmailGroupList.aspx",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-16T08:22:53.468Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 63,
-              "Title": "UserPasswordChange.aspx",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\UserPasswordChange.aspx",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\admin\\UserPasswordChange.aspx",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\UserPasswordChange.aspx [Read Only]",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\admin\\UserPasswordChange.aspx [Read Only]",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2024-10-16T07:42:47.323Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 62,
-              "Title": "DepartPrivilegeAddEdit.aspx.cs",
-              "DocumentMoniker": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\DepartPrivilegeAddEdit.aspx.cs",
-              "RelativeDocumentMoniker": "new_xuxiang2018_zhengqin_twPart\\admin\\DepartPrivilegeAddEdit.aspx.cs",
-              "ToolTip": "D:\\project\\new_xuxiang2018_zhengqin_twPart\\new_xuxiang2018_zhengqin_twPart\\admin\\DepartPrivilegeAddEdit.aspx.cs [Read Only]",
-              "RelativeToolTip": "new_xuxiang2018_zhengqin_twPart\\admin\\DepartPrivilegeAddEdit.aspx.cs [Read Only]",
-              "ViewState": "AQIAAOwAAAAAAAAAAEBBwPsAAAATAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-16T07:30:13.426Z"
-            }
-          ]
-        },
-        {
-          "DockedHeight": 97,
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+              "WhenOpened": "2024-10-27T02:05:36.825Z"
             }
           ]
         }

@@ -97,7 +97,7 @@ namespace ModuleWorkFlow
 
             }
 
-            title = "零件設定";
+            title = "產品設定";
             if (Request.Params["type"] != null)
             {
                 lab_type.Text = Request.Params["type"];

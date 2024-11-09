@@ -47,6 +47,9 @@
     <Compile Include="Employee.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Order.cs" />
+    <Compile Include="Part.cs" />
+    <Compile Include="PartData.cs" />
+    <Compile Include="PartProcess.cs" />
     <Compile Include="Priority.cs" />
     <Compile Include="Process.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +61,10 @@
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.Alert\BLL.Alert.csproj">
       <Project>{798b0758-0854-4a31-b65b-18f7034ef4c2}</Project>
       <Name>BLL.Alert</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.Outsource\BLL.Outsource.csproj">
+      <Project>{6c9b7512-a5b7-497d-b163-8bf49c900504}</Project>
+      <Name>BLL.Outsource</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.System\BLL.System.csproj">
       <Project>{adb0a4a5-30c4-40a4-a9ed-137bc7a9ef58}</Project>

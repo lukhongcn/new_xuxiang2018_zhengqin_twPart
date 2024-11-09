@@ -20,27 +20,28 @@
                     <div class="clearbox"></div>
                 </div>
             </div>
-            <div id="Menu">
-                <div class="menubox">
-                    <div class="mod1">
-                        <ul>
-                            <li class="btn1">
-                                <asp:LinkButton ID="lnkbutton_add" runat="server" OnClick="lnkbutton_add_Click" ToolTip="新增 / add">新增/add</asp:LinkButton>
-                            </li>
-
-                            <li>
-                                <asp:LinkButton ID="lnkbutton_save" runat="server" ToolTip="儲存/save" OnClick="lnkbutton_save_Click" CssClass="btn3e">儲存/save</asp:LinkButton>
-                            </li>
-                            <li class="btn5"><a href="ProjectList.aspx" title="檢視 / view" runat="server">檢視/view</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mod2"></div>
-                    <div class="clearbox"></div>
-                </div>
-            </div>
+           
             <div id="Container">
                 <div id="Content">
+                     <div id="Menu">
+                         <div class="menubox">
+                             <div class="mod1">
+                                 <ul>
+                                     <li class="btn1">
+                                         <asp:LinkButton ID="lnkbutton_add" runat="server" OnClick="lnkbutton_add_Click" ToolTip="新增 / add">新增/add</asp:LinkButton>
+                                     </li>
+
+                                     <li>
+                                         <asp:LinkButton ID="lnkbutton_save" runat="server" ToolTip="儲存/save" OnClick="lnkbutton_save_Click" CssClass="btn3e">儲存/save</asp:LinkButton>
+                                     </li>
+                                     <li class="btn5"><a href="ProjectList.aspx" title="檢視 / view" runat="server">檢視/view</a>
+                                     </li>
+                                 </ul>
+                             </div>
+                             <div class="mod2"></div>
+                             <div class="clearbox"></div>
+                         </div>
+                     </div>
                     <div class="space1"></div>
                    <div class="box" style="height:auto">
                         <div class="container mt-3">
@@ -51,7 +52,7 @@
                                  </asp:Label>
          
                                  <asp:TextBox ID="txt_moduleid" runat="server" AutoPostBack="true" CssClass="form-control custom-height-width text-start border-primary"  OnTextChanged="txt_moduleid_TextChanged"></asp:TextBox>
-                                 <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" ServiceMethod="GetCompleteListNeedOver" ServicePath="selectModuleId.asmx" Enabled="true" MinimumPrefixLength="1" CompletionSetCount="20" TargetControlID="txt_moduleid"></ajaxToolkit:AutoCompleteExtender>
+                                 <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" ServiceMethod="GetCompleteNewOrderListNeedOver" ServicePath="selectModuleId.asmx" Enabled="true" MinimumPrefixLength="1" CompletionSetCount="20" TargetControlID="txt_moduleid"></ajaxToolkit:AutoCompleteExtender>
                                 </div>
                                 <div class="col-lg-6 d-flex">
                                     <asp:Label ID="Label3" runat="server" CssClass="me-10">返修廠批</asp:Label>
