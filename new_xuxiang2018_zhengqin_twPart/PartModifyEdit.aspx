@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="space1"></div>
-                <div class="Textbox" style="width: auto">
+                <div class="container mt-3 border border-primary" >
                    <div class="container mt-3">
                          <div class="row mb-3">
                             <div class="col-lg-4  d-flex">
@@ -79,9 +79,9 @@
                                 <div class="container mt-3">
                                     <div class="row g-0 mb-3">
                                         <div class="col-lg-3  d-flex">
-                                            <div class="overflow-auto border border-primary" style="height: 360px; width:220px;">
+                                           <div class="overflow-auto border border-primary" style="height: 360px; width:220px;">
                                                 <div class="mt-3 ml-10 "> <!-- Bootstrap class for margin-top -->
-                                                    <asp:CheckBoxList ID="CheckBoxList_Process" runat="server" AutoPostBack="True"></asp:CheckBoxList>
+                                                    <asp:CheckBoxList ID="CheckBoxList_Process" runat="server" AutoPostBack="True" RepeatDirection="Vertical"  repeatcolumns="1" Width="200px"  RepeatLayout="Table" ></asp:CheckBoxList>
                                                 </div>
                                             </div>
                                         </div>
@@ -166,12 +166,12 @@
                                                             <asp:Label ID="lab_endHour" runat="server" Text="小時"></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
-                                                    <asp:TemplateColumn HeaderText="實際開始日期">
+                                                    <asp:TemplateColumn HeaderText="實際開始日期" Visible="false"> 
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="Label_FactStartDate" Text='<%# string.Format("{0:yyyy-MM-dd}",DataBinder.Eval(Container, "DataItem.FactStartDate")) %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
-                                                    <asp:TemplateColumn HeaderText="實際結束日期">
+                                                    <asp:TemplateColumn HeaderText="實際結束日期" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:Label runat="server" ID="Label_FactEndDate" Text='<%# string.Format("{0:yyyy-MM-dd}",DataBinder.Eval(Container, "DataItem.FactEndDate")) %>'></asp:Label>
                                                         </ItemTemplate>
@@ -186,13 +186,13 @@
                                                             <asp:DropDownList ID="dpl_processMachineid" runat="server"></asp:DropDownList>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
-                                                    <asp:TemplateColumn HeaderText="程式" Visible="true">
+                                                    <asp:TemplateColumn HeaderText="程式" Visible="false">
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chk_Ispcnc" runat="server"></asp:CheckBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
 
-                                                    <asp:TemplateColumn HeaderText="返修">
+                                                    <asp:TemplateColumn HeaderText="返修"  Visible="false">
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="cbl_isunnormal" runat="server"></asp:CheckBox>
                                                         </ItemTemplate>
@@ -252,7 +252,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="container mt-3 border border-primary">
                     <table width="100%" align="center" class="tbMessage">
                         <tr valign="middle">
                             <td width="15%" height="28">

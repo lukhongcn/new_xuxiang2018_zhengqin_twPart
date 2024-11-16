@@ -239,6 +239,13 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="standard\StandardPartAddEdit.aspx" />
+    <Content Include="standard\StandardPartList.aspx" />
+    <Content Include="standard\StandBomDetailList.aspx" />
+    <Content Include="standard\StandBomDetailView.aspx" />
+    <Content Include="standard\StandProcessType.aspx" />
+    <Content Include="standard\StandProcessTypeList.aspx" />
+    <Content Include="standard\StandProcessTypeView.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -463,6 +470,34 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="standard\StandardPartAddEdit.aspx.cs">
+      <DependentUpon>StandardPartAddEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="standard\StandardPartList.aspx.cs">
+      <DependentUpon>StandardPartList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="standard\StandBomDetailList.aspx.cs">
+      <DependentUpon>StandBomDetailList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="standard\StandBomDetailView.aspx.cs">
+      <DependentUpon>StandBomDetailView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="standard\StandProcessType.aspx.cs">
+      <DependentUpon>StandProcessType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="standard\StandProcessTypeList.aspx.cs">
+      <DependentUpon>StandProcessTypeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="standard\StandProcessTypeView.aspx.cs">
+      <DependentUpon>StandProcessTypeView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -512,6 +547,9 @@
     <EmbeddedResource Include="PartModifyList.aspx.resx" />
     <EmbeddedResource Include="ProjectAdd.aspx.resx" />
     <EmbeddedResource Include="ProjectList.aspx.resx" />
+    <EmbeddedResource Include="standard\StandardPartAddEdit.aspx.resx" />
+    <EmbeddedResource Include="standard\StandardPartList.aspx.resx" />
+    <EmbeddedResource Include="standard\StandProcessType.aspx.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.Alert\BLL.Alert.csproj">
@@ -537,6 +575,10 @@
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL\BLL.csproj">
       <Project>{47bd34bd-0678-4ac5-aefe-020c468a4648}</Project>
       <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\DALFactory.System\DALFactory.System.csproj">
+      <Project>{6be034cd-9e91-46c0-9d66-465d18ba7c29}</Project>
+      <Name>DALFactory.System</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\IDAL.Report\IDAL.Report.csproj">
       <Project>{ac912214-ef60-46fd-a444-d27b6a989025}</Project>
@@ -633,6 +675,10 @@
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WorkFlow.BLL.Standard\WorkFlow.BLL.Standard.csproj">
       <Project>{86ed7b3a-c831-4ed1-b4c3-9f7652e9fec2}</Project>
       <Name>WorkFlow.BLL.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WorkFlow.IDAL.Standard\WorkFlow.IDAL.Standard.csproj">
+      <Project>{89469cb5-ebfb-4c25-a013-826703599d0d}</Project>
+      <Name>WorkFlow.IDAL.Standard</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WorkFlow.Standard.Model\WorkFlow.Model.Standard.csproj">
       <Project>{3633ee98-d983-4d63-9700-4248e7b94969}</Project>

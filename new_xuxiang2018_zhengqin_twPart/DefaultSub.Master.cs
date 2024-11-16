@@ -13,14 +13,15 @@ namespace ModuleWorkFlow
         protected string baseUrl;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 var path = Request.Path; // 获取当前请求的路径
                 string baseUrl = $"{Request.Url.Scheme}://{Request.Url.Host}:{Request.Url.Port}{Request.ApplicationPath}";
                 ViewState["BaseUrl"] = baseUrl;
                 // CSS Links with ResolveClientUrl
                 string cssLinks = $@"
                 <link href='{ResolveClientUrl(baseUrl + "/css/amd.css")}' rel='stylesheet' type='text/css' />
+                <link rel='stylesheet' href='{ResolveClientUrl(baseUrl + "/css/showDiv.css")}' />
                 <link rel='stylesheet' href='{ResolveClientUrl(baseUrl + "/css/jquery.treetable.css")}' />
                 <link rel='stylesheet' href='{ResolveClientUrl(baseUrl + "/css/jquery.treetable.theme.default.css")}' />
                 <link rel='stylesheet' href='{ResolveClientUrl(baseUrl + "/plugins/bootstrap.5.2.3/css/bootstrap.min.css")}' />
@@ -30,6 +31,7 @@ namespace ModuleWorkFlow
                 // JavaScript Links with ResolveClientUrl
                 string jsLinks = $@"
                     <script language='javascript' src='{ResolveClientUrl(baseUrl + "/js/lib.js")}'></script>
+                    <script language='javascript' src='{ResolveClientUrl(baseUrl + "/js/showDiv.js")}'></script>
                     <script type='text/javascript' src='{ResolveClientUrl(baseUrl + "/plugins/JQuery.3.4.1/jquery-3.4.1.min.js")}'></script>
                     <script type='text/javascript' src='{ResolveClientUrl(baseUrl + "/plugins/jQuery-datetimepicker.2.4.5/jquery.datetimepicker.js")}'></script>
                     <script type='text/javascript' src='{ResolveClientUrl(baseUrl + "/js/jquery.treetable.js")}'></script>
@@ -42,7 +44,7 @@ namespace ModuleWorkFlow
                 // Add them to the header section of the page
                 Page.Header.Controls.Add(cssLiteral);
                 Page.Header.Controls.Add(jsLiteral);
-            }
+            //}
 
         }
 
