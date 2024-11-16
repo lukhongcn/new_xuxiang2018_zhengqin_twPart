@@ -1321,6 +1321,11 @@ namespace ModuleWorkFlow.business
 		/// <param name="ChangeVal"></param>
         private static Hashtable hprocess ;
         private static Hashtable hcustomerProcess ;
+        public static string GenerateUniqueId()
+        {
+            return Guid.NewGuid().ToString();
+        }
+
         public static void DropDownListChange(DropDownList DDL,string ChangeVal)
 		{
 			for(int i=0;i<DDL.Items.Count;i++)
