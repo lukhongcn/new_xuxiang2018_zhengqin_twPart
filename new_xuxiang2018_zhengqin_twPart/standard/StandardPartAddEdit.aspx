@@ -98,6 +98,7 @@
                                         <asp:TemplateColumn HeaderText="ProcessNo" Visible="false"><ItemTemplate><asp:Label runat="server" ID="lab_ProcessNo" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessNo&quot;) %&gt;"></asp:Label>
                                         </ItemTemplate>
                                         </asp:TemplateColumn>
+
                                         <asp:ButtonColumn Text="上移" ButtonType="PushButton" HeaderText="功能" CommandName="Upper"></asp:ButtonColumn>
                                         <asp:ButtonColumn Text="下移" ButtonType="PushButton" CommandName="Lower"></asp:ButtonColumn>
                                         <asp:ButtonColumn Text="刪除" ButtonType="PushButton" CommandName="Delete"></asp:ButtonColumn>

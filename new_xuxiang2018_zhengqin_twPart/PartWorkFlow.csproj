@@ -239,6 +239,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="standard\StandardPartlViewExcel.aspx" />
     <Content Include="standard\StandardPartAddEdit.aspx" />
     <Content Include="standard\StandardPartList.aspx" />
     <Content Include="standard\StandBomDetailList.aspx" />
@@ -470,6 +471,10 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="standard\StandardPartlViewExcel.aspx.cs">
+      <DependentUpon>StandardPartlViewExcel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="standard\StandardPartAddEdit.aspx.cs">
       <DependentUpon>StandardPartAddEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -691,6 +696,10 @@
     <ProjectReference Include="..\ModuleWorkFlow.report\ModuleWorkFlow.report.csproj">
       <Project>{5225136b-8055-43d1-beda-86b1fd1dfa32}</Project>
       <Name>ModuleWorkFlow.report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\report\report.csproj">
+      <Project>{f3e2ccf2-ad08-45aa-bff6-3687a9d9277e}</Project>
+      <Name>report</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

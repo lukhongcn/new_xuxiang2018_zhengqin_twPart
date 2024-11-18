@@ -1,97 +1,107 @@
-<%@ Register TagPrefix="Forum" Namespace="ModuleWorkFlow.controls" Assembly="ModuleWorkFlow" %>
-<%@ Register TagPrefix="c1webgrid" Namespace="C1.Web.C1WebGrid" Assembly="C1.Web.C1WebGrid" %>
-<%@ Page language="c#" Codebehind="StandardPartList.aspx.cs" AutoEventWireup="false" Inherits="ModuleWorkFlow.standard.StandardPartList" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" ><html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=big5" />
-<title><asp:Label ID="lab_title" runat="server"/></title>
-<link href="css/amd.css" rel="stylesheet" type="text/css" />
-</head>
-<body><form id="Form1" method="post" runat="server"><div id="Wrapper">
-<div id="Header"><div class="headbox">
-<div class="linebox">
-<a href="../defaultmain.aspx">•Õ≤£∫ﬁ≤z</a>
-<img src="images/arrow.png" />
-<a href="#"><asp:Label ID="lab_href_title" runat="server"/></a><asp:Label ID="lab_isProductType" runat="server" Visible="false"/>
-</div>
-<div class="logout"><a href="../login.aspx" TARGET="_parent">µn•X</a>
-</div>
-<div class="clearbox"></div>
-</div>
-</div>
-<div id="Menu"><div class="menubox">
-<div class="mod1"><ul>
-<li class="btn1"><asp:LinkButton ID="lnkbutton_add" runat="server" OnClick="lnkbutton_add_Click" ToolTip="∑sºW/add">∑sºW/add</asp:LinkButton>
-</li>
-<li class="btn2"><asp:LinkButton ID="lnkbutton_edit" runat="server" OnClick="lnkbutton_edit_Click" ToolTip="ΩsøË/edit">ΩsøË/edit</asp:LinkButton>
-</li>
-<li class="btn6"><asp:LinkButton ID="lnkbutton_delete" runat="server" OnClick="lnkbutton_delete_Click" ToolTip="ßR∞£/delete" OnClientClick="return   confirm( '±zΩT©w≠nßR∞£∂‹ '); ">ßR∞£/delete</asp:LinkButton>
-</li>
-</ul>
-</div>
-
-<div class="clearbox"></div>
-</div>
-</div>
-<div id="Container"><div id="Content">
-<div class="box"><table cellSpacing="2" width="100%" border="0">
-<tr>
-<td><asp:label id="lab_typeName" runat="server" Text="typeName">√˛´¨¶W∫Ÿ</asp:label><asp:dropdownlist id="dpl_standardtype" runat="server" AutoPostBack="True"></asp:dropdownlist></td>
-</tr>
-</table>
-</div>
-<div class="Textbox">
-<table width="100%" align="center" border="0">
-								<tr>
-									<td>
-										<asp:datagrid id="dg_StandProcess" runat="server" AutoGenerateColumns="False" 
-										CellSpacing="1"	CellPadding="0" AllowPaging="True" BorderWidth=0 CssClass=Grid 
-                                            onitemcreated="dg_StandProcess_ItemCreated">
-											<AlternatingItemStyle BackColor=#F8F7FF></AlternatingItemStyle>
-											<HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="dg_header"></HeaderStyle>
-											<ItemStyle BackColor=#ffffff  BorderColor="#E3E3E4" BorderStyle=Dotted HorizontalAlign="Center"></ItemStyle>
-											<Columns>
-                                            <asp:TemplateColumn ItemStyle-Width="10px">
-                                                <ItemTemplate>
-                                                <asp:CheckBox runat="server" ID="chk_datagrid" />
-                                                </ItemTemplate>
-                                                </asp:TemplateColumn>
-												<asp:BoundColumn HeaderText="§uß«√˛´¨Ωs∏π" DataField="StandardProcessType" Visible="false"></asp:BoundColumn>
-												<asp:BoundColumn HeaderText="§uß«¶W" DataField="StandardProcessName"></asp:BoundColumn>
-                                                <asp:BoundColumn HeaderText="§uß«Ωs∏π" DataField="StandardProcessPartNo"></asp:BoundColumn>
-												<asp:TemplateColumn>
-													<HeaderTemplate>
-														<asp:Label id="dg_header_productId" runat="server" text='§uß«¶C™Ì'></asp:Label>
-													</HeaderTemplate>
-													<ItemTemplate>
-														<asp:Label id="dg_lab_StandardProcessName" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessList") %>' />
-													</ItemTemplate>
-												</asp:TemplateColumn>
-											</Columns>
-											<SelectedItemStyle HorizontalAlign="Center"></SelectedItemStyle>
-											<EditItemStyle HorizontalAlign="Center"></EditItemStyle>
-											<PagerStyle Mode="NumericPages" CssClass="tbPager" ></PagerStyle>
-										</asp:datagrid>
-									</td>
-								</tr>
-							</table>
-</div>
-<div class="box"><table width="100%" align="center" class="tbMessage" border="1"><tr style="VERTICAL-ALIGN: middle">
-<TD width="15%" height="28"><DIV align="center"><B><DIV align="center"><B>¥£•‹</B>
-</DIV>
-</B>
-</DIV>
-</TD>
-<TD class="msg" width="85%">
-&nbsp;&nbsp;<asp:label id="Label_Message" runat="server"></asp:label>
-</TD>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-</form>
-</body>
-</html>
+Ôªø<%@ Page language="c#" Codebehind="StandardPartList.aspx.cs"  MasterPageFile="~/DefaultSub.Master" AutoEventWireup="false" Inherits="ModuleWorkFlow.standard.StandardPartList" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="contentHolder" runat="server">
+	<div id="Wrapper">
+	<div id="Header">
+		<div class="headbox">
+		<div class="linebox">
+		<a href="../defaultmain.aspx">ÁîüÁî¢ÁÆ°ÁêÜ</a>
+		<img src="../images/arrow.png" />
+		<a href="#"><%=titlemenuname%></a>
+		</div>
+		<div class="logout"><a href="../login.aspx" TARGET="_parent">ÁôªÂá∫</a>
+		</div>
+		<div class="clearbox"></div>
+		</div>
+	</div>
+	
+	<div id="Container">
+		<div id="Content">
+			<div id="Menu">
+				<div class="menubox">
+					<div class="mod1">
+						<ul>
+						<li class="btn1"><asp:LinkButton ID="LinkButton1" runat="server" OnClick="lnkbutton_addxls" ToolTip="Êñ∞Â¢û/add">Êñ∞Â¢û/add</asp:LinkButton></li>
+						<li class="btn1"><asp:LinkButton ID="lnkbutton_add" runat="server" OnClick="lnkbutton_add_Click" ToolTip="Êñ∞Â¢û/add">Êñ∞Â¢û/add</asp:LinkButton>
+						</li>
+						<li class="btn2"><asp:LinkButton ID="lnkbutton_edit" runat="server" OnClick="lnkbutton_edit_Click" ToolTip="Á∑®ËºØ/edit">Á∑®ËºØ/edit</asp:LinkButton>
+						</li>
+						<li class="btn6"><asp:LinkButton ID="lnkbutton_delete" runat="server" OnClick="lnkbutton_delete_Click" ToolTip="Âà™Èô§/delete" OnClientClick="return   confirm( 'ÊÇ®Á¢∫ÂÆöË¶ÅÂà™Èô§Âóé '); ">Âà™Èô§/delete</asp:LinkButton>
+						</li>
+						</ul>
+					</div>
+					 <div class="mod2">
+						 <ul>
+							<li class="btn8"><asp:LinkButton ID="lnkbutton_search" runat="server" ToolTip="ÊêúÂ∞ã/search" OnClick="lnkbutton_search_Click">ÊêúÂ∞ã/search</asp:LinkButton>
+							</li>
+					    </ul>
+					  </div>
+					<div class="clearbox"></div>
+				</div>
+			</div>
+			<div class="container mt-3 border border-primary">
+				 <div class="container mt-3">
+					<div class="row mb-3">
+						 <div class="col-lg-6  d-flex">
+							 <asp:label id="lab_typeName" runat="server" Text="typeName"  CssClass="me-10">Â∑•ËóùÈ°ûÂûã</asp:label>
+							 <asp:dropdownlist id="dpl_standardtype" runat="server" AutoPostBack="True"  CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:dropdownlist>
+					     </div>
+						<div class="col-lg-6  d-flex">
+							<asp:label id="Label1" runat="server" Text="typeName"  CssClass="me-10">Â∑•ËóùÂêçÁ®±</asp:label>
+							<asp:textbox id="txt_processname" runat="server" CssClass="form-control custom-height-width text-start border-primary"></asp:textbox>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container mt-3 border border-primary">
+				<div class="container mt-3">
+					<div class="row mb-3">
+						<div class="col-lg-12  d-flex">
+							<asp:datagrid id="dg_StandProcess" runat="server" AutoGenerateColumns="False" 
+							 AllowPaging="True"   CssClass="table table-striped table-bordered table-hover table-sm"  AllowCustomPaging="true" style="table-layout:fixed;width: 100%;"
+								onitemcreated="dg_StandProcess_ItemCreated">
+								<HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary" Wrap="true"></HeaderStyle>
+							    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" />
+								<Columns>
+									<asp:TemplateColumn HeaderStyle-Width ="60px">
+										<ItemTemplate>
+										<asp:CheckBox runat="server" ID="chk_datagrid" />
+										</ItemTemplate>
+									</asp:TemplateColumn>
+									<asp:BoundColumn HeaderText="Â∑•Â∫èÈ°ûÂûãÁ∑®Ëôü" DataField="StandardProcessType" Visible="false"></asp:BoundColumn>
+									<asp:BoundColumn HeaderText="Â∑•Â∫èÈ°ûÂûã" DataField="TypeName" HeaderStyle-Width ="100px"></asp:BoundColumn>
+									<asp:BoundColumn HeaderText="Â∑•Â∫èÂêç" DataField="StandardProcessName" HeaderStyle-Width ="100px"></asp:BoundColumn>
+													
+									<asp:TemplateColumn HeaderStyle-Width ="700px">
+										<HeaderTemplate>
+											<asp:Label id="dg_header_productId" runat="server" text='Â∑•Â∫èÂàóË°®'></asp:Label>
+										</HeaderTemplate>
+										<ItemTemplate>
+											<asp:Label id="dg_lab_StandardProcessName" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessList") %>' />
+										</ItemTemplate>
+									</asp:TemplateColumn>
+								</Columns>
+								<SelectedItemStyle HorizontalAlign="Center"></SelectedItemStyle>
+								<EditItemStyle HorizontalAlign="Center"></EditItemStyle>
+								<PagerStyle Mode="NumericPages" CssClass="table-primary" ></PagerStyle>
+							</asp:datagrid>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container mt-3 border border-warning"><table width="100%" align="center" class="tbMessage" border="0"><tr style="VERTICAL-ALIGN: middle">
+			<TD width="10%" height="28"><DIV align="center"><B><DIV align="center"><B>ÊèêÁ§∫</B>
+			</DIV>
+			</B>
+			</DIV>
+			</TD>
+			<TD class="msg" width="85%">
+			&nbsp;&nbsp;<asp:label id="Label_Message" runat="server"></asp:label>
+			</TD>
+			</tr>
+			</table>
+			</div>
+			</div>
+		</div>
+	</div>
+</asp:Content>
 

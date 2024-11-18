@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +12,8 @@ using System.Web.UI.HtmlControls;
 using WorkFlow.BLL.Standard;
 using WorkFlow.Model.Standard;
 using Utility;
+using ModuleWorkFlow.Model;
+using ModuleWorkFlow.BLL;
 
 namespace ModuleWorkFlow.standard
 {
@@ -25,45 +27,45 @@ namespace ModuleWorkFlow.standard
 		protected System.Web.UI.WebControls.DataGrid dg_StandProcess;
 	
 		private WorkFlow.BLL.Standard.StandProcessType standprocesstype;
-		private WorkFlow.BLL.Standard.StandProcess standprocess;
+		private WorkFlow.BLL.Standard.PartStandProcess standprocess;
 		protected System.Web.UI.WebControls.Label lab_title;
 		protected System.Web.UI.WebControls.Label lab_typeName;
 		protected System.Web.UI.WebControls.DropDownList dpl_standardtype;
 		protected System.Web.UI.WebControls.Label Label_Notice;
 		protected System.Web.UI.WebControls.Label Label_Message;
-        protected System.Web.UI.WebControls.Label lab_isProductType;
         protected System.Web.UI.WebControls.Label lab_href_title;
-		string menuid = "I02";
+        protected TextBox txt_processname;
+
+        string menuid = "I02";
         protected string titlemenuname = "";
         protected string hrefmenuname = "";
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-			standprocess = new WorkFlow.BLL.Standard.StandProcess();
+			standprocess = new WorkFlow.BLL.Standard.PartStandProcess();
 			
 			if(!this.IsPostBack)
 			{
 				if(ModuleWorkFlow.BLL.Private.checkPrivate(this,menuid,"PQUERY"))
 				{
+                    TmenuInfo mi = new Tmenu().findbykey(menuid);
+                    if (this.Master != null && this.Master is DefaultSub)
+                    {
+                        DefaultSub master = (DefaultSub)this.Master;
 
-                    if (Request.Params["isProduct"] != null && Request.Params["isProduct"].Equals("1"))
-                    {
-                        lab_isProductType.Text = System.Boolean.TrueString;
-                        hrefmenuname =Translate.translateString("≤£´~√˛ßO§u√¿≥]©w");
-                        titlemenuname = Translate.translateString("≤£´~√˛ßO");
+                        master.Menuname = mi.Menuname;
+                        hrefmenuname = mi.Menuname;
+                        titlemenuname = mi.Menuname;
                     }
-                    else
-                    {
-                        lab_isProductType.Text = System.Boolean.FalseString;
-                        hrefmenuname =Translate.translateString("º–∑«§u√¿≥]∏m");
-                        titlemenuname = Translate.translateString("§uß«√˛´¨");
-                    }
+
+                    
 
 					BindProcessType();
+                  
 					bindProcess();
 
-					if (Request.Params["type"] != null)
+					if (Request.Params["standprocesstype"] != null)
 					{
-						dpl_standardtype.SelectedValue = Request.Params["type"];
+						dpl_standardtype.SelectedValue = Request.Params["standprocesstype"];
 					}
 				}
 			}
@@ -73,21 +75,28 @@ namespace ModuleWorkFlow.standard
 
 		private void BindProcessType()
 		{
-            bool isProductType = Convert.ToBoolean(lab_isProductType.Text);
-
+         
 			standprocesstype = new WorkFlow.BLL.Standard.StandProcessType();
-            dpl_standardtype.DataSource = standprocesstype.GetStandProcessType(isProductType);
+            dpl_standardtype.DataSource = standprocesstype.GetStandProcessType();
 			dpl_standardtype.DataTextField = "TypeName";
 			dpl_standardtype.DataValueField = "id";
 			dpl_standardtype.DataBind();
 		}
 
-		private void bindProcess()
+        protected void lnkbutton_search_Click(object sender, EventArgs e)
+        {
+
+            dg_StandProcess.CurrentPageIndex = 0;
+
+            bindProcess();
+        }
+
+        private void bindProcess()
 		{
-            bool isProductType = Convert.ToBoolean(lab_isProductType.Text);
+           
             if (!dpl_standardtype.SelectedValue.Equals(""))
             {
-                IList standprocesses = standprocess.GetGroupStandProcessByType(Convert.ToInt32(dpl_standardtype.SelectedValue), isProductType);
+                IList standprocesses = standprocess.GetGroupStandProcessByType(Convert.ToInt32(dpl_standardtype.SelectedValue), txt_processname.Text.Trim());
                 dg_StandProcess.DataSource = standprocesses;
                 dg_StandProcess.DataKeyField = "StandardProcessName";
                 if (standprocesses.Count <= (dg_StandProcess.CurrentPageIndex) * dg_StandProcess.PageSize && dg_StandProcess.CurrentPageIndex > 0)
@@ -142,7 +151,7 @@ namespace ModuleWorkFlow.standard
 		{
 			Label label_standardprocessName = dg_StandProcess.Items[e.Item.ItemIndex].FindControl("dg_lab_standardProcessName") as Label;
 			string standardProcessName = label_standardprocessName.Text.ToString();
-			standprocess.DeleteStandProcessByProcessTypeName(dpl_standardtype.SelectedValue,standardProcessName);
+			standprocess.DeleteStandProcessByProcessTypeName(Convert.ToInt32(dpl_standardtype.SelectedValue),standardProcessName);
 			//JG-071122
             dg_StandProcess.CurrentPageIndex = 0;
 			bindProcess();
@@ -167,9 +176,8 @@ namespace ModuleWorkFlow.standard
                     if (cb.Checked)
                     {
                         spi = new StandProcessInfo();
-                        spi.StandardProcessName = item.Cells[2].Text;
+                        spi.StandardProcessName = item.Cells[3].Text;
                         spi.StandardProcessType = Convert.ToInt32(item.Cells[1].Text);
-                        spi.StandardProcessPartNo = item.Cells[3].Text;
                         break;
                     }
                 }
@@ -182,13 +190,11 @@ namespace ModuleWorkFlow.standard
             StandProcessInfo spi = getSelectStandProcess();
             if (spi == null)
             {
-                Label_Message.Text =Translate.translateString("Ω–øÔæ‹º–∑«§u√¿");
+                Label_Message.Text =Translate.translateString("Ë´ãÈÅ∏Êìá‰∏ÄÂÄãÊ®ôÊ∫ñÂ∑•Ëóù");
                 return;
             }
             string url = "StandardPartAddEdit.aspx?menuid=" + menuid + "&type=" + spi.StandardProcessType.ToString() + "&name=" + spi.StandardProcessName + "&func=edit";
-            bool isProductType = Convert.ToBoolean(lab_isProductType.Text);
-            if (isProductType)
-                url = url + "&isProduct=1&partno=" + spi.StandardProcessPartNo;
+           
             Response.Redirect(url);
 
         }
@@ -200,14 +206,12 @@ namespace ModuleWorkFlow.standard
                 StandProcessInfo spi = getSelectStandProcess();
                 if (spi == null)
                 {
-                    Label_Message.Text =Translate.translateString("Ω–øÔæ‹º–∑«§u√¿");
+                    Label_Message.Text =Translate.translateString("Ë´ãÈÅ∏Êìá‰∏ÄÂÄãÊ®ôÊ∫ñÂ∑•Ëóù");
                     return;
                 }
-                bool isProductType = Convert.ToBoolean(lab_isProductType.Text);
-                if (isProductType)
-                    Label_Message.Text = Translate.translateString(standprocess.DeleteStandProcessByPartNo(spi.StandardProcessType.ToString(), spi.StandardProcessPartNo));
-                else
-                    Label_Message.Text = Translate.translateString(standprocess.DeleteStandProcessByProcessTypeName(spi.StandardProcessType.ToString(), spi.StandardProcessName));
+              
+               
+                Label_Message.Text = Translate.translateString(standprocess.DeleteStandProcessByProcessTypeName(spi.StandardProcessType, spi.StandardProcessName));
                 //JG-071122
 
                 bindProcess();
@@ -216,10 +220,17 @@ namespace ModuleWorkFlow.standard
 
         protected void lnkbutton_add_Click(object sender, EventArgs e)
         {
-            string url = "StandardPartAddEdit.aspx?func=add&menuid=" + menuid ;
-            bool isProductType = Convert.ToBoolean(lab_isProductType.Text);
-            if (isProductType)
-                url = url + "&isProduct=1";
+            string url = "StandardPartAddEdit.aspx?func=add" ;
+          
+
+            Response.Redirect(url);
+
+        }
+
+        protected void lnkbutton_addxls(object sender, EventArgs e)
+        {
+            string url = "StandardPartlViewExcel.aspx?func=add";
+
 
             Response.Redirect(url);
 
@@ -227,24 +238,24 @@ namespace ModuleWorkFlow.standard
 
         protected void dg_StandProcess_ItemCreated(object sender, DataGridItemEventArgs e)
         {
-            bool isProductType = Convert.ToBoolean(lab_isProductType.Text);
-            for (int i = 0; i < dg_StandProcess.Columns.Count; i++)
-            {
-                object dc = dg_StandProcess.Columns[i];
-                string fieldname = "";
-                if (dc is BoundColumn)
-                {
-                    fieldname = ((BoundColumn)dc).DataField;
-                    if (fieldname.Equals("StandardProcessPartNo"))
-                    {
-                        if (isProductType)
-                            ((BoundColumn)dc).Visible = true;
-                        else
-                            ((BoundColumn)dc).Visible = false;
-                    }
-                }
+          
+            //for (int i = 0; i < dg_StandProcess.Columns.Count; i++)
+            //{
+            //    object dc = dg_StandProcess.Columns[i];
+            //    string fieldname = "";
+            //    if (dc is BoundColumn)
+            //    {
+            //        fieldname = ((BoundColumn)dc).DataField;
+            //        if (fieldname.Equals("StandardProcessPartNo"))
+            //        {
+            //            if (isProductType)
+            //                ((BoundColumn)dc).Visible = true;
+            //            else
+            //                ((BoundColumn)dc).Visible = false;
+            //        }
+            //    }
 
-            }
+            //}
         }
 
       

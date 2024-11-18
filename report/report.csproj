@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F3E2CCF2-AD08-45AA-BFF6-3687A9D9277E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>report</RootNamespace>
+    <AssemblyName>report</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BomPartDetail.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL.System\BLL.System.csproj">
+      <Project>{adb0a4a5-30c4-40a4-a9ed-137bc7a9ef58}</Project>
+      <Name>BLL.System</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\BLL\BLL.csproj">
+      <Project>{47bd34bd-0678-4ac5-aefe-020c468a4648}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.System\Model.System.csproj">
+      <Project>{dbc55b97-7848-4446-bd2c-816807b982c7}</Project>
+      <Name>Model.System</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model\Model.csproj">
+      <Project>{967d5465-7e73-46c0-b3bd-a921a6b94c89}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Inventory\ModuleWorkFlow.BLL.Inventory.csproj">
+      <Project>{6ff3a7c9-48c5-43db-96cd-b6871988f21b}</Project>
+      <Name>ModuleWorkFlow.BLL.Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.Inventory\ModuleWorkFlow.Model.Inventory.csproj">
+      <Project>{fb7629c6-8a21-469d-a75f-37af1f1e6f1e}</Project>
+      <Name>ModuleWorkFlow.Model.Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Utility\Utility.csproj">
+      <Project>{aa175b09-1316-4700-9e57-fb4ee7c16cb0}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\WorkFlow.BLL.Standard\WorkFlow.BLL.Standard.csproj">
+      <Project>{86ed7b3a-c831-4ed1-b4c3-9f7652e9fec2}</Project>
+      <Name>WorkFlow.BLL.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\business\business.csproj">
+      <Project>{d63a2045-57a0-460b-8781-fc60d6ef7b36}</Project>
+      <Name>business</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

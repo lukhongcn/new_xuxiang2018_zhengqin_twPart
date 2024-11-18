@@ -21,6 +21,7 @@ using WorkFlow.Model.Standard;
 using ModuleWorkFlow.BLL.System;
 //using ModuleWorkFlow.Model.Outsource;
 using ModuleWorkFlow.Model.System;
+using LibGit2Sharp;
 
 namespace ModuleWorkFlow
 {
@@ -97,7 +98,7 @@ namespace ModuleWorkFlow
 
 
                     Label_HiddenFuncMode.Text = "edit";
-                    InitalEditPage(type, name);
+                    InitalEditPage(Convert.ToInt32(type), name);
                 }
                 else
                 {
@@ -132,7 +133,7 @@ namespace ModuleWorkFlow
             dpl_standardtype.DataBind();
         }
 
-        private void InitalEditPage(string type, string name)
+        private void InitalEditPage(int type, string name)
         {
           
            
@@ -141,18 +142,18 @@ namespace ModuleWorkFlow
             dataStandBind(type, name);
         }
 
-        private void dataStandBind(string processtype, string standprocessname)
+        private void dataStandBind(int processtype, string standprocessname)
         {
             
             PartStandProcess standprocess = new PartStandProcess();
-            IList standprocesses = new ArrayList();
+            List<PartStandProcessInfo> standprocesses = new List<PartStandProcessInfo>();
             
             standprocesses = standprocess.GetStandProcessByName(processtype, standprocessname);
            
             
             MainDataGrid.DataSource = standprocesses;
             MainDataGrid.DataBind();
-            MainDataGrid.Columns[4].Visible = false;
+
 
 
 
@@ -163,20 +164,28 @@ namespace ModuleWorkFlow
 
             //retieved all data
 
-
+            supplyInfos = new Supply().GetSupplyInfos();
             for (int i = 0; i < MainDataGrid.Items.Count; i++)
             {
                 Label label_processid = MainDataGrid.Items[i].FindControl("Label_ProcessID") as Label;
-               
-               
-                TextBox txt_Minute = MainDataGrid.Items[i].FindControl("dg_txt_minute") as TextBox;
+                Label lab_id = MainDataGrid.Items[i].FindControl("lab_id") as Label;
+                DropDownList dpl_Supply = (DropDownList)MainDataGrid.Items[i].FindControl("dpl_Supply");
+                dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
+                dpl_Supply.DataTextField = "SupplierName";
+                dpl_Supply.DataValueField = "Id";
+                dpl_Supply.DataBind();
+                if ((standprocesses.FindAll(m=>m.Id == Convert.ToInt32(lab_id.Text.Trim())))[0].SupplyId > 0)
+                {
+                    dpl_Supply.SelectedValue = (standprocesses.FindAll(m => m.Id == Convert.ToInt32(lab_id.Text.Trim())))[0].SupplyId.ToString();
+                }
 
 
 
-              
-              
 
-              
+
+
+
+
             }
         }
 
@@ -232,7 +241,7 @@ namespace ModuleWorkFlow
         {
             this.CheckBoxList_Process.SelectedIndexChanged += new System.EventHandler(this.CheckBoxList_Process_SelectedIndexChanged);
             this.MainDataGrid.ItemCommand += new System.Web.UI.WebControls.DataGridCommandEventHandler(this.MainDataGrid_ItemCommand);
-            this.MainDataGrid.DeleteCommand += new System.Web.UI.WebControls.DataGridCommandEventHandler(this.MainDataGrid_DeleteCommand);
+            //this.MainDataGrid.DeleteCommand += new System.Web.UI.WebControls.DataGridCommandEventHandler(this.MainDataGrid_DeleteCommand);
             //this.MainDataGrid.ItemDataBound += new System.Web.UI.WebControls.DataGridItemEventHandler(this.MainDataGrid_ItemDataBound);
             this.MainDataGrid.SelectedIndexChanged += new System.EventHandler(this.MainDataGrid_SelectedIndexChanged);
             this.Load += new System.EventHandler(this.Page_Load);
@@ -251,69 +260,53 @@ namespace ModuleWorkFlow
                     if (index > 0)
                     {
                         Label label_processid = MainDataGrid.Items[index].FindControl("Label_ProcessID") as Label;
-                      
                         Label Label_ProcessName = MainDataGrid.Items[index].FindControl("Label_ProcessName") as Label;
-                       
-                        
                         TextBox textminute = (TextBox)MainDataGrid.Items[index].FindControl("dg_txt_minute");
-                       
                         Label label_id = (Label)MainDataGrid.Items[index].FindControl("lab_id");
-
+                        Label lab_ProcessNo = (Label)MainDataGrid.Items[index].FindControl("lab_ProcessNo");
                         TextBox txt_processComment = (TextBox)MainDataGrid.Items[index].FindControl("txt_processComment");
                         DropDownList dpl_Supply = (DropDownList)MainDataGrid.Items[index].FindControl("dpl_Supply");
 
 
 
                         Label label_processidUp = MainDataGrid.Items[index - 1].FindControl("Label_ProcessID") as Label;
-                      
                         Label Label_ProcessNameUp = MainDataGrid.Items[index - 1].FindControl("Label_ProcessName") as Label;
-                      
-                        
                         TextBox textminuteup = (TextBox)MainDataGrid.Items[index - 1].FindControl("dg_txt_minute");
-                     
                         Label label_idUp = (Label)MainDataGrid.Items[index - 1].FindControl("lab_id");
-
+                        Label lab_ProcessNoUp = (Label)MainDataGrid.Items[index-1].FindControl("lab_ProcessNo");
                         TextBox txt_processCommentUp = (TextBox)MainDataGrid.Items[index-1].FindControl("txt_processComment");
                         DropDownList dpl_SupplyUp = (DropDownList)MainDataGrid.Items[index-1].FindControl("dpl_Supply");
 
 
 
                         string temp_processid = label_processid.Text;
-                       
                         string temp_Processname = Label_ProcessName.Text;
-                       
                         string temp_minute = textminute.Text;
-                       
                         string temp_id = label_id.Text;
-
+                        string temp_processno = lab_ProcessNo.Text;
                         string temp_processComment = txt_processComment.Text;
-
                         string temp_supply = dpl_Supply.SelectedValue;
 
                     
 
                         label_processid.Text = label_processidUp.Text;
-                      
                         Label_ProcessName.Text = Label_ProcessNameUp.Text;
-
                         textminute.Text = textminuteup.Text;
-
                         txt_processComment.Text = txt_processCommentUp.Text;
 
                         dpl_Supply.DataSource  = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
                         dpl_Supply.DataBind();
                         dpl_Supply.SelectedValue = dpl_SupplyUp.SelectedValue;
 
-                      
                         label_id.Text = label_idUp.Text;
-
+                        lab_ProcessNo.Text = lab_ProcessNoUp.Text;
                        
                         textminuteup.Text = temp_minute;
                         label_processidUp.Text = temp_processid;
                        
                         Label_ProcessNameUp.Text = temp_Processname;
                         label_idUp.Text = temp_id;
-
+                        lab_ProcessNoUp.Text = temp_processno;
                         txt_processCommentUp.Text = temp_processComment;
                         dpl_SupplyUp.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processidUp.Text.Trim() + ",") > -1);
                         dpl_SupplyUp.DataBind();
@@ -328,49 +321,37 @@ namespace ModuleWorkFlow
                     if (index < MainDataGrid.Items.Count - 1)
                     {
                         Label label_processid = MainDataGrid.Items[index].FindControl("Label_ProcessID") as Label;
-                       
                         Label Label_ProcessName = MainDataGrid.Items[index].FindControl("Label_ProcessName") as Label;
-                       
                         Label label_id = (Label)MainDataGrid.Items[index].FindControl("lab_id");
-                        
-                      
+                        Label lab_ProcessNo = (Label)MainDataGrid.Items[index].FindControl("lab_ProcessNo");
                         TextBox textminute = (TextBox)MainDataGrid.Items[index].FindControl("dg_txt_minute");
                         TextBox txt_processComment = (TextBox)MainDataGrid.Items[index].FindControl("txt_processComment");
                         DropDownList dpl_Supply = (DropDownList)MainDataGrid.Items[index].FindControl("dpl_Supply");
 
 
                         Label label_processidLow = MainDataGrid.Items[index + 1].FindControl("Label_ProcessID") as Label;
-                     
                         Label label_ProcessnameLow = MainDataGrid.Items[index + 1].FindControl("Label_ProcessName") as Label;
-                       
                         Label label_idLow = (Label)MainDataGrid.Items[index + 1].FindControl("lab_id");
+                        Label lab_ProcessNoLow = (Label)MainDataGrid.Items[index + 1].FindControl("lab_ProcessNo");
                         TextBox txt_processCommentLow = (TextBox)MainDataGrid.Items[index + 1].FindControl("txt_processComment");
                         DropDownList dpl_SupplyLow = (DropDownList)MainDataGrid.Items[index + 1].FindControl("dpl_Supply");
-
-
                         TextBox textminutelow = (TextBox)MainDataGrid.Items[index + 1].FindControl("dg_txt_minute");
                       
 
 
                         string temp_processid = label_processid.Text;
-                       
                         string temp_Processname = Label_ProcessName.Text;
-                       
                         string temp_id = label_id.Text;
-                      
+                        string temp_processno = lab_ProcessNo.Text;
                         string temp_minute = textminute.Text;
                         string temp_processComment = txt_processComment.Text;
-
                         string temp_supply = dpl_Supply.SelectedValue;
 
                         label_processid.Text = label_processidLow.Text;
-                       
                         Label_ProcessName.Text = label_ProcessnameLow.Text;
-                       
                         textminute.Text = textminutelow.Text;
-                        
                         label_id.Text = label_idLow.Text;
-
+                        lab_ProcessNo.Text = lab_ProcessNoLow.Text;
                         txt_processComment.Text = txt_processCommentLow.Text;
 
                         dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
@@ -382,7 +363,7 @@ namespace ModuleWorkFlow
                        
                         label_ProcessnameLow.Text = temp_Processname;
                         label_idLow.Text = temp_id;
-                      
+                        lab_ProcessNoLow.Text = temp_processno;
                        
                         textminutelow.Text = temp_minute;
                         txt_processCommentLow.Text = temp_processComment;
@@ -400,6 +381,10 @@ namespace ModuleWorkFlow
                     }
                     e.Item.BackColor = Setting.SELECTCOLOR;
                     Label_HiddenSelectRow.Text = Convert.ToString(e.Item.ItemIndex);
+                    break;
+
+                case "Delete":
+                    DeleteDataSource(e.Item.ItemIndex);
                     break;
 
                 default:
@@ -421,7 +406,7 @@ namespace ModuleWorkFlow
                 }
                 else
                 {
-                    Edit(dpl_standardtype.SelectedValue, txt_name.Text);
+                    Edit(Convert.ToInt32(dpl_standardtype.SelectedValue), txt_name.Text);
                 }
             }
 
@@ -456,7 +441,7 @@ namespace ModuleWorkFlow
            
             IList standprocesses = new ArrayList();
             
-            standprocesses = standprocess.GetStandProcessByName(dpl_standardtype.SelectedValue, txt_name.Text.Trim());
+            standprocesses = standprocess.GetStandProcessByName(Convert.ToInt32(dpl_standardtype.SelectedValue), txt_name.Text.Trim());
             
             if (standprocesses.Count == 0)
             {
@@ -520,9 +505,12 @@ namespace ModuleWorkFlow
                         spi.SupplyId = Convert.ToInt32(dpl_Supply.SelectedValue);
                     }
 
-                   
+
                     //jg-071211
-                    spi.StatusId = "Pending";
+                    if (spi.ListOrder == 1)
+                        spi.StatusId = "Ready";
+                    else
+                        spi.StatusId = "Pending";
 
                     //spi.ProcessNo = 0;
 
@@ -556,7 +544,7 @@ namespace ModuleWorkFlow
 
         }
 
-        private void Edit(string type, string name)
+        private void Edit(int type, string name)
         {
             bool successed = true;
            
@@ -615,9 +603,9 @@ namespace ModuleWorkFlow
 
                 spi.ProcessId = ((Label)MainDataGrid.Items[i].FindControl("Label_ProcessID")).Text;
 
-                spi.CustomerProcessId = ((Label)MainDataGrid.Items[i].FindControl("Label_CustomerProcessID")).Text;
+                
 
-                spi.ProcessName = ((Label)MainDataGrid.Items[i].FindControl("Label_CustomerProcessName")).Text;
+                spi.ProcessName = ((Label)MainDataGrid.Items[i].FindControl("Label_ProcessName")).Text;
 
                 spi.ProcessComment = ((TextBox)MainDataGrid.Items[i].FindControl("txt_processComment")).Text;
 
@@ -628,8 +616,10 @@ namespace ModuleWorkFlow
                     spi.SupplyId = Convert.ToInt32(dpl_Supply.SelectedValue);
                 }
 
-                //jg-071211
-                spi.StatusId = "Pending";
+                if (spi.ListOrder == 1)
+                    spi.StatusId = "Ready";
+                else
+                    spi.StatusId = "Pending";
 
                 spi.Id = Convert.ToInt32(((Label)MainDataGrid.Items[i].FindControl("lab_id")).Text);
                 spi.ProcessNo = ((Label)MainDataGrid.Items[i].FindControl("lab_ProcessNo")).Text.Trim();
@@ -649,8 +639,6 @@ namespace ModuleWorkFlow
                     if (espi.Id == 0)
                     {
                         espi.ProcessNo = business.Methods.GenerateUniqueId();
-                        insertStandProcesses.Add(espi);
-
                         insertStandProcesses.Add(espi);
                     }
                     else
@@ -884,15 +872,12 @@ namespace ModuleWorkFlow
             DataRow dr;
             dt.Columns.Add(new DataColumn("ListOrder", typeof(string)));
             dt.Columns.Add(new DataColumn("ProcessId", typeof(string)));
-            dt.Columns.Add(new DataColumn("CustomerProcessId", typeof(string)));
-            dt.Columns.Add(new DataColumn("CustomerProcessName", typeof(string)));
-          
-            dt.Columns.Add(new DataColumn("Minute", typeof(string)));
+            dt.Columns.Add(new DataColumn("ProcessName", typeof(string)));
             dt.Columns.Add(new DataColumn("ProcessNeedMinutes", typeof(string)));
             dt.Columns.Add(new DataColumn("Id", typeof(string)));
-            dt.Columns.Add(new DataColumn("pricetype", typeof(string)));
-            dt.Columns.Add(new DataColumn("supplyId", typeof(string)));
             dt.Columns.Add(new DataColumn("processComment", typeof(string)));
+            dt.Columns.Add(new DataColumn("supplyId", typeof(string)));
+            dt.Columns.Add(new DataColumn("ProcessNo", typeof(string)));
 
 
             for (int i = 0; i < MainDataGrid.Items.Count; i++)
@@ -905,28 +890,25 @@ namespace ModuleWorkFlow
                     Label label_Processname = MainDataGrid.Items[i].FindControl("Label_ProcessName") as Label;
                    
                     Label label_id = (Label)MainDataGrid.Items[i].FindControl("lab_id");
-
-                   
-                   
+                    Label lab_ProcessNo = (Label)MainDataGrid.Items[i].FindControl("lab_ProcessNo");
                     TextBox textminute = (TextBox)MainDataGrid.Items[i].FindControl("dg_txt_minute");
                     TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
                     DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
 
-                  
-
-
+                    //new a record
                     dr = dt.NewRow();
                     dr["ListOrder"] = Label_OrderNo.Text.Trim();
                     dr["ProcessId"] = label_processid.Text.Trim();
                  
                     dr["ProcessName"] = label_Processname.Text.Trim();
                   
-                    dr["Minute"] = textminute.Text;
+                    dr["ProcessNeedMinutes"] = textminute.Text;
                   
                     dr["Id"] = label_id.Text;
-                   
+                    
                     dr["processComment"] = txt_processComment.Text;
                     dr["supplyId"] = dpl_Supply.SelectedValue;
+                    dr["ProcessNo"] = lab_ProcessNo.Text;
                     dt.Rows.Add(dr);
                 }
             }
@@ -934,28 +916,29 @@ namespace ModuleWorkFlow
             DataView dv = new DataView(dt);
             MainDataGrid.DataSource = dv;
             MainDataGrid.DataBind();
-            MainDataGrid.Columns[4].Visible = false;
+         
 
             supplyInfos = new Supply().GetSupplyInfos();
+
             //init TextBox_NeedTime input box and DropDownList_UnitSelect
             for (int i = 0; i < MainDataGrid.Items.Count; i++)
             {
                 if (i == selectRow) MainDataGrid.Items[i].BackColor = Setting.SELECTCOLOR;
+
                 Label Label_OrderNo = MainDataGrid.Items[i].FindControl("Label_OrderNo") as Label;
-               
-               
+
                 TextBox textminute = (TextBox)MainDataGrid.Items[i].FindControl("dg_txt_minute");
-               
-                Label label_id = (Label)MainDataGrid.Items[i].FindControl("lab_id");
+
+                TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
+                Label_OrderNo.Text = Convert.ToString(i + 1);
                 Label Label_ProcessID = MainDataGrid.Items[i].FindControl("Label_ProcessID") as Label;
                 DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
-                dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList!= null &&  m.ProcessIdList.IndexOf(Label_ProcessID.Text.Trim() + ",") > -1);
+                dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(Label_ProcessID.Text.Trim() + ",") > -1);
                 dpl_Supply.DataTextField = "SupplierName";
                 dpl_Supply.DataValueField = "Id";
                 dpl_Supply.DataBind();
 
-                TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
-                Label_OrderNo.Text = Convert.ToString(i + 1);
+               
 
 
             }
@@ -963,28 +946,25 @@ namespace ModuleWorkFlow
             //retieved all data
             for (int i = 0; i < MainDataGrid.Items.Count; i++)
             {
-               
-              
+
                 TextBox textminute = (TextBox)MainDataGrid.Items[i].FindControl("dg_txt_minute");
-               
-                Label label_id = (Label)MainDataGrid.Items[i].FindControl("lab_id");
-                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
                 TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
+                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
 
-                string oldDay = dt.Rows[i][dt.Columns["ScheduleDay"]].ToString();
-                string oldHour = dt.Rows[i][dt.Columns["Hour"]].ToString();
-                string oldMintes = dt.Rows[i][dt.Columns["Minute"]].ToString();
-                string oldSupplyId = dt.Rows[i][dt.Columns["supplyId"]].ToString();
+
+                string oldMintes = dt.Rows[i][dt.Columns["ProcessNeedMinutes"]].ToString();
                 string processComment = dt.Rows[i][dt.Columns["processComment"]].ToString();
+                string oldSupply = dt.Rows[i][dt.Columns["supplyId"]].ToString();
 
-              
+
                 textminute.Text = oldMintes;
+                txt_processComment.Text = processComment;
                 try
                 {
-                    dpl_Supply.SelectedValue = oldSupplyId;
+                    dpl_Supply.SelectedValue = oldSupply;
                 }
                 catch { }
-                txt_processComment.Text = processComment;
+
             }
             
         }
