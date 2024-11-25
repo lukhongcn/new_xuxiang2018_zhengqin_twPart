@@ -104,6 +104,8 @@ namespace ModuleWorkFlow
         private double num = 0;
         private string menuid = "B01";
 
+        protected string menuname;
+
         protected override void LoadViewState(object savedState)
         {
             base.LoadViewState(savedState);
@@ -325,6 +327,15 @@ namespace ModuleWorkFlow
             // Put user code to initialize the page here
             if (!this.IsPostBack)
             {
+                TmenuInfo mi = new Tmenu().findbykey(menuid);
+                if (this.Master != null && this.Master is DefaultSub)
+                {
+                    DefaultSub master = (DefaultSub)this.Master;
+
+                    master.Menuname = mi.Menuname;
+                  
+                    menuname = mi.Menuname;
+                }
                 CreateDataGrid();
                 ViewState["foo"] = "foo";
                 OrderDesignInfo createOrderInfo = new OrderCreate().OrderDesignCreate("createOrderDesign");
@@ -589,11 +600,11 @@ namespace ModuleWorkFlow
             lab_total.Text = "共" + MainDataGrid.VirtualItemCount.ToString() + "筆";
             Session["source"] = FactSource;
 
-            if (dpl_overStatus.SelectedValue.Equals("4") || dpl_overStatus.SelectedValue.Equals("3"))
-            {
-                MainDataGrid.Columns[MainDataGrid.Columns.Count - 1].Visible = false;
-                MainDataGrid.Columns[MainDataGrid.Columns.Count - 2].Visible = false;
-            }
+            //if (dpl_overStatus.SelectedValue.Equals("4") || dpl_overStatus.SelectedValue.Equals("3"))
+            //{
+            //    MainDataGrid.Columns[MainDataGrid.Columns.Count - 1].Visible = false;
+            //    MainDataGrid.Columns[MainDataGrid.Columns.Count - 2].Visible = false;
+            //}
 
             MainDataGrid.DataKeyField = "moduleid";
             MainDataGrid.DataBind();
@@ -634,7 +645,7 @@ namespace ModuleWorkFlow
             this.MainDataGrid.DeleteCommand += new System.Web.UI.WebControls.DataGridCommandEventHandler(this.MainDataGrid_DeleteCommand);
             this.MainDataGrid.ItemDataBound += new System.Web.UI.WebControls.DataGridItemEventHandler(this.MainDataGrid_ItemDataBound);
             this.DataGridDate.PageIndexChanged += new System.Web.UI.WebControls.DataGridPageChangedEventHandler(this.DataGridDate_PageIndexChanged);
-            this.DataGridDate.ItemDataBound += new System.Web.UI.WebControls.DataGridItemEventHandler(this.DataGridDate_ItemDataBound);
+            //this.DataGridDate.ItemDataBound += new System.Web.UI.WebControls.DataGridItemEventHandler(this.DataGridDate_ItemDataBound);
 
             this.Load += new System.EventHandler(this.Page_Load);
 
@@ -965,12 +976,7 @@ namespace ModuleWorkFlow
                 }
 
                 string versionfor = System.Configuration.ConfigurationSettings.AppSettings["versionfor"];
-                string ispart = System.Configuration.ConfigurationSettings.AppSettings["IsPart"];
-                if ((ispart != null && Convert.ToBoolean(ispart)) || (versionfor != null && versionfor.Equals("PART")))
-                {
-                    HyperLink HyperLink_MiddleSchedule = e.Item.FindControl("HyperLink_MiddleSchedule") as HyperLink;
-                    HyperLink_MiddleSchedule.Visible = false;
-                }
+               
 
 
                 Label dg_lab_ScheduledEndDate = e.Item.FindControl("dg_lab_ScheduledEndDate") as Label;
@@ -1167,7 +1173,7 @@ namespace ModuleWorkFlow
             DataGridDateBind();
         }
 
-        private void DataGridDate_ItemDataBound(object sender, System.Web.UI.WebControls.DataGridItemEventArgs e)
+        protected void DataGridDate_ItemDataBound(object sender, System.Web.UI.WebControls.DataGridItemEventArgs e)
         {
             ModuleWorkFlow.BLL.Customer customer = new ModuleWorkFlow.BLL.Customer();
             ModuleWorkFlow.Model.CustomerInfo customerinfo = new CustomerInfo();
@@ -1206,6 +1212,9 @@ namespace ModuleWorkFlow
                         else if (StatusId.Equals("Cancel"))
                         {
                             e.Item.Cells[i].Text = "取消";
+                        }else if (StatusId.Equals("Pending"))
+                        {
+                            e.Item.Cells[i].Text = "未就緒";
                         }
                     }
 

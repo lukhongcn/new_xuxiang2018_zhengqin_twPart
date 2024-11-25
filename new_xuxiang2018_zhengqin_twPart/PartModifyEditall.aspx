@@ -184,22 +184,22 @@
                                                                 <asp:Label runat="server" ID="Label_CustomerProcessID" Text='<%# DataBinder.Eval(Container,"DataItem.CustomerProcessID") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="工序">
+                                                        <asp:TemplateColumn HeaderText="工序" HeaderStyle-Width="100px">
                                                             <ItemTemplate>
                                                                 <asp:Label runat="server" ID="Label_CustomerProcessName" Text='<%# DataBinder.Eval(Container,"DataItem.CustomerProcessName") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="天">
+                                                        <asp:TemplateColumn HeaderText="天"  HeaderStyle-Width="50px">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="Dropdownlist_Day" CssClass="border-primary"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="小時">
+                                                        <asp:TemplateColumn HeaderText="小時"  HeaderStyle-Width="50px">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="DropDownList_Hour" CssClass="border-primary"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="分鐘">
+                                                        <asp:TemplateColumn HeaderText="分鐘"  HeaderStyle-Width="50px">
                                                             <ItemTemplate>
                                                                 <asp:DropDownList runat="server" ID="Dropdownlist_Minute" CssClass="border-primary"></asp:DropDownList>
                                                             </ItemTemplate>
@@ -231,7 +231,7 @@
                                                                 <asp:CheckBox ID="cbl_isunnormal" Text="" runat="server"></asp:CheckBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:TemplateColumn HeaderText="注意事項">
+                                                        <asp:TemplateColumn HeaderText="注意事項" HeaderStyle-Width="200px">
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txt_processComment" runat="server" CssClass="form-control custom-htight border-primary"></asp:TextBox>
                                                             </ItemTemplate>
@@ -241,9 +241,9 @@
                                                                 <asp:DropDownList ID="dpl_processMachineid" runat="server"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
-                                                        <asp:ButtonColumn Text="上移" ButtonType="PushButton" HeaderText="" CommandName="Upper"></asp:ButtonColumn>
-                                                        <asp:ButtonColumn Text="下移" ButtonType="PushButton" CommandName="Lower"></asp:ButtonColumn>
-                                                        <asp:ButtonColumn Text="刪除" ButtonType="PushButton" CommandName="Delete"></asp:ButtonColumn>
+                                                        <asp:ButtonColumn Text="上移" ButtonType="PushButton" HeaderText="" CommandName="Upper" HeaderStyle-Width="40px"></asp:ButtonColumn>
+                                                        <asp:ButtonColumn Text="下移" ButtonType="PushButton" CommandName="Lower" HeaderStyle-Width="40px"></asp:ButtonColumn>
+                                                        <asp:ButtonColumn Text="刪除" ButtonType="PushButton" CommandName="Delete" HeaderStyle-Width="40px"></asp:ButtonColumn>
                                                         <asp:TemplateColumn HeaderText="processno" Visible="false">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="dg_lab_processno" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.processno") %>'></asp:Label>

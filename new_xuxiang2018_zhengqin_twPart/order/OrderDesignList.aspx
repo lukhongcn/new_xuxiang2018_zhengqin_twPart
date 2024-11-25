@@ -10,13 +10,13 @@
                     <div class="linebox">
                         <a href="../defaultmain.aspx">生產管理</a>
                         <img src="images/arrow.png" />
-                        <a href="#">訂單設定</a>
+                        <a href="#"><%=menuname %></a>
                     </div>
                     <div class="logout">
                         <a href="../login.aspx" target="_parent">登出</a>
                     </div>
                     <div id='pop-div' style="width: 1000; display: none; border: solid 1px #6e8bde; margin: 0 auto;" class="pop-box">
-                        <div class="pop-box-h4">訂單詳細</div>
+                        <div class="pop-box-h4"><%=menuname %>詳細</div>
                         <div class='buttonPanel' style="text-align: right" mce_style="text-align: right">
                             <button type="reset" class="sexybutton" onclick="hideDiv('pop-div');"><span><span><span class="cancel">關閉</span></span></span></button>
                         </div>
@@ -39,29 +39,31 @@
                            <div class="menubox">
                                <div class="mod1">
                                    <ul>
+                                        <li class="btn1">
+                                             <asp:LinkButton ID="lnkbutton_add" runat="server" ToolTip="新增 / add" OnClick="lnkbutton_add_Click"  >新增/add</asp:LinkButton>
+                                         </li>
+                                         <li class="btn2">
+                                              <asp:LinkButton ID="lnkbutton_edit" runat="server" OnClick="lnkbutton_edit_Click" ToolTip="編輯/edit" >編輯/edit</asp:LinkButton>
+                                          </li>
+
+
+
+ 
+ 
+ 
+                                          <li class="btn6">
+                                              <asp:LinkButton ID="lnkbutton_delete" runat="server" OnClick="lnkbutton_delete_Click" ToolTip="刪除/delete"  Visible="false" OnClientClick="return   confirm( '您确定&#21024;除&#21527;? '); ">刪除/delete</asp:LinkButton>
+                                          </li>
                                         <li class="btn5">
                                              <asp:LinkButton ID="lnkbutton_view" runat="server" OnClick="lnkbutton_view_Click" ToolTip="檢視/view" >檢視/view</asp:LinkButton>
                                          </li>
-                                       <li class="btn2">
-                                           <asp:LinkButton ID="lnkbutton_edit" runat="server" OnClick="lnkbutton_edit_Click" ToolTip="編輯/edit" Visible="false">編輯/edit</asp:LinkButton>
-                                       </li>
-
-
-
-                                       <li class="btn4">
-                                           <asp:LinkButton ID="lnkbutton_copy" runat="server" ToolTip="複製 / copy" OnClick="lnkbutton_copy_Click"  Visible="false">複製/copy</asp:LinkButton>
-                                       </li>
-                                      
-                                       <li class="btn1">
-                                           <asp:LinkButton ID="lnkbutton_add" runat="server" ToolTip="新增 / add" OnClick="lnkbutton_add_Click"  Visible="false">新增/add</asp:LinkButton>
-                                       </li>
-                                       <li class="btn6">
-                                           <asp:LinkButton ID="lnkbutton_delete" runat="server" OnClick="lnkbutton_delete_Click" ToolTip="刪除/delete"  Visible="false" OnClientClick="return   confirm( '您确定&#21024;除&#21527;? '); ">刪除/delete</asp:LinkButton>
-                                       </li>
+                                     
                                        <li class="btn12">
                                            <asp:LinkButton ID="lnkbutton_project" runat="server" OnClick="lnkbutton_project_Click" ToolTip="刪除/delete"  Visible="false">创建项目</asp:LinkButton>
                                        </li>
-
+                                        <li class="btn4">
+                                             <asp:LinkButton ID="lnkbutton_copy" runat="server" ToolTip="複製 / copy" OnClick="lnkbutton_copy_Click"  Visible="false">複製/copy</asp:LinkButton>
+                                         </li>
                                    </ul>
                                </div>
                                <div class="mod2">
@@ -171,11 +173,11 @@
                         <asp:Label ID="lab_sort" runat="server" Visible="false"></asp:Label>
                         <asp:Label ID="lab_total" runat="server"></asp:Label>
                         <asp:Label ID="lab_LastScheduledTime" runat="server"></asp:Label>
-                        <asp:DataGrid ID="MainDataGrid" runat="server" AutoGenerateColumns="False"  AllowPaging="True" CssClass="table table-striped table-bordered table-hover table-sm" PageSize="10" AllowCustomPaging="True" AllowSorting="true" OnSortCommand="MainDataGrid_SortCommand" EnableViewState="true">
+                        <asp:DataGrid ID="MainDataGrid" runat="server" AutoGenerateColumns="False"  AllowPaging="True" CssClass="table table-striped table-bordered table-hover table-sm" PageSize="10" AllowCustomPaging="True" AllowSorting="true" OnSortCommand="MainDataGrid_SortCommand" EnableViewState="true" OnItemDataBound="DataGridDate_ItemDataBound">
                            <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary" ></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" />
                             <Columns>
-                                <asp:TemplateColumn>
+                                <asp:TemplateColumn HeaderStyle-Width="10px">
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chk_datagrid" />
                                     </ItemTemplate>

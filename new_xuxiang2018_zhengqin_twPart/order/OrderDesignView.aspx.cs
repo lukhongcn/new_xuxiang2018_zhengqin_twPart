@@ -105,7 +105,7 @@ namespace ModuleWorkFlow
         protected System.Web.UI.WebControls.DropDownList dpl_priority;
         protected string moduleidshow = "";
         private ModuleWorkFlow.BLL.User user;
-        private ModuleWorkFlow.BLL.NewOrder.OrderDesign orderDesign;
+        private ModuleWorkFlow.BLL.NewOrder.PartOrderDesign partOrderDesign;
         protected System.Web.UI.WebControls.DropDownList dpl_difficultlevel;
         protected Label lab_customerid;
         protected Label lab_pageindex;
@@ -136,6 +136,8 @@ namespace ModuleWorkFlow
 
         protected System.Web.UI.WebControls.FileUpload TextBox_Picture;
 
+        protected UpdatePanel UpdatePanel1;
+
 
         protected string newname = "";
         protected System.Web.UI.WebControls.Label lab_picturename;
@@ -148,16 +150,30 @@ namespace ModuleWorkFlow
         protected System.Web.UI.WebControls.Label lab_oldstatusid;
         private string menuid = "B01";
 
+        protected string menuname;
+
         private void Page_Load(object sender, System.EventArgs e)
         {
 
             //this.
             //SystemInterFace sysinterface = new SystemInterFace();
             //IList orderdesigns = sysinterface.getNEWInterSchema("order");
-            orderDesign = new ModuleWorkFlow.BLL.NewOrder.OrderDesign();
+            partOrderDesign = new ModuleWorkFlow.BLL.NewOrder.PartOrderDesign();
             user = new ModuleWorkFlow.BLL.User();
+            
             if (!this.IsPostBack)
             {
+                
+                TmenuInfo mi = new Tmenu().findbykey(menuid);
+                if (this.Master != null && this.Master is DefaultSub)
+                {
+                    DefaultSub master = (DefaultSub)this.Master;
+
+                    master.Menuname = mi.Menuname;
+
+                    menuname = mi.Menuname;
+                }
+
                 BindData();
 
                 Label_Message.Text = "";
@@ -196,7 +212,8 @@ namespace ModuleWorkFlow
                         InitalAddPage();
                     }
                 }
-
+                
+              
 
             }
         }
@@ -213,14 +230,13 @@ namespace ModuleWorkFlow
             foreach (ModuleWorkFlow.Model.ControlTableInfo cti in ilist)
             {
                 bool only = false;
-                if (moduleid != null)
+               
+                if (cti.Isreadonly == 1)
                 {
-                    if (cti.Isreadonly == 1)
-                    {
-                        only = true;
-                    }
-
+                    only = true;
                 }
+
+                
                 TableCell tc = new TableCell();
                 if (cti.IsVisible == 1)
                 {
@@ -233,15 +249,13 @@ namespace ModuleWorkFlow
                     case "string":
                         TextBox tb = new TextBox();
                         tb.ID = cti.ControlName;
-                        if (cti.TableField.Equals("moduleId"))
-                        {
-                            tb.CssClass = cti.CssClass;
-                        }
+                       
+                        tb.CssClass = cti.CssClass;
+                        
 
-                        if (cti.TableField.Equals("productname"))
-                        {
-                            tb.CssClass = cti.CssClass;
-                        }
+                       
+                        tb.CssClass = cti.CssClass;
+                        
                         if (cti.IsVisible == 1)
                         {
                             tb.Visible = true;
@@ -251,11 +265,26 @@ namespace ModuleWorkFlow
                         {
                             tb.Visible = false;
                         }
+
+                      
                         tc.Controls.Add(tb);
+
+                        if (!string.IsNullOrEmpty(cti.AssemblyPath) && !string.IsNullOrEmpty(cti.InstanceName) && !string.IsNullOrEmpty(cti.BindMethod))
+                        {
+                            tb.TextChanged += new EventHandler(trigger_event);
+                            tb.AutoPostBack = true;
+                            AsyncPostBackTrigger txtTrigger = new AsyncPostBackTrigger();
+                            txtTrigger.ControlID = tb.ID;
+                            txtTrigger.EventName = "TextChanged";
+                            UpdatePanel1.Triggers.Add(txtTrigger);
+                        }
+
+                            
                         break;
                     case "userajx":
                         tb = new TextBox();
                         tb.ID = cti.ControlName;
+                        tb.CssClass = cti.CssClass;
                         //tb.Location = new Point(100, 200);//
                         if (cti.IsVisible == 1)
                         {
@@ -353,6 +382,7 @@ namespace ModuleWorkFlow
                     case "DateTime":
                         TextBox ic = new TextBox();
                         ic.ID = cti.ControlName;
+                        ic.CssClass = cti.CssClass;
                         ic.Text = "";
                         if (!only)
                         {
@@ -397,11 +427,20 @@ namespace ModuleWorkFlow
 
                         }
 
-
+                        if (!string.IsNullOrEmpty(cti.AssemblyPath) && !string.IsNullOrEmpty(cti.InstanceName) && !string.IsNullOrEmpty(cti.BindMethod))
+                        {
+                            ic.TextChanged += new EventHandler(trigger_event);
+                            ic.AutoPostBack = true;
+                            AsyncPostBackTrigger txtTrigger = new AsyncPostBackTrigger();
+                            txtTrigger.ControlID = ic.ID;
+                            txtTrigger.EventName = "TextChanged";
+                            UpdatePanel1.Triggers.Add(txtTrigger);
+                        }
                         break;
                     case "DateTimePick":
                         ic = new TextBox();
                         ic.ID = cti.ControlName;
+                        ic.CssClass = cti.CssClass;
                         ic.Text = "";
                         if (!only)
                         {
@@ -411,22 +450,8 @@ namespace ModuleWorkFlow
                             cal.Format = "yy-MM-dd";
                             tc.Controls.Add(cal);
                         }
-                        TextBox tic = new TextBox();
-                        tic.ID = cti.ControlName + "_time";
-                        tic.Text = "00:00";
-                        tic.CssClass = "timepicker";
-                        if (cti.IsVisible == 1)
-                        {
-                            ic.Visible = true;
-                            tic.Visible = true;
-
-                        }
-                        else
-                        {
-                            ic.Visible = false;
-                        }
+                       
                         tc.Controls.Add(ic);
-                        tc.Controls.Add(tic);
                         break;
                     case "Int":
                         tb = new TextBox();
@@ -463,6 +488,7 @@ namespace ModuleWorkFlow
                         break;
                     case "DropDownList":
                         DropDownList ddl = new DropDownList();
+                        ddl.CssClass = cti.CssClass;
                         ddl.ID = cti.ControlName;
                         ddl.AutoPostBack = true;
                         //tb.c = new Point(100, 200);//
@@ -513,9 +539,21 @@ namespace ModuleWorkFlow
                             ddl.SelectedIndexChanged += new System.EventHandler(this.dpl_SelectedIndexChanged);
                             ddl.AutoPostBack = true;
                         }
-
-
                         tc.Controls.Add(ddl);
+
+                        if (!string.IsNullOrEmpty(cti.AssemblyPath) && !string.IsNullOrEmpty(cti.InstanceName) && !string.IsNullOrEmpty(cti.BindMethod))
+                        {
+                            ddl.SelectedIndexChanged += new System.EventHandler(this.trigger_event);
+
+                            ddl.AutoPostBack = true;
+
+                            AsyncPostBackTrigger ddlTrigger = new AsyncPostBackTrigger();
+                            ddlTrigger.ControlID = ddl.ID;
+                            ddlTrigger.EventName = "SelectedIndexChanged";
+                            UpdatePanel1.Triggers.Add(ddlTrigger);
+                        }
+
+                      
 
                         break;
                     case "Image":
@@ -772,6 +810,51 @@ namespace ModuleWorkFlow
 
         }
 
+       
+
+        protected void trigger_event(object sender, EventArgs e)
+        {
+            ControlTable ct = new ControlTable();
+            
+
+            ControlTableInfo cti = ct.GetTableByControlName("tb_order", (sender as WebControl).ID);
+            
+            
+            if (cti.AssemblyPath != null && cti.InstanceName != null && cti.BindMethod != null)
+            {
+                Object[] args;
+                if (!string.IsNullOrEmpty(cti.ParamControl))
+                {
+                    string[] controlName = cti.ParamControl.Split(',');
+                    args = new Object[controlName.Length];
+
+                    for (int i = 0; i < controlName.Length; i++)
+                    {
+                        if (((TextBox)Table4.FindControl(controlName[i])) != null)
+                            args[i] = ((TextBox)Table4.FindControl(controlName[i])).Text;
+                    }
+                }
+                else
+                {
+                    args = new Object[1];
+                    if (sender is TextBox)
+                        args[0] = (sender as TextBox).Text;
+                    else
+                        args[0] = (sender as DropDownList).SelectedValue;
+                }
+
+                Object dataBind = Assembly.Load(cti.AssemblyPath).CreateInstance(cti.InstanceName);
+                string EffectiveControl = cti.EffectiveControl;
+                if (EffectiveControl.IndexOf("dpl_") > -1)
+                    ((DropDownList)Table4.FindControl(EffectiveControl)).SelectedValue = Reflector.CallMethod(dataBind, cti.BindMethod, args).ToString();
+                else
+                    ((TextBox)Table4.FindControl(EffectiveControl)).Text = Reflector.CallMethod(dataBind, cti.BindMethod, args).ToString();
+
+            }
+
+           
+        }
+
         private void InitalAddPage()
         {
             string initalDate = string.Format("{0:yyyy-MM-dd}", (DateTime.Now));
@@ -787,6 +870,7 @@ namespace ModuleWorkFlow
             if (((TextBox)Table4.FindControl("txt_tryDate0")) != null)
             {
                 ((TextBox)Table4.FindControl("txt_tryDate0")).Text = initalDate;
+                trigger_event(((TextBox)Table4.FindControl("txt_tryDate0")), EventArgs.Empty);
             }
 
             if (((DropDownList)Table4.FindControl("drp_hours")) != null)
@@ -850,10 +934,17 @@ namespace ModuleWorkFlow
                 ((TextBox)Table4.FindControl("txt_merchindiseEndDate")).Text = initalDate;
             }
             //.Text=initalDate;
-            if (((TextBox)Table4.FindControl("txt_productEndDate")) != null)
+            //if (((TextBox)Table4.FindControl("txt_productEndDate")) != null)
+            //{
+            //    ((TextBox)Table4.FindControl("txt_productEndDate")).Text = initalDate;
+            //}
+
+            if (Session["userid"] != null && ((TextBox)Table4.FindControl("txt_creater")) != null)
             {
-                ((TextBox)Table4.FindControl("txt_productEndDate")).Text = initalDate;
+                ((TextBox)Table4.FindControl("txt_creater")).Text = Session["userid"].ToString();
             }
+
+                
 
 
             //.Text=initalDate;
@@ -1091,26 +1182,33 @@ namespace ModuleWorkFlow
         {
             WorkFlow.BLL.Standard.StandProcessType standProcessType = new WorkFlow.BLL.Standard.StandProcessType();
             DropDownList dpl_parentTypeId = Table4.FindControl("dpl_parentTypeId") as DropDownList;
-            try
+            if (dpl_parentTypeId != null)
             {
-                IList sptlist = standProcessType.GetStandProcessType(true);
-                IList newsptlist = new ArrayList();
-                foreach (StandProcessTypeInfo spt in sptlist)
+                try
                 {
-                    if (spt.ParentId.Equals(0))
-                    {
-                        newsptlist.Add(spt);
-                    }
-                }
-                dpl_parentTypeId.DataSource = newsptlist;
-                dpl_parentTypeId.DataTextField = "TypeName";
-                dpl_parentTypeId.DataValueField = "Id";
-                dpl_parentTypeId.DataBind();
-                dpl_parentTypeId.Items.Insert(0, "");
-            }
-            catch { }
 
-        }
+
+
+                    IList sptlist = standProcessType.GetStandProcessType(true);
+                    IList newsptlist = new ArrayList();
+                    foreach (StandProcessTypeInfo spt in sptlist)
+                    {
+                        if (spt.ParentId.Equals(0))
+                        {
+                            newsptlist.Add(spt);
+                        }
+                    }
+                    dpl_parentTypeId.DataSource = newsptlist;
+                    dpl_parentTypeId.DataTextField = "TypeName";
+                    dpl_parentTypeId.DataValueField = "Id";
+                    dpl_parentTypeId.DataBind();
+                    dpl_parentTypeId.Items.Insert(0, "");
+                }
+                catch { }
+            }
+
+        }  
+
 
 
 
@@ -1318,8 +1416,16 @@ namespace ModuleWorkFlow
 
                 if (func.Text.Equals("Edit"))
                 {
-                    dpl_ProductTypeList.Enabled = false;
-                    dpl_parentTypeId.Enabled = false;
+                    if (dpl_ProductTypeList != null)
+                    {
+                        dpl_ProductTypeList.Enabled = false;
+                    }
+
+                    if (dpl_parentTypeId != null)
+                    {
+                        dpl_parentTypeId.Enabled = false;
+                    }
+                
                 }
 
                 if (orderDesigninfo.ProductTypeId != 0 && !orderDesigninfo.ProductTypeId.Equals("0") && dpl_ProductTypeList != null && dpl_ProductTypeList.Visible)
@@ -1894,7 +2000,12 @@ namespace ModuleWorkFlow
                 dpl_modelType.DataTextField = "typename";
                 dpl_modelType.DataValueField = "TypeId";
                 dpl_modelType.DataBind();
-                dpl_modelType.AutoPostBack = false;
+
+                dpl_modelType.SelectedIndex = 0;
+
+                trigger_event(dpl_modelType, EventArgs.Empty);
+
+
             }
         }
 
@@ -1959,7 +2070,7 @@ namespace ModuleWorkFlow
         {
             bindusername();
 
-
+            
             bindProductType();
 
             bindCustomer();
@@ -2060,6 +2171,8 @@ namespace ModuleWorkFlow
             }
             //((Button)Table4.FindControl("btn_up")).Click += new System.EventHandler(this.Picture_FileUpload_Click);
 
+         
+
             this.Load += new System.EventHandler(this.Page_Load);
 
         }
@@ -2143,6 +2256,13 @@ namespace ModuleWorkFlow
             TextBox txt_signPrice = (TextBox)Table4.FindControl("txt_signPrice");
             TextBox txt_tryPrice = (TextBox)Table4.FindControl("txt_tryPrice");
             TextBox txt_creater = (TextBox)Table4.FindControl("txt_creater");
+            if (txt_creater != null)
+            {
+                if (!checkImportent(txt_creater, hcontroltables))
+                {
+                    return;
+                }
+            }
             TextBox txt_checker = (TextBox)Table4.FindControl("txt_checker");
 
             TextBox txt_equipMent = (TextBox)Table4.FindControl("txt_equipMent");
@@ -2172,6 +2292,14 @@ namespace ModuleWorkFlow
             TextBox txt_designEndDate = (TextBox)Table4.FindControl("txt_designEndDate");
             TextBox txt_designStart = (TextBox)Table4.FindControl("txt_designStart");
             TextBox txt_productEndDate = (TextBox)Table4.FindControl("txt_productEndDate");
+            if (txt_productEndDate != null)
+            {
+                if (!checkImportent(txt_productEndDate, hcontroltables))
+                {
+                    return;
+                }
+            }
+            
 
             TextBox txt_T3 = (TextBox)Table4.FindControl("txt_T3");
             TextBox txt_checkDate = (TextBox)Table4.FindControl("txt_checkDate");
@@ -2202,6 +2330,13 @@ namespace ModuleWorkFlow
             TextBox txt_tryDateF = (TextBox)Table4.FindControl("txt_tryDateF");
             TextBox txt_comment = (TextBox)Table4.FindControl("txt_comment");
             TextBox txt_productname = (TextBox)Table4.FindControl("txt_productname");
+            if (txt_productname != null)
+            {
+                if (!checkImportent(txt_productname, hcontroltables))
+                {
+                    return;
+                }
+            }
             TextBox txt_ton = (TextBox)Table4.FindControl("txt_ton");
             if (txt_ton != null)
             {
@@ -2253,7 +2388,7 @@ namespace ModuleWorkFlow
 
             CheckBox chk_isoutsource = (CheckBox)Table4.FindControl("chk_isoutsource");
 
-            OrderDesignInfo orderDesigninfo = new OrderDesignInfo();
+            PartOrderDesignInfo orderDesigninfo = new PartOrderDesignInfo();
 
 
             if (txt_moduleid.Text.Trim().Equals(""))
@@ -2361,7 +2496,7 @@ namespace ModuleWorkFlow
 
             }
 
-            if (txt_customerModuleId != null && dpl_customerid != null)
+            if (txt_customerModuleId != null && dpl_customerid != null && dpl_ClientModuleId != null)
             {
                 ModelInfo mi = new ModuleWorkFlow.BLL.System.Model().GetModelByNo(txt_customerModuleId.Text.Trim(), Convert.ToInt32(dpl_customerid.SelectedValue));
                 if (mi == null)
@@ -2712,7 +2847,7 @@ namespace ModuleWorkFlow
 
             orderDesigninfo.ExtractRate = txt_extractRate.Text;
 
-            if (!txt_startDate.Text.Trim().Equals(""))
+            if (txt_startDate != null && !txt_startDate.Text.Trim().Equals(""))
             {
                 try
                 {
@@ -2726,8 +2861,9 @@ namespace ModuleWorkFlow
             }
             else
             {
-                Label_Message.Text = "起始日期" + Lang.NO_SPACES;
-                return;
+                //Label_Message.Text = "起始日期" + Lang.NO_SPACES;
+                //return;
+                orderDesigninfo.StatusId = "Pending";
 
             }
             if (!txt_merchindiseEndDate.Text.Trim().Equals(""))
@@ -2784,17 +2920,8 @@ namespace ModuleWorkFlow
             {
                 try
                 {
-
-                    if ((TextBox)Table4.FindControl("txt_productEndDate_time") != null && !((TextBox)Table4.FindControl("txt_productEndDate_time")).Text.Trim().Equals(""))
-                    {
-                        orderDesigninfo.ProductEndDate = Convert.ToDateTime(txt_productEndDate.Text);
-                        orderDesigninfo.ProductEndDate = orderDesigninfo.ProductEndDate.AddHours(Convert.ToInt32(((TextBox)Table4.FindControl("txt_productEndDate_time")).Text.Split(':')[0]));
-                        orderDesigninfo.ProductEndDate = orderDesigninfo.ProductEndDate.AddMinutes(Convert.ToInt32(((TextBox)Table4.FindControl("txt_productEndDate_time")).Text.Split(':')[1]));
-                    }
-                    else
-                    {
-                        orderDesigninfo.ProductEndDate = Convert.ToDateTime(txt_productEndDate.Text);
-                    }
+                    orderDesigninfo.ProductEndDate = Convert.ToDateTime(txt_productEndDate.Text);
+                    
                 }
                 catch
                 {
@@ -3099,7 +3226,7 @@ namespace ModuleWorkFlow
 
                 if (Label_Message.Text.Equals(Lang.SAVE_SUCCESS) && (ERPInterface == null || !Convert.ToBoolean(ERPInterface.Trim())))
                 {
-                    Label_Message.Text = orderDesign.insertOrderDesign(orderDesigninfo, new SendAlert());
+                    Label_Message.Text = partOrderDesign.insertOrderDesign(orderDesigninfo, new SendAlert());
                 }
 
 
@@ -3112,7 +3239,7 @@ namespace ModuleWorkFlow
             {
                 Label_Message.Text = Lang.SAVE_SUCCESS;
                 SystemInterFace erppdminterface = new SystemInterFace();
-                OrderDesignInfo oldinfo = new OrderDesign().GetOrderDesignByNo(orderDesigninfo.ModuleId);
+                PartOrderDesignInfo oldinfo = new PartOrderDesign().GetOrderDesignByNo(orderDesigninfo.ModuleId);
                 string createModule = System.Configuration.ConfigurationSettings.AppSettings["createModule"];
                 string lastparameter = orderDesigninfo.ModuleId.Trim().Substring(orderDesigninfo.ModuleId.Trim().Length - 1, 1).ToUpper();
 
@@ -3142,7 +3269,7 @@ namespace ModuleWorkFlow
 
                 if ((createModule.Contains(lastparameter) || ERPInterface == null || !Convert.ToBoolean(ERPInterface.Trim())) && (createModule.Contains(lastparameter) || PDMInterface == null || !Convert.ToBoolean(PDMInterface.Trim())))
                 {
-                    Label_Message.Text = orderDesign.updateOrderDesign(orderDesigninfo);
+                    Label_Message.Text = partOrderDesign.updateOrderDesign(orderDesigninfo);
                 }
                 if (Label_Message.Text.Equals(Lang.SAVE_SUCCESS))
                 {
@@ -3183,7 +3310,7 @@ namespace ModuleWorkFlow
             }
             else
             {
-                orderDesign.deleteOrderDesign(txt_moduleid.Text.Trim());
+                partOrderDesign.deleteOrderDesign(txt_moduleid.Text.Trim());
             }
         }
         protected void lnkbutton_view_Click(object sender, EventArgs e)
@@ -3199,11 +3326,9 @@ namespace ModuleWorkFlow
 
         private bool checkImportent(TextBox tx, Hashtable hControtable)
         {
-            TextBox txt_moduleid = (TextBox)Table4.FindControl("txt_moduleid");
-            string createModule = System.Configuration.ConfigurationSettings.AppSettings["createModule"];
-            string lastparameter = txt_moduleid.Text.Trim().Substring(txt_moduleid.Text.Trim().Length - 1, 1).ToUpper();
+           
             bool successful = true;
-            if (hControtable.ContainsKey(tx.ID) && !createModule.Contains(lastparameter))
+            if (hControtable.ContainsKey(tx.ID) )
             {
                 ControlTableInfo cti = hControtable[tx.ID] as ControlTableInfo;
                 if (cti.important == 1 && tx.Text.Trim().Equals(""))

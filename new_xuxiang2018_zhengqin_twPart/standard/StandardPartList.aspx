@@ -20,7 +20,7 @@
 				<div class="menubox">
 					<div class="mod1">
 						<ul>
-						<li class="btn1"><asp:LinkButton ID="LinkButton1" runat="server" OnClick="lnkbutton_addxls" ToolTip="新增/add">新增/add</asp:LinkButton></li>
+						<li class="btn1"><asp:LinkButton ID="LinkButton1" runat="server" OnClick="lnkbutton_addxls" ToolTip="批量新增/add">批量新增/add</asp:LinkButton></li>
 						<li class="btn1"><asp:LinkButton ID="lnkbutton_add" runat="server" OnClick="lnkbutton_add_Click" ToolTip="新增/add">新增/add</asp:LinkButton>
 						</li>
 						<li class="btn2"><asp:LinkButton ID="lnkbutton_edit" runat="server" OnClick="lnkbutton_edit_Click" ToolTip="編輯/edit">編輯/edit</asp:LinkButton>

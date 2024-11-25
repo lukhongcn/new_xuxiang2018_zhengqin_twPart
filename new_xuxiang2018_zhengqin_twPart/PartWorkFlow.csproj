@@ -134,6 +134,7 @@
     <Content Include="admin\MaterialList.aspx" />
     <Content Include="admin\ModelList.aspx" />
     <Content Include="admin\ModelView.aspx" />
+    <Content Include="admin\ProcessHelp.aspx" />
     <Content Include="admin\SupplyList.aspx" />
     <Content Include="admin\SupplyView.aspx" />
     <Content Include="admin\UnNormalReasonsView.aspx" />
@@ -143,6 +144,7 @@
     <Content Include="admin\UserPrivilegeAddEdit.aspx" />
     <Content Include="admin\UserPrivilegeList.aspx" />
     <Content Include="admin\UserView.aspx" />
+    <Content Include="BomDetailViewExcel.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -238,6 +240,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="selectUser.asmx" />
     <Content Include="Site.Master" />
     <Content Include="standard\StandardPartlViewExcel.aspx" />
     <Content Include="standard\StandardPartAddEdit.aspx" />
@@ -317,6 +320,10 @@
       <DependentUpon>ModelView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="admin\ProcessHelp.aspx.cs">
+      <DependentUpon>ProcessHelp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="admin\SupplyList.aspx.cs">
       <DependentUpon>SupplyList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -362,6 +369,10 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BomDetailViewExcel.aspx.cs">
+      <DependentUpon>BomDetailViewExcel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -457,6 +468,10 @@
       <DependentUpon>selectModuleId.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="selectUser.asmx.cs">
+      <DependentUpon>selectUser.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -536,6 +551,7 @@
     <EmbeddedResource Include="admin\MaterialAddEdit.aspx.resx" />
     <EmbeddedResource Include="admin\MaterialList.aspx.resx" />
     <EmbeddedResource Include="admin\ModelList.aspx.resx" />
+    <EmbeddedResource Include="admin\ProcessHelp.aspx.resx" />
     <EmbeddedResource Include="admin\SupplyList.aspx.resx" />
     <EmbeddedResource Include="admin\SupplyView.aspx.resx" />
     <EmbeddedResource Include="admin\UserEdit.aspx.resx" />

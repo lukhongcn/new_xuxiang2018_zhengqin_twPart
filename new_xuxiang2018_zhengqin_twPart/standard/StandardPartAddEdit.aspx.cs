@@ -107,6 +107,9 @@ namespace ModuleWorkFlow
 
 
                     Label_HiddenFuncMode.Text = "add";
+                    IList fixprocesses = new ArrayList();
+                    MainDataGrid.DataSource = fixprocesses;
+                    MainDataGrid.DataBind();
                 }
 
 

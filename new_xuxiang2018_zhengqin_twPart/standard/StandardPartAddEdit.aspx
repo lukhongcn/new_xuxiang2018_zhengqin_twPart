@@ -68,8 +68,8 @@
                                             onitemcreated="MainDataGrid_ItemCreated" >
                                     <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary"  Wrap="true"></HeaderStyle>
                                     <Columns>
-                                        <asp:ButtonColumn Text="選擇" ButtonType="PushButton" CommandName="Select"></asp:ButtonColumn>
-                                        <asp:TemplateColumn HeaderText="加工順序"><ItemTemplate><asp:Label runat="server" ID="Label_OrderNo" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ListOrder&quot;) %&gt;"></asp:Label>
+                                        <asp:ButtonColumn Text="選擇" ButtonType="PushButton" CommandName="Select" HeaderStyle-Width="40px"></asp:ButtonColumn>
+                                        <asp:TemplateColumn HeaderText="加工順序" HeaderStyle-Width="40px"><ItemTemplate><asp:Label runat="server" ID="Label_OrderNo" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ListOrder&quot;) %&gt;"></asp:Label>
                                         </ItemTemplate>
                                         </asp:TemplateColumn>
                                         <asp:TemplateColumn Visible="False" HeaderText="工序編號"><ItemTemplate><asp:Label runat="server" ID="Label_ProcessID" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessID&quot;) %&gt;"></asp:Label>
@@ -82,7 +82,7 @@
                                         <asp:TemplateColumn HeaderText="分鐘" ><ItemTemplate><asp:TextBox Runat="server" ID="dg_txt_minute" Width="40" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessNeedMinutes&quot;) %&gt;"></asp:TextBox>
                                         </ItemTemplate>
                                         </asp:TemplateColumn>
-                                         <asp:TemplateColumn HeaderText="注意事項">
+                                         <asp:TemplateColumn HeaderText="注意事項"  HeaderStyle-Width="200px">
                                              <ItemTemplate>
                                                  <asp:TextBox ID="txt_processComment" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.processComment&quot;) %&gt;"></asp:TextBox>
                                              </ItemTemplate>
@@ -99,9 +99,9 @@
                                         </ItemTemplate>
                                         </asp:TemplateColumn>
 
-                                        <asp:ButtonColumn Text="上移" ButtonType="PushButton" HeaderText="功能" CommandName="Upper"></asp:ButtonColumn>
-                                        <asp:ButtonColumn Text="下移" ButtonType="PushButton" CommandName="Lower"></asp:ButtonColumn>
-                                        <asp:ButtonColumn Text="刪除" ButtonType="PushButton" CommandName="Delete"></asp:ButtonColumn>
+                                        <asp:ButtonColumn Text="上移" ButtonType="PushButton" HeaderText="" CommandName="Upper" HeaderStyle-Width="40px"></asp:ButtonColumn>
+                                        <asp:ButtonColumn Text="下移" ButtonType="PushButton" CommandName="Lower" HeaderStyle-Width="40px"></asp:ButtonColumn>
+                                        <asp:ButtonColumn Text="刪除" ButtonType="PushButton" CommandName="Delete" HeaderStyle-Width="40px"></asp:ButtonColumn>
                                      
                                         
                                        
