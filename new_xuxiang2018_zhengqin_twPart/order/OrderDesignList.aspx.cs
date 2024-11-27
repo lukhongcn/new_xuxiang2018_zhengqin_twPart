@@ -534,7 +534,7 @@ namespace ModuleWorkFlow
             //}
             //catch { }
 
-            ModuleWorkFlow.BLL.NewOrder.OrderDesign order = new ModuleWorkFlow.BLL.NewOrder.OrderDesign();
+            ModuleWorkFlow.BLL.NewOrder.PartOrderDesign order = new ModuleWorkFlow.BLL.NewOrder.PartOrderDesign();
             int customerModuleId = -1;
             if (!dpl_customerModuleId.SelectedValue.Equals(""))
                 customerModuleId = Convert.ToInt32(dpl_customerModuleId.SelectedValue);
@@ -570,7 +570,7 @@ namespace ModuleWorkFlow
                 Project project = new Project();
                 for (int i = 0; i < source.Count; i++)
                 {
-                    OrderDesignInfo oi = (OrderDesignInfo)source[i];
+                    PartOrderDesignInfo oi = (PartOrderDesignInfo)source[i];
                     oi.OrderSingle = project.GetProjectInfoByModuleid(oi.ModuleId).ECNO;
                 }
             }
@@ -580,7 +580,7 @@ namespace ModuleWorkFlow
                 modulelist = "(";
                 for (int i = 0; i < source.Count; i++)
                 {
-                    OrderDesignInfo oi = (OrderDesignInfo)source[i];
+                    PartOrderDesignInfo oi = (PartOrderDesignInfo)source[i];
                     modulelist = modulelist + "'" + oi.ModuleId + "'";
                     if (i == source.Count - 1)
                     {
@@ -592,7 +592,7 @@ namespace ModuleWorkFlow
                     }
                 }
             }
-            IList FactSource = new ModuleWorkFlow.BLL.PartProcess().GetLastOrderDesing(Convert.ToInt32(dpl_overStatus.SelectedValue), customeriId, producttype, modifyid, modulelist, Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, source);
+            IList FactSource = new ModuleWorkFlow.BLL.PartPartProcess().GetLastOrderDesing(Convert.ToInt32(dpl_overStatus.SelectedValue), customeriId, producttype, modifyid, modulelist, Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, source);
 
             MainDataGrid.VirtualItemCount = order.getOrderListCount(sqlstring);
 
@@ -1345,7 +1345,7 @@ namespace ModuleWorkFlow
         {
             ModuleWorkFlow.BLL.NewOrder.OrderDesign order = new ModuleWorkFlow.BLL.NewOrder.OrderDesign();
 
-            foreach (ModuleWorkFlow.Model.NewOrder.OrderDesignInfo odi in source)
+            foreach (ModuleWorkFlow.Model.NewOrder.PartOrderDesignInfo odi in source)
             {
                 if (odi.ProductEndDate.Ticks < odi.ScheduledEndDate.Ticks && odi.Overdealt == 0)
                 {
@@ -1387,7 +1387,7 @@ namespace ModuleWorkFlow
             ModuleWorkFlow.BLL.StupidReport.StupidReport report = new ModuleWorkFlow.BLL.StupidReport.StupidReport();
             IList ppilist = new ArrayList();
             Hashtable horderline = new Hashtable();
-            ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
+            ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
             ppilist = pp.getOrderLine(Convert.ToInt32(dpl_overStatus.SelectedValue), Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, 0);
             horderline = pp.getHashtableOrderCompletion(Convert.ToInt32(dpl_overStatus.SelectedValue), 0, 0, 0, "", Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, ppilist);
 
@@ -1458,7 +1458,7 @@ namespace ModuleWorkFlow
             ModuleWorkFlow.report.OrderPriceReport opreport = new ModuleWorkFlow.report.OrderPriceReport();
             IList ppilist = new ArrayList();
             Hashtable horderline = new Hashtable();
-            ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
+            ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
             int customer = 0;
             try
             {
@@ -1575,8 +1575,8 @@ namespace ModuleWorkFlow
                         LinkButton lnkbutton = (LinkButton)sender;
                         string value = MainDataGrid.DataKeys[item.ItemIndex].ToString();
 
-                        ModuleWorkFlow.BLL.NewOrder.OrderDesign order = new ModuleWorkFlow.BLL.NewOrder.OrderDesign();
-                        OrderDesignInfo oi = order.GetOrderDesignByModuleId(value);
+                        ModuleWorkFlow.BLL.NewOrder.PartOrderDesign order = new ModuleWorkFlow.BLL.NewOrder.PartOrderDesign();
+                        PartOrderDesignInfo oi = order.GetOrderDesignByModuleId(value);
 
                         OrderView.bindDate(oi.Id, false);
 
@@ -1714,7 +1714,7 @@ namespace ModuleWorkFlow
                         {
                             if (part.GetAllPartNo(ModuleId).Count == 0)
                             {
-                                OrderDesignInfo orderDesignInfo = new OrderDesign().GetOrderDesignByNo(ModuleId);
+                                PartOrderDesignInfo orderDesignInfo = new PartOrderDesign().GetOrderDesignByNo(ModuleId);
                                 if (orderDesignInfo == null)
                                 {
                                     Label_Message.Text = "模具已刪除，請刷新后重新選擇";
@@ -1824,10 +1824,10 @@ namespace ModuleWorkFlow
 
             if (modules.Count > 0)
             {
-                OrderDesign orderDesign = new OrderDesign();
+                PartOrderDesign orderDesign = new PartOrderDesign();
                 foreach (string moduelid in modules)
                 {
-                    OrderDesignInfo odi = orderDesign.GetOrderDesignByModuleId(moduelid);
+                    PartOrderDesignInfo odi = orderDesign.GetOrderDesignByModuleId(moduelid);
                     source.Add(odi);
                 }
                 outfliename = createOrder.createOrderReprot(source);
@@ -1905,7 +1905,7 @@ namespace ModuleWorkFlow
             IList FactSource = getDataByOrderDesign();
             OverReason overReason = new OverReason();
 
-            foreach (OrderDesignInfo ord in FactSource)
+            foreach (PartOrderDesignInfo ord in FactSource)
             {
                 OverReasonInfo ori = overReason.findbykey(Convert.ToInt32(ord.OverreasonId));
                 if (ori != null)
@@ -1956,7 +1956,7 @@ namespace ModuleWorkFlow
             ModuleWorkFlow.BLL.StupidReport.StupidReport report = new ModuleWorkFlow.BLL.StupidReport.StupidReport();
             IList source = new ArrayList();
 
-            ModuleWorkFlow.BLL.NewOrder.OrderDesign order = new ModuleWorkFlow.BLL.NewOrder.OrderDesign();
+            ModuleWorkFlow.BLL.NewOrder.PartOrderDesign order = new ModuleWorkFlow.BLL.NewOrder.PartOrderDesign();
 
             ModuleWorkFlow.BLL.Schedule schedule = new ModuleWorkFlow.BLL.Schedule();
 
@@ -2033,7 +2033,7 @@ namespace ModuleWorkFlow
             // source = order.GetOrderListFast("tb_order", null, "id", MainDataGrid.CurrentPageIndex + 1, MainDataGrid.PageSize, "*", sqlorderby, sqlstring, orderdiection);
             source = order.GetOrderListFast("tb_order", null, "id", 1, MainDataGrid.VirtualItemCount, "*", sqlorderby, sqlstring, orderdiection);
 
-            foreach (OrderDesignInfo odi in source)
+            foreach (PartOrderDesignInfo odi in source)
             {
                 for (int i = 0; i < dpl_customer.Items.Count; i++)
                 {
@@ -2051,7 +2051,7 @@ namespace ModuleWorkFlow
                 modulelist = "(";
                 for (int i = 0; i < source.Count; i++)
                 {
-                    OrderDesignInfo oi = (OrderDesignInfo)source[i];
+                    PartOrderDesignInfo oi = (PartOrderDesignInfo)source[i];
                     modulelist = modulelist + "'" + oi.ModuleId + "'";
                     if (i == source.Count - 1)
                     {
@@ -2063,7 +2063,7 @@ namespace ModuleWorkFlow
                     }
                 }
             }
-            return new ModuleWorkFlow.BLL.PartProcess().GetLastOrderDesing(Convert.ToInt32(dpl_overStatus.SelectedValue), customeriId, producttype, modifyid, modulelist, Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, source);
+            return new ModuleWorkFlow.BLL.PartPartProcess().GetLastOrderDesing(Convert.ToInt32(dpl_overStatus.SelectedValue), customeriId, producttype, modifyid, modulelist, Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, source);
         }
 
         //protected void lnkbutton_printbarCode_Click(object sender, EventArgs e)
@@ -2257,7 +2257,7 @@ namespace ModuleWorkFlow
                 }
             }
 
-            ModuleWorkFlow.BLL.NewOrder.OrderDesign order = new ModuleWorkFlow.BLL.NewOrder.OrderDesign();
+            ModuleWorkFlow.BLL.NewOrder.PartOrderDesign order = new ModuleWorkFlow.BLL.NewOrder.PartOrderDesign();
 
             int customerModuleId = -1;
             if (!dpl_customerModuleId.SelectedValue.Equals(""))
@@ -2265,10 +2265,10 @@ namespace ModuleWorkFlow
             string sqlstring = "AND " + order.getOrderSql(Convert.ToInt32(dpl_overStatus.SelectedValue), customeriId, producttype, modifyid, TextBox_key.Text.Trim(), Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, customerModuleId, Convert.ToInt32(dpl_model.SelectedValue), Convert.ToInt16(dpl_projectDepartMent.SelectedValue), txt_productname.Text.Trim());
             if (modules.Count > 0)
             {
-                OrderDesign orderDesign = new OrderDesign();
+                PartOrderDesign orderDesign = new PartOrderDesign();
                 foreach (string moduelid in modules)
                 {
-                    OrderDesignInfo odi = orderDesign.GetOrderDesignByModuleId(moduelid);
+                    PartOrderDesignInfo odi = orderDesign.GetOrderDesignByModuleId(moduelid);
                     source.Add(odi);
                 }
             }
@@ -2278,17 +2278,17 @@ namespace ModuleWorkFlow
             }
             string subject = dpl_customerModuleId.SelectedItem.Text;
 
-            foreach (OrderDesignInfo odi in source)
+            foreach (PartOrderDesignInfo odi in source)
             {
                 if (source.IndexOf(odi) == 0)
                 {
                     if (odi.ModuleId.IndexOf("-") > 0)
                     {
-                        subject += "修模通知";
+                        subject += "子批通知";
                     }
                     else
                     {
-                        subject += "新模通知";
+                        subject += "廠批通知";
                     }
                 }
                 subject += "," + odi.MoldName + "-" + odi.ModuleId;
@@ -2389,7 +2389,7 @@ namespace ModuleWorkFlow
                         hFinisheddiscard[di.PartNoId] = finishedOrder;
                     }
                 }
-                IList PartProcesses = new ModuleWorkFlow.BLL.PartProcess().getPartProcessInfo(moduleId, partNoId);
+                IList PartProcesses = new ModuleWorkFlow.BLL.PartPartProcess().getPartProcessInfo(moduleId, partNoId);
                 foreach (PartProcessInfo ppi in PartProcesses)
                 {
                     totalProcessNeedMinutes += ppi.ProcessNeedMinutes;
@@ -2488,7 +2488,7 @@ namespace ModuleWorkFlow
                         }
 
 
-                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
+                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
                         hpartprocess.Add(di.ModuleId.Trim() + "+" + di.PartNoId.Trim(), di.OldPartNoId);
                     }
                     else
@@ -2515,7 +2515,7 @@ namespace ModuleWorkFlow
                             ppinfo.StatusId = "Pending";
                         }
 
-                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
+                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
 
                     }
 
@@ -2590,7 +2590,7 @@ namespace ModuleWorkFlow
                 Hashtable hstatus = status.getKeyStatusInfo();
 
                 ModuleWorkFlow.BLL.Part part = new BLL.Part();
-                ModuleWorkFlow.BLL.PartProcess partprocess = new BLL.PartProcess();
+                ModuleWorkFlow.BLL.PartPartProcess partprocess = new BLL.PartPartProcess();
                 Hashtable hpartprocess = new Hashtable();
 
 
@@ -2733,11 +2733,11 @@ namespace ModuleWorkFlow
 
                             if (ppinfo.NeedProduct == 0)
                             {
-                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='FFFFFF'>" + tempprocessid + "</font></a><br></td>";
+                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='FFFFFF'>" + tempprocessid + "</font></a><br></td>";
                             }
                             else
                             {
-                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='000000'>" + tempprocessid + "</font></a><br></td>";
+                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='000000'>" + tempprocessid + "</font></a><br></td>";
                             }
                         }
                     }

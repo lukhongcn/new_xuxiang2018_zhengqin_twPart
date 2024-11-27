@@ -175,7 +175,7 @@
                         <asp:Label ID="lab_LastScheduledTime" runat="server"></asp:Label>
                         <asp:DataGrid ID="MainDataGrid" runat="server" AutoGenerateColumns="False"  AllowPaging="True" CssClass="table table-striped table-bordered table-hover table-sm" PageSize="10" AllowCustomPaging="True" AllowSorting="true" OnSortCommand="MainDataGrid_SortCommand" EnableViewState="true" OnItemDataBound="DataGridDate_ItemDataBound">
                            <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary" ></HeaderStyle>
-                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" />
+                           <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" CssClass="wrap-text" />
                             <Columns>
                                 <asp:TemplateColumn HeaderStyle-Width="10px">
                                     <ItemTemplate>

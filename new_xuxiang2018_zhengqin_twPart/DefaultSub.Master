@@ -92,6 +92,14 @@
              word-wrap: break-word
          }
 
+   .wrap-text {
+    word-wrap: break-word; /* Break long words */
+    overflow-wrap: break-word; /* Modern alternative for word-wrap */
+    white-space: normal; /* Allow wrapping */
+  
+    
+}
+
 
     </style>
 
@@ -111,7 +119,11 @@
              });
 
          });
-    </script>
+
+         function wrapText(text) {
+             return text.replace(/_/g, "<br />");
+         }
+     </script>
     <form id="form1" runat="server">
         <div>
             <asp:ContentPlaceHolder ID="contentHolder" runat="server">

@@ -197,8 +197,8 @@ namespace ModuleWorkFlow
                     Label_HiddenModuleId.Text = moduleid;
                     if (ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PEDIT"))
                     {
-                        OrderDesignInfo orderDesigninfo = new OrderDesignInfo();
-                        OrderDesign orderdesign = new OrderDesign();
+                        PartOrderDesignInfo orderDesigninfo = new PartOrderDesignInfo();
+                        PartOrderDesign orderdesign = new PartOrderDesign();
 
                         orderDesigninfo = orderdesign.GetOrderDesignByNo(moduleid);
                         func.Text = "Edit";
@@ -456,6 +456,7 @@ namespace ModuleWorkFlow
                     case "Int":
                         tb = new TextBox();
                         tb.ID = cti.ControlName;
+                        tb.CssClass = cti.CssClass;
                         //tb.Location = new Point(100, 200);//
                         if (cti.IsVisible == 1)
                         {
@@ -845,10 +846,17 @@ namespace ModuleWorkFlow
 
                 Object dataBind = Assembly.Load(cti.AssemblyPath).CreateInstance(cti.InstanceName);
                 string EffectiveControl = cti.EffectiveControl;
-                if (EffectiveControl.IndexOf("dpl_") > -1)
-                    ((DropDownList)Table4.FindControl(EffectiveControl)).SelectedValue = Reflector.CallMethod(dataBind, cti.BindMethod, args).ToString();
-                else
-                    ((TextBox)Table4.FindControl(EffectiveControl)).Text = Reflector.CallMethod(dataBind, cti.BindMethod, args).ToString();
+                try
+                {
+                    if (EffectiveControl.IndexOf("dpl_") > -1)
+                        ((DropDownList)Table4.FindControl(EffectiveControl)).SelectedValue = Reflector.CallMethod(dataBind, cti.BindMethod, args).ToString();
+                    else
+                        ((TextBox)Table4.FindControl(EffectiveControl)).Text = Reflector.CallMethod(dataBind, cti.BindMethod, args).ToString();
+                }catch (Exception ex)
+                {
+
+                }
+              
 
             }
 
@@ -1037,7 +1045,7 @@ namespace ModuleWorkFlow
             }
             if (systemkeycolumn != null)
             {
-                OrderDesignInfo odi = sysInterface.getInterSchemaObjectInfoFromOut("order", systemkeycolumn, value) as OrderDesignInfo;
+                PartOrderDesignInfo odi = sysInterface.getInterSchemaObjectInfoFromOut("order", systemkeycolumn, value) as PartOrderDesignInfo;
                 initialEdit(odi);
             }
         }
@@ -1251,7 +1259,7 @@ namespace ModuleWorkFlow
 
         }
 
-        private void initialEdit(OrderDesignInfo orderDesigninfo)
+        private void initialEdit(PartOrderDesignInfo orderDesigninfo)
         {
 
             Hashtable hcontroltables = new ControlTable().getHashTableByTableName("tb_order");
@@ -1338,6 +1346,7 @@ namespace ModuleWorkFlow
             TextBox txt_projectManager3 = (TextBox)Table4.FindControl("txt_projectManager3");
             TextBox txt_DFMModuleId = (TextBox)Table4.FindControl("txt_DFMModuleId");
             TextBox txt_businessStatus = (TextBox)Table4.FindControl("txt_businessStatus");
+            TextBox txt_OrderNumber = (TextBox)Table4.FindControl("txt_OrderNumber");
 
             DropDownList dpl_modelType = Table4.FindControl("dpl_modelType") as DropDownList;
 
@@ -1677,7 +1686,7 @@ namespace ModuleWorkFlow
                         if (hcontroltables.Contains(txt_YingYeDanDang.ID))
                         {
                             ControlTableInfo cti = hcontroltables[txt_YingYeDanDang.ID] as ControlTableInfo;
-                            if (cti.TableDateField.Equals("userajx"))
+                            if (cti.TableDateField.Equals("userajx") && orderDesigninfo.YingYeDanDang != null)
                             {
                                 txt_YingYeDanDang.Text = user.getajaxTXTtoName(orderDesigninfo.YingYeDanDang.Trim());//設定相應創建人
                             }
@@ -1829,6 +1838,11 @@ namespace ModuleWorkFlow
                     {
                         chk_isoutsource.Checked = false;
                     }
+                }
+
+                if (txt_OrderNumber != null)
+                {
+                    txt_OrderNumber.Text = orderDesigninfo.OrderNumber.ToString();
                 }
 
 
@@ -2385,6 +2399,7 @@ namespace ModuleWorkFlow
             TextBox txt_overUser = (TextBox)Table4.FindControl("txt_overUser");
             TextBox txt_copyfrom = (TextBox)Table4.FindControl("txt_copyfrom");
             TextBox txt_manufactureCost = (TextBox)Table4.FindControl("lab_manufactureCost");
+            TextBox txt_OrderNumber = (TextBox)Table4.FindControl("txt_OrderNumber");
 
             CheckBox chk_isoutsource = (CheckBox)Table4.FindControl("chk_isoutsource");
 
@@ -2399,7 +2414,7 @@ namespace ModuleWorkFlow
 
             if (func.Text.Equals("Edit"))
             {
-                orderDesigninfo = new OrderDesign().GetOrderDesignByNo(txt_moduleid.Text);
+                orderDesigninfo = new PartOrderDesign().GetOrderDesignByNo(txt_moduleid.Text);
                 if (orderDesigninfo == null)
                 {
                     Label_Message.Text = "模具已被刪除，請重新選擇";
@@ -2421,6 +2436,8 @@ namespace ModuleWorkFlow
             {
                 orderDesigninfo.isPart = 1;
             }
+
+            
 
             if (txt_price != null)
             {
@@ -2554,6 +2571,16 @@ namespace ModuleWorkFlow
             {
                 orderDesigninfo.ProductNumber = 0;
             }
+
+            try
+            {
+                orderDesigninfo.OrderNumber = Convert.ToInt32(txt_OrderNumber.Text.Trim());
+            }
+            catch
+            {
+                orderDesigninfo.OrderNumber = 0;
+            }
+
             try
             {
                 orderDesigninfo.Priority = Convert.ToInt32(dpl_priority.SelectedValue);
@@ -3155,7 +3182,11 @@ namespace ModuleWorkFlow
             string msg = "";
             string ERPInterface = System.Configuration.ConfigurationSettings.AppSettings["ERPInterface"];
             string PDMInterface = System.Configuration.ConfigurationSettings.AppSettings["PDMInterface"];
-
+            if (orderDesigninfo.ProductEndDate.Ticks >orderDesigninfo.TryDate0.Ticks)
+            {
+                Label_Message.Text = "製造截止日期必須早於交期";
+                return;
+            }
             Label_Message.Text = Lang.SAVE_SUCCESS;
             if (!func.Text.Equals("Edit"))
             {
@@ -3196,6 +3227,7 @@ namespace ModuleWorkFlow
                         orderDesigninfo.TryDate0 = new DateTime();
                         orderDesigninfo.TryDateF = new DateTime();
                         orderDesigninfo.ProductNumber = 0;
+                        orderDesigninfo.OrderNumber = 0;
                         orderDesigninfo.ERPTransStatus = "HOLD";
                         Label_Message.Text = erppdminterface.updateFromAmd(orderDesigninfo, null, "order", false, "U");
                         if (Label_Message.Text.Equals(Lang.SAVE_SUCCESS))
@@ -3247,6 +3279,7 @@ namespace ModuleWorkFlow
                 {
                     SystemInterFace erpinterface = new SystemInterFace();
                     orderDesigninfo.ProductNumber = 0;
+                    orderDesigninfo.OrderNumber = 0;
                     orderDesigninfo.ERPTransStatus = "HOLD";
                     Label_Message.Text = erppdminterface.updateFromAmd(orderDesigninfo, oldinfo, "order", true, "U");
 
@@ -3285,7 +3318,7 @@ namespace ModuleWorkFlow
                         if (!lab_oldstatusid.Text.Trim().Equals(orderDesigninfo.StatusId))
                         {
                             orderDesigninfo.StatusId = htable[orderDesigninfo.StatusId].ToString();
-                            string subject = "模具編號：" + orderDesigninfo.ModuleId + "狀態由" + htable[lab_oldstatusid.Text.Trim()].ToString() + "改為" + orderDesigninfo.StatusId;
+                            string subject = "廠批：" + orderDesigninfo.ModuleId + "狀態由" + htable[lab_oldstatusid.Text.Trim()].ToString() + "改為" + orderDesigninfo.StatusId;
                             IList source = new ArrayList();
                             source.Add(orderDesigninfo);
                             new SendAlert().sendAlert("OrderAddNotice", source, subject);

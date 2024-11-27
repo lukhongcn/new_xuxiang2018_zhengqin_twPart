@@ -747,10 +747,10 @@ namespace ModuleWorkFlow
                     dr["supplyId"] = "";
                     dr["processComment"] = "";
                     dr["ProcessNo"] = "";
-                    dt.Rows.InsertAt(dr, MainDataGrid.Items.Count - 1);
+                   
                     
                    
-                    //dt.Rows.Add(dr);
+                    dt.Rows.Add(dr);
                 }
                 Label Label_OrderNo = MainDataGrid.Items[i].FindControl("Label_OrderNo") as Label;
                 Label label_processid = MainDataGrid.Items[i].FindControl("Label_ProcessID") as Label;
@@ -779,11 +779,9 @@ namespace ModuleWorkFlow
                 dr["supplyId"] = dpl_Supply.SelectedValue;
                 dr["processComment"] = txt_processComment.Text.Trim();
                 dr["ProcessNo"] = lab_ProcessNo.Text.Trim();
-                dt.Rows.InsertAt(dr, MainDataGrid.Items.Count - 1);
-                
-               
+              
 
-                //dt.Rows.Add(dr);
+                dt.Rows.Add(dr);
             }
 
             if (selectRow == -1)

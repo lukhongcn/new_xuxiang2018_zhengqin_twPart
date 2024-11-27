@@ -22,6 +22,7 @@ using ModuleWorkFlow.BLL.Outsource;
 using ModuleWorkFlow.Model.Outsource;
 using ModuleWorkflow.OutSource.BLL.Interface;
 using Utility;
+using System.Collections.Generic;
 namespace ModuleWorkFlow.admin
 {
     /// <summary>
@@ -214,7 +215,7 @@ namespace ModuleWorkFlow.admin
                 }
                 else
                 {
-                    Label_Message.Text = Translate.translateString("未指定模具編號");//Lang.NO_MODULEID;
+                    Label_Message.Text = Translate.translateString("未指定廠批編號");//Lang.NO_MODULEID;
                     return;
                 }
                
@@ -269,20 +270,7 @@ namespace ModuleWorkFlow.admin
                     }
                     func.Text = "Edit";
                     ModuleWorkFlow.report.BomPartDetail bpd = new ModuleWorkFlow.report.BomPartDetail();
-                    IList source = bpd.CheckDetailElectFile(txt_content.Text.Substring(0, txt_content.Text.Length - 1).Split('\n'), bomDesignInfo, true, "public");
-
-                    string userno = "";
-                    if (Session["userid"] != null)
-                    {
-                        userno = Session["userid"].ToString();
-                    }
-                    IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
-                    outsourceApplyDesigninfo.Creater = userno;
-                    outsourceApplyDesigninfo.CreateDate = DateTime.Now;
-
-                    ModuleWorkFlow.BLL.BomDetail bd = new BomDetail();
-
-                    Label_Message.Text = bd.updateAllBomDetail(source,true, true, lab_User.Text, new SendAlert(), false, true, new OutSourceDetail(), outsourceApplyDesigninfo);
+                    List<PartBomDetailInfo> source = bpd.CheckDetailElectFile(txt_content.Text.Substring(0, txt_content.Text.Length - 1).Split('\n'), bomDesignInfo, true, "public");
 
 
                     ierr = bpd.getErrorList();
@@ -293,7 +281,26 @@ namespace ModuleWorkFlow.admin
                         dg_error.Visible = true;
                         dg_error.DataSource = ierr;
                         dg_error.DataBind();
+                        return;
                     }
+
+                   
+                    string userno = "";
+                    if (Session["userid"] != null)
+                    {
+                        userno = Session["userid"].ToString();
+                    }
+                    IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
+                    outsourceApplyDesigninfo.Creater = userno;
+                    outsourceApplyDesigninfo.CreateDate = DateTime.Now;
+
+                    ModuleWorkFlow.BLL.PartBomDetail bd = new PartBomDetail();
+                    OrderDesignInfo orderDesignInfo = new OrderDesign().GetOrderDesignByModuleId(bomDesignInfo.ModuleId);
+
+                    Label_Message.Text = bd.updateAllBomDetail(orderDesignInfo.StatusId, source,true, true, lab_User.Text, new SendAlert(), false, true, new OutSourceDetail(), outsourceApplyDesigninfo);
+
+
+                    
                 }
             }
             else//edit狀態

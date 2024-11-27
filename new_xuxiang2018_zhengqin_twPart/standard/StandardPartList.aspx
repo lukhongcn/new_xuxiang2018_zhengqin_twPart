@@ -60,7 +60,7 @@
 							 AllowPaging="True"   CssClass="table table-striped table-bordered table-hover table-sm"  AllowCustomPaging="true" style="table-layout:fixed;width: 100%;"
 								onitemcreated="dg_StandProcess_ItemCreated">
 								<HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary" Wrap="true"></HeaderStyle>
-							    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" />
+							    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" CssClass="wrap-text"/>
 								<Columns>
 									<asp:TemplateColumn HeaderStyle-Width ="60px">
 										<ItemTemplate>
@@ -69,11 +69,11 @@
 									</asp:TemplateColumn>
 									<asp:BoundColumn HeaderText="工序類型編號" DataField="StandardProcessType" Visible="false"></asp:BoundColumn>
 									<asp:BoundColumn HeaderText="工序類型" DataField="TypeName" HeaderStyle-Width ="100px"></asp:BoundColumn>
-									<asp:BoundColumn HeaderText="工序名" DataField="StandardProcessName" HeaderStyle-Width ="100px"></asp:BoundColumn>
+									<asp:BoundColumn HeaderText="工序名" DataField="StandardProcessName"   ItemStyle-Width="100px"  ></asp:BoundColumn>
 													
-									<asp:TemplateColumn HeaderStyle-Width ="700px">
+									<asp:TemplateColumn HeaderStyle-Width ="600px">
 										<HeaderTemplate>
-											<asp:Label id="dg_header_productId" runat="server" text='工序列表'></asp:Label>
+											<asp:Label id="dg_header_productId" runat="server" text='工序列表'  Style="overflow-wrap: anywhere;"></asp:Label>
 										</HeaderTemplate>
 										<ItemTemplate>
 											<asp:Label id="dg_lab_StandardProcessName" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessList") %>' />
