@@ -171,7 +171,7 @@
                         </asp:TemplateColumn>
 
                         <asp:BoundColumn DataField="Priority" HeaderText="µ¥¯Å" Visible="false"></asp:BoundColumn>
-                        <asp:TemplateColumn HeaderText="¤u§Ç" HeaderStyle-Width="565px"><ItemTemplate>
+                        <asp:TemplateColumn HeaderText="¤u§Ç" HeaderStyle-Width="635px"><ItemTemplate>
                             <asp:Label runat="server" ID="Label_ProcessName" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessName") %>' ></asp:Label>
                              <asp:Label runat="server" ID="dg_lnk_ProcessName" Text='' Visible="false"></asp:Label>
                         </ItemTemplate>

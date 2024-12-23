@@ -37,17 +37,18 @@ namespace ModuleWorkFlow.standard
         {
 
             standProcessType = new WorkFlow.BLL.Standard.StandProcessType();
+            Tmenu menu = new Tmenu();
+            TmenuInfo mi = menu.findbykey(menuid);
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+
+                master.Menuname = mi.Menuname;
+                menuname = mi.Menuname;
+            }
             if (!this.IsPostBack)
             {
-                Tmenu menu = new Tmenu();
-                TmenuInfo mi = menu.findbykey(menuid);
-                if (this.Master != null && this.Master is DefaultSub)
-                {
-                    DefaultSub master = (DefaultSub)this.Master;
-
-                    master.Menuname = mi.Menuname;
-                    menuname = mi.Menuname;
-                }
+               
 
                 if (ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PQUERY"))
                 {

@@ -520,7 +520,7 @@ namespace ModuleWorkFlow
                 }
 
                 Label dueDate = (Label)e.Item.FindControl("dg_lab_dueDate");
-                if (dueDate.Text.Equals("01-01 0:00"))
+                if (dueDate.Text.Equals("01-01 00:00"))
                 {
                     dueDate.Text = "";
                 }
@@ -669,7 +669,7 @@ namespace ModuleWorkFlow
 
             if (!PartNolist.Equals(""))
             {
-                string url = "PartModifyEditall.aspx?menuid=" + menuid + "&moduleid=" + ModuleId + "&pageIndex=" + (Convert.ToInt32(lab_nowpage.Text) - 1).ToString() + "&PartNolist=" + PartNolist.Substring(1);
+                string url = "PartModifyEditall.aspx?menuid=" + menuid + "&moduleid=" + Server.UrlEncode(ModuleId) + "&pageIndex=" + (Convert.ToInt32(lab_nowpage.Text) - 1).ToString() + "&PartNolist=" + Server.UrlEncode(PartNolist.Substring(1));
                 Response.Redirect(url);
             }
             else

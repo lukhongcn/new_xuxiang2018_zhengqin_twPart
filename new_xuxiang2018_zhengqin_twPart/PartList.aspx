@@ -250,7 +250,7 @@
                     數量
             </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:Label id="dg_lab_EachBatchCount" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.EachBatchCount") %>'/>
+                    <asp:Label id="dg_lab_EachBatchCount" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.LeastCount") %>'/>
             </ItemTemplate>
             </asp:TemplateColumn>
 

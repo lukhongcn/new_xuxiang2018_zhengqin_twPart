@@ -60,21 +60,24 @@ namespace ModuleWorkFlow
             {
                 menuid = Request.Params["menuid"];
             }
+
+            Tmenu menu = new Tmenu();
+            TmenuInfo mi = menu.findbykey(menuid);
+
+
+
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+
+                master.Menuname = mi.Menuname;
+                menuname = mi.Menuname;
+            }
+
             //ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PEDIT", Request.Params["moduleid"], Request.Params["partnoid"]);
             if (!this.IsPostBack)
             {
-                Tmenu menu = new Tmenu();
-                TmenuInfo mi = menu.findbykey(menuid);
-
                
-
-                if (this.Master != null && this.Master is DefaultSub)
-                {
-                    DefaultSub master = (DefaultSub)this.Master;
-
-                    master.Menuname = mi.Menuname;
-                    menuname = mi.Menuname;
-                }
 
                 ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PEDIT");
                 Label_HiddenSelectRow.Text = "-1";

@@ -331,3 +331,6 @@ D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\D
 D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\bin\report.dll
 D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\bin\report.pdb
 D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\Debug\ModuleWorkFlow.admin.ProcessHelp.aspx.resources
+D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\Debug\ModuleWorkFlow.BomDetailListCopy.resources
+D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\Debug\ModuleWorkFlow.BomDetailView.aspx.resources
+D:\project\new_xuxiang2018_zhengqin_twPart\new_xuxiang2018_zhengqin_twPart\obj\Debug\ModuleWorkFlow.ParRelation.aspx.resources

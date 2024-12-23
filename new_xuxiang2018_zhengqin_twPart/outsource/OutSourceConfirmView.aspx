@@ -88,7 +88,7 @@
                         <asp:DataGrid ID="dg_OutSourceDetail" runat="server" CellPadding="2"  CssClass="table table-striped table-bordered table-hover table-sm" 
                            AutoGenerateColumns="False" style="table-layout:fixed" >
                              <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="table-primary" ></HeaderStyle>
-                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" />
+                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" CssClass="wrap-text"/>
                             <Columns>
                                 <asp:TemplateColumn HeaderStyle-Width ="10px" >
                                     <HeaderTemplate>
@@ -124,7 +124,7 @@
                                     </ItemTemplate>
                                 </asp:TemplateColumn>
 
-                                <asp:TemplateColumn HeaderText="回厂日期" HeaderStyle-Width="30px">
+                                <asp:TemplateColumn HeaderText="回厂日期" HeaderStyle-Width="30px" Visible="false">
 
                                     <ItemTemplate>
                                         <asp:Label ID="dg_lab_requireDate" runat="server" Text='<%#DataBinder.Eval(Container, "DataItem.RequireDate","{0:yyyy-M-d}")%>' />
@@ -133,10 +133,15 @@
                                 <asp:TemplateColumn HeaderText="答覆交期" HeaderStyle-Width="30px">
 
                                     <ItemTemplate>
-                                        <asp:TextBox ID="dg_lab_confirmDate" runat="server" CssClass="datetime-picker" Width="100" Text='<%#DataBinder.Eval(Container, "DataItem.ConfirmDate","{0:yyyy-M-d HH:mm}")%>' />
+                                        <asp:TextBox ID="dg_lab_confirmDate" runat="server" CssClass="datetime-picker" Width="100px" Text='<%#DataBinder.Eval(Container, "DataItem.ConfirmDate","{0:yyyy-M-d HH:mm}")%>' />
                                       
                                     </ItemTemplate>
                                 </asp:TemplateColumn>
+                               <asp:TemplateColumn HeaderText="可外发数量" HeaderStyle-Width="20px">
+                                    <ItemTemplate>
+                                        <asp:Label ID="dg_lab_LeastCount" runat="server" Width="40"  />
+                                    </ItemTemplate>
+                               </asp:TemplateColumn>
                                <asp:TemplateColumn HeaderText="答覆數量" HeaderStyle-Width="20px">
                                   <ItemTemplate>
                                       <asp:TextBox ID="dg_txt_confirmCount" runat="server" Width="40" Text='<%#DataBinder.Eval(Container, "DataItem.ConfirmCount")%>' />
@@ -178,6 +183,19 @@
 
                                     <ItemTemplate>
                                         <asp:Label ID="dg_lab_serno" runat="server" Text='<%#DataBinder.Eval(Container, "DataItem.SerNo")%>' />
+                                    </ItemTemplate>
+                                </asp:TemplateColumn>
+                                 <asp:TemplateColumn HeaderText="外包方式" HeaderStyle-Width="30px">
+
+                                     <ItemTemplate>
+                                         <asp:DropDownList ID="dg_drp_PartComment" runat="server" />
+                                         <asp:Label ID="dg_lab_PartComment" runat="server" Text='<%#DataBinder.Eval(Container, "DataItem.PartComment")%>' Visible="false" />
+                                     </ItemTemplate>
+                                 </asp:TemplateColumn>
+                                <asp:TemplateColumn HeaderText="processno" Visible="false">
+
+                                    <ItemTemplate>
+                                        <asp:Label ID="dg_lab_Processno" runat="server" Text='<%#DataBinder.Eval(Container, "DataItem.Processno")%>' />
                                     </ItemTemplate>
                                 </asp:TemplateColumn>
 

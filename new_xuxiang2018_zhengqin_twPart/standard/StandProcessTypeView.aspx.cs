@@ -32,19 +32,20 @@ namespace ModuleWorkFlow
         private void Page_Load(object sender, System.EventArgs e)
         {
             standProcessType = new StandProcessType();
-           
+
+            Tmenu menu = new Tmenu();
+            TmenuInfo mi = menu.findbykey(menuid);
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+
+                master.Menuname = mi.Menuname;
+                menuname = mi.Menuname;
+            }
 
             if (!this.IsPostBack)
             {
-                Tmenu menu = new Tmenu();
-                TmenuInfo mi = menu.findbykey(menuid);
-                if (this.Master != null && this.Master is DefaultSub)
-                {
-                    DefaultSub master = (DefaultSub)this.Master;
-
-                    master.Menuname = mi.Menuname;
-                    menuname = mi.Menuname;
-                }
+                
                 bindParent();
                 if (Request.QueryString["standid"] != null)
                 {

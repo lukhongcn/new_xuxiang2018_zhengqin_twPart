@@ -105,7 +105,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="Textbox">
+                    <div class="container mt-3 border border-primary">
                         <asp:DataGrid ID="dg_OutSourceDetail" runat="server"
                             AutoGenerateColumns="False"  AllowPaging="false"
                             CssClass="table table-striped table-bordered table-hover table-sm" 
@@ -224,9 +224,9 @@
                            <PagerStyle Mode="NumericPages" CssClass="table-primary"></PagerStyle>
                         </asp:DataGrid>
                     </div>
-                    <div class="Textbox">
+                    <div class="container mt-3 border border-primary">
                     </div>
-                    <div class="box">
+                    <div class="container mt-3 border border-primary">
                         <table width="100%" align="center" class="tbMessage" border="1">
                             <tr valign="middle">
                                 <td width="15%" height="28">

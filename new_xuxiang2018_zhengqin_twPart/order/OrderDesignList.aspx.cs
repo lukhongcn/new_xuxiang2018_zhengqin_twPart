@@ -513,26 +513,26 @@ namespace ModuleWorkFlow
             modifyid = Convert.ToInt32(dpl_ismodify.SelectedValue);
             DateTime startdate = Convert.ToDateTime("0001/1/1");
             DateTime enddate = Convert.ToDateTime("0001/1/1");
-            //try
-            //{
-            //    if (txt_startdatetime.Text.Equals(""))
-            //    {
-            //        startdate = Convert.ToDateTime("0001/1/1");
-            //    }
-            //    else
-            //    {
-            //        startdate = Convert.ToDateTime(txt_startdatetime.Text);
-            //    }
-            //    if (txt_endstartdatetime.Text.Equals(""))
-            //    {
-            //        enddate = Convert.ToDateTime("0001/1/1");
-            //    }
-            //    else
-            //    {
-            //        enddate = Convert.ToDateTime(txt_endstartdatetime.Text);
-            //    }
-            //}
-            //catch { }
+            try
+            {
+                if (txt_startdatetime.Text.Equals(""))
+                {
+                    startdate = Convert.ToDateTime("0001/1/1");
+                }
+                else
+                {
+                    startdate = Convert.ToDateTime(txt_startdatetime.Text);
+                }
+                if (txt_endstartdatetime.Text.Equals(""))
+                {
+                    enddate = Convert.ToDateTime("0001/1/1");
+                }
+                else
+                {
+                    enddate = Convert.ToDateTime(txt_endstartdatetime.Text);
+                }
+            }
+            catch { }
 
             ModuleWorkFlow.BLL.NewOrder.PartOrderDesign order = new ModuleWorkFlow.BLL.NewOrder.PartOrderDesign();
             int customerModuleId = -1;
@@ -862,11 +862,11 @@ namespace ModuleWorkFlow
                         }
                     }
 
-                    if (cti.TableField.Equals("productname"))
-                    {
-                        if (e.Item.Cells[i].Text.Length > 15)
-                            e.Item.Cells[i].Text = e.Item.Cells[i].Text.Substring(0, 14);
-                    }
+                    //if (cti.TableField.Equals("productname"))
+                    //{
+                    //    if (e.Item.Cells[i].Text.Length > 15)
+                    //        e.Item.Cells[i].Text = e.Item.Cells[i].Text.Substring(0, 14);
+                    //}
 
                     if (cti.TableField.Equals("StatusId"))
                     {
@@ -1387,7 +1387,7 @@ namespace ModuleWorkFlow
             ModuleWorkFlow.BLL.StupidReport.StupidReport report = new ModuleWorkFlow.BLL.StupidReport.StupidReport();
             IList ppilist = new ArrayList();
             Hashtable horderline = new Hashtable();
-            ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
+            ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
             ppilist = pp.getOrderLine(Convert.ToInt32(dpl_overStatus.SelectedValue), Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, 0);
             horderline = pp.getHashtableOrderCompletion(Convert.ToInt32(dpl_overStatus.SelectedValue), 0, 0, 0, "", Convert.ToInt32(dpl_datetime.SelectedValue), startdate, enddate, ppilist);
 
@@ -1458,7 +1458,7 @@ namespace ModuleWorkFlow
             ModuleWorkFlow.report.OrderPriceReport opreport = new ModuleWorkFlow.report.OrderPriceReport();
             IList ppilist = new ArrayList();
             Hashtable horderline = new Hashtable();
-            ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
+            ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
             int customer = 0;
             try
             {
@@ -2389,7 +2389,7 @@ namespace ModuleWorkFlow
                         hFinisheddiscard[di.PartNoId] = finishedOrder;
                     }
                 }
-                IList PartProcesses = new ModuleWorkFlow.BLL.PartPartProcess().getPartProcessInfo(moduleId, partNoId);
+                IList PartProcesses = new ModuleWorkFlow.BLL.PartProcess().getPartProcessInfo(moduleId, partNoId);
                 foreach (PartProcessInfo ppi in PartProcesses)
                 {
                     totalProcessNeedMinutes += ppi.ProcessNeedMinutes;
@@ -2488,7 +2488,7 @@ namespace ModuleWorkFlow
                         }
 
 
-                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
+                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
                         hpartprocess.Add(di.ModuleId.Trim() + "+" + di.PartNoId.Trim(), di.OldPartNoId);
                     }
                     else
@@ -2515,7 +2515,7 @@ namespace ModuleWorkFlow
                             ppinfo.StatusId = "Pending";
                         }
 
-                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
+                        tablesyyleprocess += "<td bgcolor='#" + color + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, new Hashtable(), outsourceDetail) + "' ><font color='000000'>" + ppinfo.ProcessName + "</font></a><br></td>";
 
                     }
 
@@ -2590,7 +2590,7 @@ namespace ModuleWorkFlow
                 Hashtable hstatus = status.getKeyStatusInfo();
 
                 ModuleWorkFlow.BLL.Part part = new BLL.Part();
-                ModuleWorkFlow.BLL.PartPartProcess partprocess = new BLL.PartPartProcess();
+                ModuleWorkFlow.BLL.PartProcess partprocess = new BLL.PartProcess();
                 Hashtable hpartprocess = new Hashtable();
 
 
@@ -2733,11 +2733,11 @@ namespace ModuleWorkFlow
 
                             if (ppinfo.NeedProduct == 0)
                             {
-                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='FFFFFF'>" + tempprocessid + "</font></a><br></td>";
+                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='FFFFFF'>" + tempprocessid + "</font></a><br></td>";
                             }
                             else
                             {
-                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartPartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='000000'>" + tempprocessid + "</font></a><br></td>";
+                                tablesyyleprocess += "<td bgcolor='#" + si.StatusColor.Substring(2).Trim() + "' width='25px' height='25px'><a    title='" + new BLL.PartProcess().bindProcess(ppinfo, si, hRelation, outsourceDetail) + "' ><font color='000000'>" + tempprocessid + "</font></a><br></td>";
                             }
                         }
                     }

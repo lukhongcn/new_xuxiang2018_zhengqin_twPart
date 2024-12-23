@@ -1,4 +1,4 @@
-﻿<%@ Page language="c#" Codebehind="StandardPartAddEdit.aspx.cs" AutoEventWireup="false"  MasterPageFile="~/DefaultSub.Master" Inherits="ModuleWorkFlow.StandardPartAddEdit" smartNavigation="True" %>
+﻿<%@ Page language="c#" Codebehind="StandardPartAddEdit.aspx.cs" AutoEventWireup="false"  MasterPageFile="~/DefaultSub.Master" Inherits="ModuleWorkFlow.StandardPartAddEdit" smartNavigation="True" MaintainScrollPositionOnPostback="true" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentHolder" runat="server">
@@ -57,12 +57,20 @@
                              <ContentTemplate>
                             <div class="container mt-3">
                                 <div class="row g-0 mb-3">
-                                    <div class="col-lg-4  d-flex">
-                                        <div class="overflow-auto border border-primary" style="height: 360px; width:400px;">
-                                            <asp:checkboxlist id="CheckBoxList_Process" runat="server" AutoPostBack="True" RepeatDirection="Vertical"  repeatcolumns="2" Width="400px"  RepeatLayout="Table" ></asp:checkboxlist>
+                                     <div class="col-lg-4  d-flex">
+                                           <asp:Label ID="Label3" runat = "server" Text = "工藝類型"  CssClass="me-10"/>
+                                           <asp:DropDownList ID="dpl_processGroup" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1" OnSelectedIndexChanged="dpl_processGroup_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                     </div>
+                                </div>
+                                <div class="row g-0 mb-3">
+                                    <div class="col-lg-3  d-flex">
+                                        <div class="overflow-auto border border-primary" style="height: 400px; width:250px;" onscroll="saveScrollPosition()" >
+                                            
+                                            <asp:checkboxlist id="CheckBoxList_Process" runat="server" AutoPostBack="True" RepeatDirection="Vertical"  repeatcolumns="1" Width="200px"  RepeatLayout="Table"   ></asp:checkboxlist>
+                                           
                                         </div>
                                     </div>
-                                   <div class="col-lg-8  d-flex">
+                                   <div class="col-lg-9  d-flex">
                                     <asp:datagrid id="MainDataGrid" runat="server" 
                                             AutoGenerateColumns="False" CssClass="table table-striped table-bordered table-hover table-sm" style="height: 40px; overflow-y: auto;"
                                             onitemcreated="MainDataGrid_ItemCreated" >
@@ -81,6 +89,11 @@
                                   
                                         <asp:TemplateColumn HeaderText="分鐘" ><ItemTemplate><asp:TextBox Runat="server" ID="dg_txt_minute" Width="40" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessNeedMinutes&quot;) %&gt;"></asp:TextBox>
                                         </ItemTemplate>
+                                        </asp:TemplateColumn>
+                                         <asp:TemplateColumn HeaderText="抽檢率(%)" ><ItemTemplate>
+                                             <asp:TextBox Runat="server" ID="dg_txt_qcPercent" Width="40" 
+                     Text='<%# string.Format("{0:P0}", Eval("QCPercent")) %>' />
+                                             </ItemTemplate>
                                         </asp:TemplateColumn>
                                          <asp:TemplateColumn HeaderText="注意事項"  HeaderStyle-Width="200px">
                                              <ItemTemplate>
@@ -115,6 +128,7 @@
                              <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="MainDataGrid" EventName="ItemCommand" />
                                     <asp:AsyncPostBackTrigger ControlID="CheckBoxList_Process" EventName="SelectedIndexChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="dpl_processGroup" EventName="SelectedIndexChanged" />
                              </Triggers>
                         </asp:UpdatePanel>
                     </div>
@@ -138,3 +152,30 @@
     </div>
  </div>
 </asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="JSHolder" runat="server">
+        
+   
+        <script type="text/javascript">
+            // 保存滚动位置
+            function saveScrollPosition() {
+                sessionStorage.setItem('scrollPosition', document.querySelector('.overflow-auto').scrollTop);
+            }
+
+            // 恢复滚动位置
+            function restoreScrollPosition() {
+        var scrollPos = sessionStorage.getItem('scrollPosition');
+            if (scrollPos) {
+                document.querySelector('.overflow-auto').scrollTop = scrollPos;
+        }
+    }
+
+            // 页面加载后恢复滚动位置
+            Sys.Application.add_load(function() {
+                restoreScrollPosition();
+    });
+        </script>
+
+   
+</asp:Content>
+
+

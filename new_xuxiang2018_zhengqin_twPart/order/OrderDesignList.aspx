@@ -135,7 +135,7 @@
                                     <asp:DropDownList ID="dpl_datetime" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1">
                                     <asp:ListItem Value="10">不選擇</asp:ListItem>
                                     <asp:ListItem Value="5">製造截止日期</asp:ListItem>
-                                    <asp:ListItem Value="3">最後交貨日期(</asp:ListItem>
+                                    <asp:ListItem Value="3">最後交貨日期</asp:ListItem>
                
                                     </asp:DropDownList>
                                 </div>

@@ -23,6 +23,8 @@ using ModuleWorkFlow.BLL.Outsource;
 using ModuleWorkFlow.Model.Outsource;
 using ModuleWorkflow.OutSource.BLL.Interface;
 using Utility;
+using System.Collections.Generic;
+using System.Linq;
 //using RedisUtilty;
 
 namespace ModuleWorkFlow
@@ -37,6 +39,7 @@ namespace ModuleWorkFlow
         protected System.Web.UI.WebControls.Label Label_ModuleId;
        
         protected System.Web.UI.WebControls.CheckBoxList CheckBoxList_Process;
+        protected CheckBoxList CheckBoxList1;
         protected System.Web.UI.WebControls.DataGrid MainDataGrid;
         protected System.Web.UI.WebControls.Label Label_Message;
         protected System.Web.UI.WebControls.Label Label_HiddenSelectRow;
@@ -84,6 +87,7 @@ namespace ModuleWorkFlow
         int isProject;
         //Hashtable htPartProcess;
         protected System.Web.UI.WebControls.Label lab_productdate;
+        
 
         private void Page_Load(object sender, System.EventArgs e)
         {
@@ -234,12 +238,14 @@ namespace ModuleWorkFlow
 
 
 
-
+                bindProcessType();
+                bindProcess();
                 BindDataProcessAll();
               
                
                 ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
-                DataSet ds = new PartDetail().GetDSPartDetailInfos(Label_ModuleId.Text.Trim(), partno.Trim());
+                PartPartDetail partDetail = new PartPartDetail();
+                DataSet ds = partDetail.GetDSPartDetailInfos(Label_ModuleId.Text.Trim(), partno.Trim());
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     dataBindHandly(ds);
@@ -247,7 +253,7 @@ namespace ModuleWorkFlow
                 else
                 {
                     ModuleWorkFlow.BLL.Process process = new ModuleWorkFlow.BLL.Process();
-                    IList fixprocesses = new ArrayList();
+                    List<PartStandProcessInfo> fixprocesses = new List<PartStandProcessInfo>();
                     if (lab_type.Text.Trim().Equals(""))
                     {
                         PartType parttype = new PartType();
@@ -256,7 +262,7 @@ namespace ModuleWorkFlow
                         {
                             if (pi.PriceType != null && pi.PriceType.Equals("ALWAYSFIRST") && isProject == 0 && parttype.GetPartTypeByPartNo(partno.Trim()).NoFirstProcess == 0)
                             {
-                                StandProcessInfo spi = new StandProcessInfo();
+                                PartStandProcessInfo spi = new PartStandProcessInfo();
                                 spi.ProcessId = pi.ProcessId;
                                 spi.ProcessName = pi.ProcessName;
                                 spi.CustomerProcessId = pi.CustomerProcessId;
@@ -327,22 +333,198 @@ namespace ModuleWorkFlow
             }
         }
 
+        protected void dpl_processtype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bindProcess();
+        }
+
+        private void bindProcessType()
+        {
+            StandProcessType standprocesstype = new StandProcessType();
+            dpl_processtype.DataSource = standprocesstype.GetStandProcessType(false);
+            dpl_processtype.DataTextField = "TypeName";
+            dpl_processtype.DataValueField = "id";
+            dpl_processtype.DataBind();
+            dpl_processtype.Items.Insert(0, new ListItem(Translate.translateString("所有"), "0"));
+        }
+
+        private void bindProcess()
+        {
+            if (dpl_standprocess.Items.Count == 0 || dpl_standprocess.SelectedValue.Trim().Equals(""))
+            {
+                StandProcess standprocess = new StandProcess();
+                WorkFlow.Model.Standard.StandProcessInfo spi = new WorkFlow.Model.Standard.StandProcessInfo();
+                IList stands = new ArrayList();
+                if (!dpl_processtype.SelectedValue.Equals(""))
+                    stands = standprocess.GetStandProcessByType(Convert.ToInt32(dpl_processtype.SelectedValue));
+
+                spi.StandardProcessName = "";
+                stands.Insert(0, spi);
+                dpl_standprocess.DataSource = stands;
+                dpl_standprocess.DataTextField = "StandardProcessName";
+                dpl_standprocess.DataValueField = "StandardProcessName";
+                dpl_standprocess.DataBind();
+            }
+        }
+
+        protected void dpl_standprocess_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ModuleWorkFlow.BLL.Process process = new ModuleWorkFlow.BLL.Process();
+            List<PartStandProcessInfo> fixprocesses = new List<PartStandProcessInfo>();
+            if (lab_type.Text.Trim().Equals(""))
+            {
+                IList processes = process.getProcessInfoExceptDesign();
+                foreach (ModuleWorkFlow.Model.ProcessInfo pi in processes)
+                {
+                    PartType parttype = new PartType();
+                    string partno = "";
+                    if (list_partnos.Items.Count > 0)
+                    {
+                        partno = list_partnos.Items[0].Value.Trim();
+                    }
+                    if (pi.PriceType != null && pi.PriceType.Equals("ALWAYSFIRST") && Label_ModuleId.Text.IndexOf("-") < 0 && parttype.GetPartTypeByPartNo(partno).NoFirstProcess == 0)
+                    {
+                        PartStandProcessInfo spi = new PartStandProcessInfo();
+                        spi.ProcessId = pi.ProcessId;
+                        spi.ProcessName = pi.ProcessName;
+                        int ProcessNeedMinutes = 6;
+                        if (System.Configuration.ConfigurationSettings.AppSettings["ProcessNeedMinutes"] != null)
+                        {
+                            try
+                            {
+                                if (Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ProcessNeedMinutes"]) > 0)
+                                {
+                                    ProcessNeedMinutes = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ProcessNeedMinutes"]);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                        spi.ProcessNeedMinutes = ProcessNeedMinutes;
+                        spi.CustomerProcessId = pi.CustomerProcessId;
+                        spi.CustomerProcessName = pi.CustomerProcessName;
+                        spi.pricetype = pi.PriceType;
+                        spi.ListOrder = 1;
+
+                        //�ȮɱN���Ҩ�s�����t��X�����۰ʲK�[B�u��
+                        string lastone = Label_ModuleId.Text.Substring(Label_ModuleId.Text.Length - 1, 1);
+
+                        if (System.Configuration.ConfigurationSettings.AppSettings["lastparameter"] != null)
+                        {
+                            string[] parameter = System.Configuration.ConfigurationSettings.AppSettings["lastparameter"].Split(',');
+                            //if (!lastone.Contains("X") && !lastone.Contains("x"))
+                            foreach (string lastparameter in parameter)
+                            {
+                                if (lastone.Contains(lastparameter))
+                                {
+                                    fixprocesses.Add(spi);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            fixprocesses.Add(spi);
+                        }
+
+                        break;
+                    }
+                }
+            }
+            dataStandBind(dpl_processtype.SelectedValue, dpl_standprocess.SelectedValue, fixprocesses);
+        }
+
         private void BindDataProcessAll()
         {
             ModuleWorkFlow.BLL.Process process = new ModuleWorkFlow.BLL.Process();
+            List<ModuleWorkFlow.Model.ProcessInfo> processes
+                = process.getProcessInfoExceptDesign().Cast<ModuleWorkFlow.Model.ProcessInfo>().ToList();
+
+            var groupedProcesses = processes
+            .Select(p => new
+            {
+                JobGroup = string.IsNullOrEmpty(p.JobGroup) ? "" : p.JobGroup,
+                JobGroupName = string.IsNullOrEmpty(p.JobGroup) ? "其它" : p.JobGroupName,
+                ProcessInfo = p
+            })
+            .GroupBy(p => new { p.JobGroup, p.JobGroupName })
+            .Select(g => new
+            {
+                JobGroup = g.Key.JobGroup,
+                JobGroupName = g.Key.JobGroupName
+            })
+           .ToList();
+
+            dpl_processGroup.DataSource = groupedProcesses;
+            dpl_processGroup.DataTextField = "JobGroupName";
+            dpl_processGroup.DataValueField = "JobGroup";
+            dpl_processGroup.DataBind();
+
+            var filteredProcesses = processes.FindAll(m => m.JobGroup != null && m.JobGroup.Equals(dpl_processGroup.SelectedValue));
+
+            // Group the filtered processes by ProcessName and ProcessId
+            var groupedFilterProcesses = filteredProcesses
+                .GroupBy(p => new { p.ProcessName, p.ProcessId,p.CustomerProcessId,p.CustomerProcessName })
+                .Select(g => new
+                {
+                    ProcessName = g.Key.ProcessName,
+                    ProcessId = g.Key.ProcessId,
+                    CustomerProcessId = g.Key.CustomerProcessId,
+                    CustomerProcessName = g.Key.CustomerProcessName
+                })
+                .ToList();
+
+            if (lab_type.Text.Trim().Equals(""))
+            {
+                CheckBoxList_Process.DataTextField = "CustomerProcessName";
+                CheckBoxList_Process.DataValueField = "CustomerProcessId";
+                CheckBoxList_Process.DataSource = groupedFilterProcesses;
+            }
+            else
+            {
+                CheckBoxList_Process.DataTextField = "ProcessName";
+                CheckBoxList_Process.DataValueField = "ProcessId";
+                CheckBoxList_Process.DataSource = groupedFilterProcesses;
+            }
+
+            CheckBoxList_Process.DataBind();
+            CheckBoxList_Process.RepeatDirection = RepeatDirection.Vertical;
+            CheckBoxList_Process.RepeatColumns = 2;
+        }
+
+        protected void dpl_processGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ModuleWorkFlow.BLL.Process process = new ModuleWorkFlow.BLL.Process();
+            List<ModuleWorkFlow.Model.ProcessInfo> processes
+                = process.getProcessInfoExceptDesign().Cast<ModuleWorkFlow.Model.ProcessInfo>().ToList();
+
+            var filteredProcesses = processes.FindAll(m => m.JobGroup != null && m.JobGroup.Equals(dpl_processGroup.SelectedValue));
+
+            // Group the filtered processes by ProcessName and ProcessId
+            var groupedFilterProcesses = filteredProcesses
+                .GroupBy(p => new { p.ProcessName, p.ProcessId, p.CustomerProcessId, p.CustomerProcessName })
+                .Select(g => new
+                {
+                    ProcessName = g.Key.ProcessName,
+                    ProcessId = g.Key.ProcessId,
+                    CustomerProcessId = g.Key.CustomerProcessId,
+                    CustomerProcessName = g.Key.CustomerProcessName
+                })
+                .ToList();
 
 
             if (lab_type.Text.Trim().Equals(""))
             {
                 CheckBoxList_Process.DataTextField = "CustomerProcessName";
                 CheckBoxList_Process.DataValueField = "CustomerProcessId";
-                CheckBoxList_Process.DataSource = process.getProcessInfoExceptDesign();
+                CheckBoxList_Process.DataSource = groupedFilterProcesses;
             }
             else
             {
                 CheckBoxList_Process.DataTextField = "ProcessName";
                 CheckBoxList_Process.DataValueField = "ProcessId";
-                CheckBoxList_Process.DataSource = process.getProcessInfoDesignGroup(lab_type.Text, lab_type.Text);
+                CheckBoxList_Process.DataSource = groupedFilterProcesses;
             }
 
             CheckBoxList_Process.DataBind();
@@ -380,10 +562,10 @@ namespace ModuleWorkFlow
 
         private void dataBindHandly(DataSet ds)
         {
-            
+
             //MYB061226-3-5
 
-
+            List<ModuleWorkFlow.Model.System.SupplyInfo> supplyInfos = new ModuleWorkFlow.BLL.System.Supply().GetSupplyInfos();
             DataTable dtpartprocess = ds.Tables[0];
            
             MainDataGrid.DataSource = ds;
@@ -412,8 +594,11 @@ namespace ModuleWorkFlow
                 DropDownList dpl_endHour = MainDataGrid.Items[i].FindControl("dpl_endHour") as DropDownList;
                 CheckBox cbl_isunnormal = MainDataGrid.Items[i].FindControl("cbl_isunnormal") as CheckBox;//whd080901 增�??�否返修
                 TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
+                TextBox dg_txt_qcPercent = MainDataGrid.Items[i].FindControl("dg_txt_qcPercent") as TextBox;
                 DropDownList dpl_processMachineid = MainDataGrid.Items[i].FindControl("dpl_processMachineid") as DropDownList;
                 Label lab_pricetype = MainDataGrid.Items[i].FindControl("dg_lab_pricetype") as Label;
+                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
+             
 
                 //init TextBox_NeedTime input box and DropDownList_UnitSelect
                 tools.DropDownListInit(DDLDay, 0, Setting.DAYS);
@@ -422,7 +607,11 @@ namespace ModuleWorkFlow
                 //txt_processComment.Text = "";
                 ModuleWorkFlow.BLL.Machine machine = new ModuleWorkFlow.BLL.Machine();
 
-
+               
+                dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList!= null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
+                dpl_Supply.DataTextField = "SupplierName";
+                dpl_Supply.DataValueField = "Id";
+                dpl_Supply.DataBind();
 
                 try
                 {
@@ -463,6 +652,10 @@ namespace ModuleWorkFlow
                 string oldMintes = Convert.ToString((int)(processneedminutes % (60 * hoursperday) % 60));
                 string oldStartHour = "";
                 string oldEndHour = "";
+
+                string oldSupplyId = dt.Rows[i][dt.Columns["supplyId"]].ToString();
+                string oldQCPercent = dt.Rows[i][dt.Columns["QCPercent"]].ToString();
+
                 if (!Convert.IsDBNull(dt.Rows[i]["selfStartDate"]) && !dt.Rows[i][dt.Columns["selfStartDate"]].ToString().Equals(""))
                 {
                     string oldSelfStartDate = Convert.ToString(((DateTime)(dt.Rows[i][dt.Columns["selfStartDate"]])).ToShortDateString());
@@ -490,6 +683,13 @@ namespace ModuleWorkFlow
                     lab_pricetype.Text = "ZULI";
                 }
 
+                try
+                {
+
+                    dpl_Supply.SelectedValue = oldSupplyId;
+                }
+                catch { }
+                dg_txt_qcPercent.Text =oldQCPercent;
 
                 PartType parttype = new PartType();
                 string partno = "";
@@ -569,7 +769,51 @@ namespace ModuleWorkFlow
 
             }
             disableProductedProcess();
+            disableQCPercent();
 
+        }
+
+        private void disableQCPercent()
+        {
+
+            List<Model.ProcessInfo> processList = new BLL.Process().getallProcessInfoExceptDesign().Cast<Model.ProcessInfo>().ToList();
+            for (int i = 0; i < MainDataGrid.Items.Count; i++)
+            {
+
+
+                Label label_processid = MainDataGrid.Items[i].FindControl("Label_ProcessID") as Label;
+
+
+                TextBox dg_txt_qcPercent = (TextBox)MainDataGrid.Items[i].FindControl("dg_txt_qcPercent");
+                if (processList.FindAll(m => m.ProcessId.Equals(label_processid.Text))[0].PriceType.IndexOf("QC") < 0)
+                {
+                    dg_txt_qcPercent.Text = "";
+                    dg_txt_qcPercent.ReadOnly = true;
+                    dg_txt_qcPercent.BackColor = Color.LightGray;
+                }
+                else
+                {
+                    dg_txt_qcPercent.ReadOnly = false;
+                    dg_txt_qcPercent.BackColor = Color.White;
+                   
+
+
+                    if (!string.IsNullOrEmpty(dg_txt_qcPercent.Text.Trim()))
+                    {
+                        try
+                        {
+                            dg_txt_qcPercent.Text = (Convert.ToDecimal(dg_txt_qcPercent.Text) * 100).ToString("0.##");
+                        }
+                        catch
+                        {
+
+                        }
+
+                    }
+                }
+
+
+            }
         }
 
 
@@ -601,6 +845,7 @@ namespace ModuleWorkFlow
 
         protected void MainDataGrid_ItemCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
         {
+            List<ModuleWorkFlow.Model.System.SupplyInfo> supplyInfos = new ModuleWorkFlow.BLL.System.Supply().GetSupplyInfos();
             int index = e.Item.ItemIndex;
             switch (((Button)e.CommandSource).CommandName)//080901
             {
@@ -621,6 +866,8 @@ namespace ModuleWorkFlow
                         CheckBox cbl_isunnormal = MainDataGrid.Items[index].FindControl("cbl_isunnormal") as CheckBox;//whd080901 增�??�否返修
                         TextBox txt_processComment = MainDataGrid.Items[index].FindControl("txt_processComment") as TextBox;
                         DropDownList dpl_processMachineid = MainDataGrid.Items[index].FindControl("dpl_processMachineid") as DropDownList;
+                        DropDownList dpl_Supply = (DropDownList)MainDataGrid.Items[index].FindControl("dpl_Supply");
+                        TextBox dg_txt_qcPercent = MainDataGrid.Items[index].FindControl("dg_txt_qcPercent") as TextBox;
 
                         Label label_processnoUp = MainDataGrid.Items[index - 1].FindControl("Label_processno") as Label;
                         Label label_processidUp = MainDataGrid.Items[index - 1].FindControl("Label_ProcessID") as Label;
@@ -636,6 +883,8 @@ namespace ModuleWorkFlow
                         CheckBox cbl_isunnormalUp = MainDataGrid.Items[index - 1].FindControl("cbl_isunnormal") as CheckBox;
                         TextBox txt_processCommentUp = MainDataGrid.Items[index - 1].FindControl("txt_processComment") as TextBox;
                         DropDownList dpl_processMachineidUp = MainDataGrid.Items[index - 1].FindControl("dpl_processMachineid") as DropDownList;
+                        DropDownList dpl_SupplyUp = (DropDownList)MainDataGrid.Items[index - 1].FindControl("dpl_Supply");
+                        TextBox dg_txt_qcPercentUp = MainDataGrid.Items[index-1].FindControl("dg_txt_qcPercent") as TextBox;
 
                         string temp_processno = label_processno.Text;
                         string temp_processid = label_processid.Text;
@@ -651,6 +900,8 @@ namespace ModuleWorkFlow
                         bool temp_isunnormal = cbl_isunnormal.Checked;//whd080901
                         string temp_processComment = txt_processComment.Text;
                         string temp_processMachineid = dpl_processMachineid.SelectedValue;
+                        string temp_supply = dpl_Supply.SelectedValue;
+                        string temp_qcpercent = dg_txt_qcPercent.Text;
 
                         label_processno.Text = label_processnoUp.Text;
                         label_processid.Text = label_processidUp.Text;
@@ -665,6 +916,11 @@ namespace ModuleWorkFlow
                         tools.DropDownListChange(dpl_endHour, dpl_endHourUp.SelectedValue);
                         cbl_isunnormal.Checked = cbl_isunnormalUp.Checked;//whd080901
                         txt_processComment.Text = txt_processCommentUp.Text;
+                        dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
+                        dpl_Supply.DataBind();
+                        dpl_Supply.SelectedValue = dpl_SupplyUp.SelectedValue;
+                        dg_txt_qcPercent.Text = dg_txt_qcPercentUp.Text;
+
                         ModuleWorkFlow.BLL.Machine machine = new ModuleWorkFlow.BLL.Machine();
                         try
                         {
@@ -711,6 +967,10 @@ namespace ModuleWorkFlow
                         tools.DropDownListChange(dpl_endHourUp, temp_endHour);
                         cbl_isunnormalUp.Checked = temp_isunnormal;//whd080901
                         txt_processCommentUp.Text = temp_processComment.Trim();
+                        dpl_SupplyUp.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processidUp.Text.Trim() + ",") > -1);
+                        dpl_SupplyUp.DataBind();
+                        dpl_SupplyUp.SelectedValue = temp_supply;
+                        dg_txt_qcPercentUp.Text = temp_qcpercent;
                         try
                         {
                             if (menuid.Equals("F102"))
@@ -769,6 +1029,8 @@ namespace ModuleWorkFlow
                         CheckBox cbl_isunnormal = MainDataGrid.Items[index].FindControl("cbl_isunnormal") as CheckBox;
                         TextBox txt_processComment = MainDataGrid.Items[index].FindControl("txt_processComment") as TextBox;
                         DropDownList dpl_processMachineid = MainDataGrid.Items[index].FindControl("dpl_processMachineid") as DropDownList;
+                        DropDownList dpl_Supply = (DropDownList)MainDataGrid.Items[index].FindControl("dpl_Supply");
+                        TextBox dg_txt_qcPercent = (TextBox)MainDataGrid.Items[index].FindControl("dg_txt_qcPercent");
 
                         Label label_processnoLow = MainDataGrid.Items[index + 1].FindControl("Label_Processno") as Label;
                         Label label_processidLow = MainDataGrid.Items[index + 1].FindControl("Label_ProcessID") as Label;
@@ -784,6 +1046,8 @@ namespace ModuleWorkFlow
                         CheckBox cbl_isunnormalLow = MainDataGrid.Items[index + 1].FindControl("cbl_isunnormal") as CheckBox;
                         TextBox txt_processCommentLow = MainDataGrid.Items[index + 1].FindControl("txt_processComment") as TextBox;
                         DropDownList dpl_processMachineidLow = MainDataGrid.Items[index + 1].FindControl("dpl_processMachineid") as DropDownList;
+                        DropDownList dpl_SupplyLow = (DropDownList)MainDataGrid.Items[index + 1].FindControl("dpl_Supply");
+                        TextBox dg_txt_qcPercentLow = (TextBox)MainDataGrid.Items[index+1].FindControl("dg_txt_qcPercent");
 
                         string temp_processno = label_processno.Text;
                         string temp_processid = label_processid.Text;
@@ -799,6 +1063,8 @@ namespace ModuleWorkFlow
                         bool temp_isunnormal = cbl_isunnormal.Checked;
                         string temp_processComment = txt_processComment.Text.Trim();
                         string temp_processMachineid = dpl_processMachineid.SelectedValue;
+                        string temp_supply = dpl_Supply.SelectedValue;
+                        string temp_qcPercent = dg_txt_qcPercent.Text;
 
                         label_processno.Text = label_processnoLow.Text;
                         label_processid.Text = label_processidLow.Text;
@@ -813,6 +1079,11 @@ namespace ModuleWorkFlow
                         tools.DropDownListChange(dpl_endHour, dpl_endHourLow.SelectedValue);
                         cbl_isunnormal.Checked = cbl_isunnormalLow.Checked;
                         txt_processComment.Text = txt_processCommentLow.Text.Trim();
+                        dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
+                        dpl_Supply.DataBind();
+                        dpl_Supply.SelectedValue = dpl_SupplyLow.SelectedValue;
+                        dg_txt_qcPercent.Text = dg_txt_qcPercentLow.Text;
+
                         ModuleWorkFlow.BLL.Machine machine = new ModuleWorkFlow.BLL.Machine();
                         try
                         {
@@ -859,6 +1130,10 @@ namespace ModuleWorkFlow
                         tools.DropDownListChange(dpl_endHourLow, temp_endHour);
                         cbl_isunnormalLow.Checked = temp_isunnormal;
                         txt_processCommentLow.Text = temp_processComment;
+                        dpl_SupplyLow.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processidLow.Text.Trim() + ",") > -1);
+                        dpl_SupplyLow.DataBind();
+                        dpl_SupplyLow.SelectedValue = temp_supply;
+                        dg_txt_qcPercentLow.Text = temp_qcPercent;
                         try
                         {
                             if (menuid.Equals("F102"))
@@ -953,7 +1228,7 @@ namespace ModuleWorkFlow
                     break;
 
             }
-          
+
             disableProductedProcess();
             UpdatePanel1.Update();
         }
@@ -987,7 +1262,7 @@ namespace ModuleWorkFlow
 
         private void AddDataSource() //whd080901
         {
-
+            List<ModuleWorkFlow.Model.System.SupplyInfo> supplyInfos = new ModuleWorkFlow.BLL.System.Supply().GetSupplyInfos();
             ModuleWorkFlow.BLL.Process process = new ModuleWorkFlow.BLL.Process();
             int selectRow = Convert.ToInt32(Label_HiddenSelectRow.Text);
             if (selectRow > MainDataGrid.Items.Count - 1)
@@ -997,9 +1272,10 @@ namespace ModuleWorkFlow
             }
             DataTable dt = new DataTable();
             DataRow dr;
+           
             dt.Columns.Add(new DataColumn("processorder", typeof(string)));
             dt.Columns.Add(new DataColumn("ProcessId", typeof(string)));
-            dt.Columns.Add(new DataColumn("CustomerProcessId", typeof(string)));
+            dt.Columns.Add(new DataColumn("CustomerProcessID", typeof(string)));
             dt.Columns.Add(new DataColumn("CustomerProcessName", typeof(string)));
             dt.Columns.Add(new DataColumn("Day", typeof(string)));
             dt.Columns.Add(new DataColumn("Hour", typeof(string)));
@@ -1009,8 +1285,10 @@ namespace ModuleWorkFlow
             dt.Columns.Add(new DataColumn("StartHour", typeof(string)));
             dt.Columns.Add(new DataColumn("SelfEndDate", typeof(string)));
             dt.Columns.Add(new DataColumn("EndHour", typeof(string)));
-            dt.Columns.Add(new DataColumn("IsUnnormal", typeof(int)));//whd080901 增�??�否返修
+            dt.Columns.Add(new DataColumn("IsUnnormal", typeof(int)));
             dt.Columns.Add(new DataColumn("processComment", typeof(string)));
+            dt.Columns.Add(new DataColumn("QCPercent", typeof(string)));
+            dt.Columns.Add(new DataColumn("supplyId", typeof(string)));
             dt.Columns.Add(new DataColumn("processMachineid", typeof(string)));
             dt.Columns.Add(new DataColumn("StatusID", typeof(string)));
             dt.Columns.Add(new DataColumn("pricetype", typeof(string)));
@@ -1038,6 +1316,8 @@ namespace ModuleWorkFlow
                     dr["EndHour"] = "0";
                     dr["IsUnnormal"] = 0;
                     dr["processComment"] = "";
+                    dr["QCPercent"] = "1";
+                    dr["supplyId"] = "";
                     dr["processMachineid"] = "";
                     dr["StatusID"] = "Pending";
                     dr["pricetype"] = "";
@@ -1070,6 +1350,8 @@ namespace ModuleWorkFlow
                 DropDownList dpl_endHour = MainDataGrid.Items[i].FindControl("dpl_endHour") as DropDownList;
                 CheckBox cbl_isunnormal = MainDataGrid.Items[i].FindControl("cbl_isunnormal") as CheckBox;
                 TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
+                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
+                TextBox dg_txt_qcPercent = MainDataGrid.Items[i].FindControl("dg_txt_qcPercent") as TextBox;
                 DropDownList dpl_processMachineid = MainDataGrid.Items[i].FindControl("dpl_processMachineid") as DropDownList;
                 Label lab_StatusID = MainDataGrid.Items[i].FindControl("dg_lab_StatusID") as Label;
                 Label dg_lab_processno = MainDataGrid.Items[i].FindControl("dg_lab_processno") as Label;
@@ -1100,6 +1382,16 @@ namespace ModuleWorkFlow
                     dr["IsUnnormal"] = 0;
                 }
                 dr["processComment"] = txt_processComment.Text.Trim();
+                try
+                {
+                    dr["QCPercent"] = Convert.ToDouble(dg_txt_qcPercent.Text.Trim())/100;
+                }
+                catch
+                {
+
+                }
+              
+                dr["supplyId"] = dpl_Supply.SelectedValue;
                 dr["processMachineid"] = dpl_processMachineid.SelectedValue.Trim();
                 dr["StatusID"] = lab_StatusID.Text.Trim();
                 dr["pricetype"] = lab_pricetype.Text;
@@ -1143,6 +1435,8 @@ namespace ModuleWorkFlow
                 dr["EndHour"] = "0";
                 dr["IsUnnormal"] = 0;
                 dr["processComment"] = "";
+                dr["QCPercent"] = "1";
+                dr["supplyId"] = "";
                 dr["processMachineid"] = "";
                 dr["StatusID"] = "Pending";
                 dr["pricetype"] = "";
@@ -1163,9 +1457,9 @@ namespace ModuleWorkFlow
                 }
             }
 
-            DataView dv = new DataView(dt);
+            //DataView dv = new DataView(dt);
 
-            MainDataGrid.DataSource = dv;
+            MainDataGrid.DataSource = dt;
             MainDataGrid.DataBind();
 
             for (int i = 0; i < MainDataGrid.Items.Count; i++)
@@ -1183,7 +1477,7 @@ namespace ModuleWorkFlow
                 CheckBox cbl_isunnormal = MainDataGrid.Items[i].FindControl("cbl_isunnormal") as CheckBox;//whd080901 增�??�否返修
                 TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
                 DropDownList dpl_processMachineid = MainDataGrid.Items[i].FindControl("dpl_processMachineid") as DropDownList;
-
+                TextBox dg_txt_qcPercent = MainDataGrid.Items[i].FindControl("dg_txt_qcPercent") as TextBox;
 
                 Label lab_StatusID = MainDataGrid.Items[i].FindControl("dg_lab_StatusID") as Label;
                 Label lab_pricetype = MainDataGrid.Items[i].FindControl("dg_lab_pricetype") as Label;
@@ -1198,6 +1492,12 @@ namespace ModuleWorkFlow
                 tools.DropDownListInit(dpl_endHour, 0, Setting.HOURS - 1);
                 cbl_isunnormal.Checked = false;//whd080901 增�??�否返修
                 txt_processComment.Text = "";
+                dg_txt_qcPercent.Text = "100";
+                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
+                dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
+                dpl_Supply.DataTextField = "SupplierName";
+                dpl_Supply.DataValueField = "Id";
+                dpl_Supply.DataBind();
                 ModuleWorkFlow.BLL.Machine machine = new ModuleWorkFlow.BLL.Machine();
                 try
                 {
@@ -1243,6 +1543,8 @@ namespace ModuleWorkFlow
                 DropDownList dpl_endHour = MainDataGrid.Items[i].FindControl("dpl_endHour") as DropDownList;
                 CheckBox cbl_isunnormal = MainDataGrid.Items[i].FindControl("cbl_isunnormal") as CheckBox;//whd080901 增�??�否返修
                 TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
+                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
+                TextBox dg_txt_qcPercent = MainDataGrid.Items[i].FindControl("dg_txt_qcPercent") as TextBox;
                 DropDownList dpl_processMachineid = MainDataGrid.Items[i].FindControl("dpl_processMachineid") as DropDownList;
 
                 Label lab_StatusID = MainDataGrid.Items[i].FindControl("dg_lab_StatusID") as Label;
@@ -1258,7 +1560,9 @@ namespace ModuleWorkFlow
                 string oldSelfEndDate = dt.Rows[i][dt.Columns[10]].ToString();
                 string oldEndHour = dt.Rows[i][dt.Columns[11]].ToString();
                 int oldisunnormal = Convert.ToInt32(dt.Rows[i][dt.Columns[12]]);
+                string oldqcPercent = dt.Rows[i][dt.Columns["QCPercent"]].ToString();
                 string oldProcessComment = dt.Rows[i][dt.Columns[13]].ToString();
+                string oldSupply = dt.Rows[i][dt.Columns["supplyId"]].ToString();
                 string oldProcessMachineid = dt.Rows[i][dt.Columns[14]].ToString();
                 string statusid = dt.Rows[i][dt.Columns[15]].ToString();
                 string pricetype = dt.Rows[i][dt.Columns[16]].ToString();
@@ -1284,6 +1588,12 @@ namespace ModuleWorkFlow
                     cbl_isunnormal.Checked = true;
                 }
                 txt_processComment.Text = oldProcessComment;
+                dg_txt_qcPercent.Text = oldqcPercent;
+                try
+                {
+                    dpl_Supply.SelectedValue = oldSupply;
+                }
+                catch { }
                 try
                 {
                     dpl_processMachineid.SelectedValue = oldProcessMachineid;
@@ -1356,11 +1666,13 @@ namespace ModuleWorkFlow
             //htPartProcess = (Hashtable)Session["htPartProcess"];
             hprocess = (Hashtable)Session["hprocess"];
             disableProductedProcess();
+            disableQCPercent();
 
         }
 
         private void DeleteDataSource(int index) //080901
         {
+            List<ModuleWorkFlow.Model.System.SupplyInfo> supplyInfos = new ModuleWorkFlow.BLL.System.Supply().GetSupplyInfos();
             int selectRow = Convert.ToInt32(Label_HiddenSelectRow.Text);
             if (selectRow > MainDataGrid.Items.Count - 2)
             {
@@ -1383,6 +1695,8 @@ namespace ModuleWorkFlow
             dt.Columns.Add(new DataColumn("EndHour", typeof(string)));
             dt.Columns.Add(new DataColumn("IsUnnormal", typeof(int)));
             dt.Columns.Add(new DataColumn("processComment", typeof(string)));
+            dt.Columns.Add(new DataColumn("QCPercent", typeof(string)));
+            dt.Columns.Add(new DataColumn("supplyId", typeof(string)));
             dt.Columns.Add(new DataColumn("processMachineid", typeof(string)));
             dt.Columns.Add(new DataColumn("StatusID", typeof(string)));
             dt.Columns.Add(new DataColumn("pricetype", typeof(string)));
@@ -1404,7 +1718,10 @@ namespace ModuleWorkFlow
                     DropDownList dpl_endHour = MainDataGrid.Items[i].FindControl("dpl_endHour") as DropDownList;
                     CheckBox cbl_isunnormal = MainDataGrid.Items[i].FindControl("cbl_isunnormal") as CheckBox;//whd080901 增�??�否返修
                     TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
+                    DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
+                    TextBox dg_txt_qcPercent = MainDataGrid.Items[i].FindControl("dg_txt_qcPercent") as TextBox;
                     DropDownList dpl_processMachineid = MainDataGrid.Items[i].FindControl("dpl_processMachineid") as DropDownList;
+
 
                     string processno = ((Label)MainDataGrid.Items[i].FindControl("Label_processno")).Text;
                     Label lab_StatusID = MainDataGrid.Items[i].FindControl("dg_lab_StatusID") as Label;
@@ -1432,6 +1749,16 @@ namespace ModuleWorkFlow
                         dr["IsUnnormal"] = 0;
                     }
                     dr["processComment"] = txt_processComment.Text.Trim();
+                    dr["supplyId"] = dpl_Supply.SelectedValue;
+                    try
+                    {
+                        dr["QCPercent"] = (Convert.ToDouble(dg_txt_qcPercent.Text))/100.0;
+                    }
+                    catch
+                    {
+
+                    }
+                  
                     dr["processMachineid"] = dpl_processMachineid.SelectedValue.Trim();
                     dr["StatusID"] = lab_StatusID.Text;
                     dr["pricetype"] = lab_pricetype.Text;
@@ -1458,6 +1785,12 @@ namespace ModuleWorkFlow
                 DropDownList DDLHour = MainDataGrid.Items[i].FindControl("DropDownList_Hour") as DropDownList;
                 DropDownList DDLMinute = MainDataGrid.Items[i].FindControl("DropDownList_Minute") as DropDownList;
                 DropDownList dpl_processMachineid = MainDataGrid.Items[i].FindControl("dpl_processMachineid") as DropDownList;
+
+                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
+                dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
+                dpl_Supply.DataTextField = "SupplierName";
+                dpl_Supply.DataValueField = "Id";
+                dpl_Supply.DataBind();
 
                 DropDownList dpl_startHour = MainDataGrid.Items[i].FindControl("dpl_startHour") as DropDownList;
                 DropDownList dpl_endHour = MainDataGrid.Items[i].FindControl("dpl_endHour") as DropDownList;
@@ -1508,6 +1841,8 @@ namespace ModuleWorkFlow
                 DropDownList dpl_endHour = MainDataGrid.Items[i].FindControl("dpl_endHour") as DropDownList;
                 CheckBox cbl_isunnormal = MainDataGrid.Items[i].FindControl("cbl_isunnormal") as CheckBox;//whd080901 增�??�否返修
                 TextBox txt_processComment = MainDataGrid.Items[i].FindControl("txt_processComment") as TextBox;
+                DropDownList dpl_Supply = MainDataGrid.Items[i].FindControl("dpl_Supply") as DropDownList;
+                TextBox dg_txt_qcPercent = MainDataGrid.Items[i].FindControl("dg_txt_qcPercent") as TextBox;
                 DropDownList dpl_processMachineid = MainDataGrid.Items[i].FindControl("dpl_processMachineid") as DropDownList;
 
                 Label lab_pricetype = MainDataGrid.Items[i].FindControl("dg_lab_pricetype") as Label;
@@ -1522,6 +1857,9 @@ namespace ModuleWorkFlow
                 string oldEndHour = dt.Rows[i][dt.Columns["EndHour"]].ToString();
                 int oldisunnormal = Convert.ToInt32(dt.Rows[i][dt.Columns["IsUnnormal"]]);
                 string oldProcessComment = dt.Rows[i][dt.Columns["processComment"]].ToString();
+                string oldQCPercent = dt.Rows[i][dt.Columns["QCPercent"]].ToString();
+
+                string oldSupply = dt.Rows[i][dt.Columns["supplyId"]].ToString();
                 string oldProcessMachineid = dt.Rows[i][dt.Columns["processMachineid"]].ToString();
 
                 tools.DropDownListChange(dropDownList_Day, oldDay);
@@ -1544,6 +1882,11 @@ namespace ModuleWorkFlow
                     cbl_isunnormal.Checked = true;
                 }
                 txt_processComment.Text = oldProcessComment;
+                try
+                {
+                    dpl_Supply.SelectedValue = oldSupply;
+                }
+                catch { }
                 try
                 {
                     dpl_processMachineid.SelectedValue = oldProcessMachineid;
@@ -1614,6 +1957,7 @@ namespace ModuleWorkFlow
                 }
             }
             disableProductedProcess();
+            disableQCPercent();
         }
 
         protected void MainDataGrid_DeleteCommand(object source, System.Web.UI.WebControls.DataGridCommandEventArgs e)
@@ -1721,20 +2065,21 @@ namespace ModuleWorkFlow
             dpl_status.Items.Add(new ListItem(Translate.translateString("取消"), "Cancelled"));
         }
 
-        private void dataStandBind(string processtype, string standprocessname, IList fixedProcesses)
+        private void dataStandBind(string processtype, string standprocessname, List<PartStandProcessInfo> fixedProcesses)
         {
 
-            StandProcess standprocess = new StandProcess();
+            PartStandProcess standprocess = new PartStandProcess();
             if (!processtype.Equals("") && !standprocessname.Equals(""))
             {
 
-                IList standprocesses = standprocess.GetStandProcessByName(processtype, standprocessname, false);
-                foreach (StandProcessInfo spi in standprocesses)
+                List<PartStandProcessInfo> standprocesses = standprocess.GetStandProcessByName(processtype, standprocessname, false);
+                foreach (PartStandProcessInfo spi in standprocesses)
                 {
+                    spi.ProcessNo = spi.Id.ToString();
                     spi.Id = 0;
                 }
 
-                (fixedProcesses as ArrayList).AddRange(standprocesses);
+                fixedProcesses.AddRange(standprocesses);
             }
 
             MainDataGrid.DataSource = fixedProcesses;
@@ -1745,7 +2090,7 @@ namespace ModuleWorkFlow
             Hashtable htprocesstype = new ModuleWorkFlow.BLL.Process().GetProcessIdProcessWithCustomerProcess();
             //retieved all data
             int selectRow = Convert.ToInt32(Label_HiddenSelectRow.Text);
-
+            List<ModuleWorkFlow.Model.System.SupplyInfo>  supplyInfos = new  ModuleWorkFlow.BLL.System.Supply().GetSupplyInfos();
             for (int i = 0; i < MainDataGrid.Items.Count; i++)
             {
                 int hoursPerday = 24;
@@ -1764,7 +2109,14 @@ namespace ModuleWorkFlow
                 TextBox txt_endDate = MainDataGrid.Items[i].FindControl("txt_endDate") as TextBox;
                 DropDownList dpl_endHour = MainDataGrid.Items[i].FindControl("dpl_endHour") as DropDownList;
 
-                lab_pricetype.Text = ((ModuleWorkFlow.Model.ProcessInfo)htprocesstype[Label_CustomerProcessID.Text]).PriceType;
+                DropDownList dpl_Supply = (DropDownList)MainDataGrid.Items[i].FindControl("dpl_Supply");
+                dpl_Supply.DataSource = supplyInfos.FindAll(m => m.ProcessIdList != null && m.ProcessIdList.IndexOf(label_processid.Text.Trim() + ",") > -1);
+                dpl_Supply.DataTextField = "SupplierName";
+                dpl_Supply.DataValueField = "Id";
+                dpl_Supply.DataBind();
+
+                if (!string.IsNullOrEmpty(Label_CustomerProcessID.Text))
+                    lab_pricetype.Text = ((ModuleWorkFlow.Model.ProcessInfo)htprocesstype[Label_CustomerProcessID.Text]).PriceType;
 
                 Label_OrderNo.Text = Convert.ToString(i + 1);
                 tools.DropDownListInit(DDLDay, 0, Setting.DAYS);
@@ -1775,7 +2127,7 @@ namespace ModuleWorkFlow
                 tools.DropDownListInit(dpl_endHour, 0, Setting.HOURS - 1);
 
 
-                WorkFlow.Model.Standard.StandProcessInfo spi = new WorkFlow.Model.Standard.StandProcessInfo();
+                WorkFlow.Model.Standard.PartStandProcessInfo spi = new WorkFlow.Model.Standard.PartStandProcessInfo();
                 Label lab_processno = MainDataGrid.Items[i].FindControl("Label_processno") as Label;
 
                 int processno = Convert.ToInt32(lab_processno.Text);
@@ -1790,7 +2142,7 @@ namespace ModuleWorkFlow
                 {
                     if (fixedProcesses.Count > 0)
                     {
-                        spi = fixedProcesses[i] as StandProcessInfo;
+                        spi = fixedProcesses[i] ;
                     }
                     else
                     {
@@ -1803,6 +2155,7 @@ namespace ModuleWorkFlow
                     if (htProcess.ContainsKey(spi.ProcessId.ToUpper()))
                     {
                         hoursPerday = Convert.ToInt32(htProcess[spi.ProcessId.ToUpper()]);
+                       
                         if (hoursPerday == 0)
                         {
                             hoursPerday = 24;
@@ -1945,11 +2298,11 @@ namespace ModuleWorkFlow
                     }
                     Hashtable htProcess = ModuleWorkFlow.business.Process.getProcessHoursPerDay();
 
-                    IList partDetails = new ArrayList();
+                    List<PartPartDetailInfo> partDetails = new List<PartPartDetailInfo>();
                     for (int i = 0; i < MainDataGrid.Items.Count; i++)
                     {
                         int hoursPerday = 24;
-                        PartDetailInfo pdi = new PartDetailInfo();
+                        PartPartDetailInfo pdi = new PartPartDetailInfo();
                         pdi.ModuleId = Label_ModuleId.Text;
                         pdi.PartNo = li.Value;
                         Label Label_OrderNo = MainDataGrid.Items[i].FindControl("Label_OrderNo") as Label;
@@ -2011,6 +2364,28 @@ namespace ModuleWorkFlow
                         pdi.ProcessComment = txt_processComment.Text.Trim();
                         pdi.ProcessMachineId = dpl_processMachineid.SelectedValue;
 
+                        DropDownList dpl_Supply = ((DropDownList)MainDataGrid.Items[i].FindControl("dpl_Supply"));
+
+                        if (!string.IsNullOrEmpty(dpl_Supply.SelectedValue))
+                        {
+                            pdi.SupplyId = Convert.ToInt32(dpl_Supply.SelectedValue);
+                        }
+
+                        TextBox dg_txt_qcPercent = ((TextBox)MainDataGrid.Items[i].FindControl("dg_txt_qcPercent"));
+                        try
+                        {
+                            if (string.IsNullOrEmpty(dg_txt_qcPercent.Text))
+                                pdi.QCPercent = 1.0;
+                            else
+                                pdi.QCPercent = Math.Round(Convert.ToDouble(dg_txt_qcPercent.Text) / 100.0, 2);
+                        }
+                        catch
+                        {
+                            Label_Message.Text = Translate.translateString("請填寫數字");
+                            return;
+                        }
+                       
+
                         partDetails.Add(pdi);
 
 
@@ -2034,7 +2409,7 @@ namespace ModuleWorkFlow
                         outsourceApplyDesigninfo.CreateDate = DateTime.Now;
                         if (list_partnos.Items.Count > 1)
                         {
-                            Label_Message.Text = Label_Message.Text = new PartDetail().updatePartDetail(partDetails, Label_ModuleId.Text, li.Value, Convert.ToInt32(ListBox_Priority.SelectedValue), true, dpl_status.SelectedValue, userno, dueDate, sendDate, checkDate, null, false, new OutSourceDetail(), outsourceApplyDesigninfo);
+                            Label_Message.Text = Label_Message.Text = new PartPartDetail().updatePartDetail(partDetails, Label_ModuleId.Text, li.Value, Convert.ToInt32(ListBox_Priority.SelectedValue), true, dpl_status.SelectedValue, userno, dueDate, sendDate, checkDate, null, false, new OutSourceDetail(), outsourceApplyDesigninfo);
                         }
 
                         if (list_partnos.Items.Count == 1)
@@ -2043,7 +2418,7 @@ namespace ModuleWorkFlow
                             //RedisHelper redis = new RedisHelper();
 
                            
-                            Label_Message.Text = new PartDetail().updatePartDetail(partDetails, Label_ModuleId.Text, li.Value, Convert.ToInt32(ListBox_Priority.SelectedValue), true, dpl_status.SelectedValue, userno, dueDate, sendDate, checkDate, null, txt_comment.Text, false, null, null, new OutSourceDetail(), outsourceApplyDesigninfo, Convert.ToInt32(dpl_difficuleLevel.SelectedValue));
+                            Label_Message.Text = new PartPartDetail().updatePartDetail(partDetails, Label_ModuleId.Text, li.Value, Convert.ToInt32(ListBox_Priority.SelectedValue), true, dpl_status.SelectedValue, userno, dueDate, sendDate, checkDate, null, txt_comment.Text, false, null, null, new OutSourceDetail(), outsourceApplyDesigninfo, Convert.ToInt32(dpl_difficuleLevel.SelectedValue));
 
                                
                             
@@ -2136,20 +2511,20 @@ namespace ModuleWorkFlow
         {
             //if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             //{
-            //    Label Label_processno = e.Item.FindControl("Label_processno") as Label;
-            //    Label Label_ProcessID = e.Item.FindControl("Label_ProcessID") as Label;
-            //    if (Convert.ToInt32(Label_processno.Text) > 0)
+            //    TextBox dg_txt_qcPercent = e.Item.FindControl("dg_txt_qcPercent") as TextBox;
+                
+
+            //    if (!string.IsNullOrEmpty(dg_txt_qcPercent.Text.Trim()))
             //    {
-            //        ModuleWorkFlow.Model.ProcessInfo pi = new ModuleWorkFlow.BLL.Process().GetProcessInfoById(Label_ProcessID.Text.Trim());
-            //        if (pi.ProcessneedminutesChange == ModuleWorkFlow.Model.ProcessInfo.NOALLOWCHANGE)
+            //        try
             //        {
-            //            DropDownList Dropdownlist_Day = e.Item.FindControl("Dropdownlist_Day") as DropDownList;
-            //            Dropdownlist_Day.Enabled = false;
-            //            DropDownList DropDownList_Hour = e.Item.FindControl("DropDownList_Hour") as DropDownList;
-            //            DropDownList_Hour.Enabled = false;
-            //            DropDownList Dropdownlist_Minute = e.Item.FindControl("Dropdownlist_Minute") as DropDownList;
-            //            Dropdownlist_Minute.Enabled = false;
+            //            dg_txt_qcPercent.Text = (Convert.ToDecimal(dg_txt_qcPercent.Text) * 100).ToString("0.##");
             //        }
+            //        catch
+            //        {
+
+            //        }
+                    
             //    }
             //}
         }

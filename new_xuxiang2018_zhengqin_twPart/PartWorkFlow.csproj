@@ -144,6 +144,8 @@
     <Content Include="admin\UserPrivilegeAddEdit.aspx" />
     <Content Include="admin\UserPrivilegeList.aspx" />
     <Content Include="admin\UserView.aspx" />
+    <Content Include="BomDetailListCopy.aspx" />
+    <Content Include="BomDetailView.aspx" />
     <Content Include="BomDetailViewExcel.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -176,6 +178,8 @@
     <Content Include="outsource\OutSourceConfirmView.aspx" />
     <Content Include="outsource\OutSourceDetailList.aspx" />
     <Content Include="outsource\OutSourceView.aspx" />
+    <Content Include="ParRelation.aspx" />
+    <Content Include="PartBarcodeScan.aspx" />
     <Content Include="PartList.aspx" />
     <Content Include="PartModifyEdit.aspx" />
     <Content Include="PartModifyEditall.aspx" />
@@ -369,6 +373,14 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BomDetailListCopy.aspx.cs">
+      <DependentUpon>BomDetailListCopy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BomDetailView.aspx.cs">
+      <DependentUpon>BomDetailView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="BomDetailViewExcel.aspx.cs">
       <DependentUpon>BomDetailViewExcel.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -434,6 +446,14 @@
     </Compile>
     <Compile Include="outsource\OutSourceView.aspx.cs">
       <DependentUpon>OutSourceView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ParRelation.aspx.cs">
+      <DependentUpon>ParRelation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PartBarcodeScan.aspx.cs">
+      <DependentUpon>PartBarcodeScan.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PartList.aspx.cs">
@@ -559,10 +579,15 @@
     <EmbeddedResource Include="admin\UserPrivilegeAddEdit.aspx.resx" />
     <EmbeddedResource Include="admin\UserPrivilegeList.aspx.resx" />
     <EmbeddedResource Include="admin\UserView.aspx.resx" />
+    <EmbeddedResource Include="BomDetailListCopy.aspx.resx">
+      <DependentUpon>BomDetailListCopy.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BomDetailView.aspx.resx" />
     <EmbeddedResource Include="Controls\newLeft.aspx.resx" />
     <EmbeddedResource Include="Login.aspx.resx" />
     <EmbeddedResource Include="order\OrderDesignList.aspx.resx" />
     <EmbeddedResource Include="order\OrderDesignView.aspx.resx" />
+    <EmbeddedResource Include="ParRelation.aspx.resx" />
     <EmbeddedResource Include="PartList.aspx.resx" />
     <EmbeddedResource Include="PartModifyEdit.aspx.resx" />
     <EmbeddedResource Include="PartModifyList.aspx.resx" />
@@ -656,6 +681,10 @@
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.BLL.Unnormal\ModuleWorkFlow.BLL.Unnormal.csproj">
       <Project>{6faf5a68-2b63-49b4-af71-bcb051d0cbd7}</Project>
       <Name>ModuleWorkFlow.BLL.Unnormal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.Config\ModuleWorkFlow.Model.Config.csproj">
+      <Project>{FAB098D1-A4BA-4D04-A37E-10E4EC02DB38}</Project>
+      <Name>ModuleWorkFlow.Model.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\ModuleWorkFlow.Model.InventorySystem\ModuleWorkFlow.Model.InventorySystem.csproj">
       <Project>{18572ba8-f102-40bc-b872-2a172a584a96}</Project>

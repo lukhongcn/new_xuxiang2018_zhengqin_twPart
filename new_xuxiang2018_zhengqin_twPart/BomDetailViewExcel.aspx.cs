@@ -68,7 +68,15 @@ namespace ModuleWorkFlow.admin
         {
             bomDetail = new ModuleWorkFlow.BLL.BomDetail();
             bomDesign = new ModuleWorkFlow.BLL.BomDesign();
-            menuname = new Tmenu().findbykey(menuid).Menuname;
+            TmenuInfo mi = new Tmenu().findbykey(menuid);
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+
+                master.Menuname = mi.Menuname;
+                menuname = mi.Menuname;
+
+            }
             if (!this.IsPostBack)
             {
 
@@ -197,187 +205,7 @@ namespace ModuleWorkFlow.admin
 
         }
 
-        //保存按鈕
-        private void btn_add_edit_Click(object sender, System.EventArgs e)
-        {
-            user = new ModuleWorkFlow.BLL.User();
-            dg_error.Visible = false;
-
-            IList ierr = new ArrayList();
-
-            //endwhd080815
-            if (!func.Text.Equals("Edit"))//非編輯，即添加狀態
-            {
-                BomDesignInfo bomDesignInfo = new BomDesignInfo();
-                if (!txt_moduleId.Text.Equals(""))
-                {
-                    bomDesignInfo.ModuleId = txt_moduleId.Text;
-                }
-                else
-                {
-                    Label_Message.Text = Translate.translateString("未指定廠批編號");//Lang.NO_MODULEID;
-                    return;
-                }
-               
-                string username = user.getajaxTXTtoUsername(txt_creater.Text);
-                string name = user.getajaxTXTtoName(txt_creater.Text);
-                if (user.getUserInfoByUserNameAndName(username, name).Count > 0)
-                {
-                    bomDesignInfo.Creater = username;
-                }
-                else
-                {
-                    Label_Message.Text = Translate.translateString("用戶名和用戶編號不符合,請重新輸入");
-                    return;
-                }
-
-
-
-                //添加版次字段 whd080815
-              
-                ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PADD");//檢查添加權限 
-                if (!txt_content.Text.Trim().Equals(""))
-                {
-                    //根據模具編號獲得bomDesign對像
-                    if (bomDesign.GetBomDesignByModuleid(txt_moduleId.Text) != null)
-                    {
-                        Label_Message.Text = txt_moduleId.Text + " " + Lang.NO_NOT_UNIQUE;
-                        return;
-                    }
-
-                    if (bomDesign.insertBomDesign(bomDesignInfo))//insert BomDesign
-                    {
-                        Label_Message.Text = Lang.SAVE_SUCCESS;
-                    }
-                    else
-                    {
-                        Label_Message.Text = Lang.SAVE_FAIL;
-                        return;
-                    }
-
-                    bomDesignInfo = bomDesign.GetBomDesignByModuleid(txt_moduleId.Text);
-                    bomDesignInfo.CreateDate = DateTime.Now;
-
-
-                    //txt_productno.Enabled = false;
-                    try
-                    {
-                        lab_Id.Text = bomDesignInfo.Id.ToString();
-                    }
-                    catch
-                    {
-
-                    }
-                    func.Text = "Edit";
-                    ModuleWorkFlow.report.BomPartDetail bpd = new ModuleWorkFlow.report.BomPartDetail();
-                    List<PartBomDetailInfo> source = bpd.CheckDetailElectFile(txt_content.Text.Substring(0, txt_content.Text.Length - 1).Split('\n'), bomDesignInfo, true, "public");
-
-
-                    ierr = bpd.getErrorList();
-
-
-                    if (ierr.Count > 0)
-                    {
-                        dg_error.Visible = true;
-                        dg_error.DataSource = ierr;
-                        dg_error.DataBind();
-                        return;
-                    }
-
-                   
-                    string userno = "";
-                    if (Session["userid"] != null)
-                    {
-                        userno = Session["userid"].ToString();
-                    }
-                    IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
-                    outsourceApplyDesigninfo.Creater = userno;
-                    outsourceApplyDesigninfo.CreateDate = DateTime.Now;
-
-                    ModuleWorkFlow.BLL.PartBomDetail bd = new PartBomDetail();
-                    OrderDesignInfo orderDesignInfo = new OrderDesign().GetOrderDesignByModuleId(bomDesignInfo.ModuleId);
-
-                    Label_Message.Text = bd.updateAllBomDetail(orderDesignInfo.StatusId, source,true, true, lab_User.Text, new SendAlert(), false, true, new OutSourceDetail(), outsourceApplyDesigninfo);
-
-
-                    
-                }
-            }
-            else//edit狀態
-            {
-
-                ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PEDIT");
-                int id = 0;
-                try
-                {
-                    id = Convert.ToInt32(lab_Id.Text);
-                }
-                catch (Exception ex)
-                {
-                    Label_Message.Text = Translate.translateString("BOM基本信息丟失，請重新選擇");
-                    return;
-                }
-
-                BomDesignInfo bomDesignInfo = new BomDesign().findbykey(id);
-                if (bomDesignInfo == null)
-                {
-                    Label_Message.Text = Translate.translateString("BOM已被刪除，請重新選擇");
-                    return;
-                }
-
-              
-
-                if (bomDesign.updateBomDesign(bomDesignInfo))
-                {
-                    Label_Message.Text = Lang.SAVE_SUCCESS;
-
-                }
-                else
-                {
-                    Label_Message.Text = Lang.SAVE_FAIL;
-                    return;
-                }
-                ModuleWorkFlow.report.BomPartDetail bpd = new ModuleWorkFlow.report.BomPartDetail();
-
-                //判斷是否複製excel內容到控件
-                IList source;
-                if (txt_content.Text.Length == 0)
-                {
-                    Label_Message.Text = Lang.SAVE_FAIL + Translate.translateString(" 需要拷貝Excel內容");
-                    return;
-                }
-                else
-                {
-                    source = bpd.CheckDetailElectFile(txt_content.Text.Substring(0, txt_content.Text.Length - 1).Split('\n'), bomDesignInfo,true,"public");
-                }
-
-                ModuleWorkFlow.BLL.BomDetail bd = new BomDetail();
-                string userno = "";
-                if (Session["userid"] != null)
-                {
-                    userno = Session["userid"].ToString();
-                }
-                IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
-                outsourceApplyDesigninfo.Creater = userno;
-                outsourceApplyDesigninfo.CreateDate = DateTime.Now;
-                Label_Message.Text = bd.updateAllBomDetail(source, true, true, lab_User.Text, new SendAlert(), false, false, new OutSourceDetail(), outsourceApplyDesigninfo);
-
-
-                ierr = bpd.getErrorList();
-
-
-                if (ierr.Count > 0)
-                {
-                    dg_error.Visible = true;
-                    dg_error.DataSource = ierr;
-                    dg_error.DataBind();
-                }
-
-
-            }
-
-        }
-
+      
 
 
         private void txt_partNo_TextChanged(object sender, System.EventArgs e)
@@ -431,6 +259,12 @@ namespace ModuleWorkFlow.admin
             dg_error.Visible = false;
             ModuleWorkFlow.report.BomPartDetail bpd = new ModuleWorkFlow.report.BomPartDetail();
             IList ierr = new ArrayList();
+            OrderDesignInfo odi = new OrderDesign().GetOrderDesignByModuleId(txt_moduleId.Text.ToUpper().Trim());
+            if (odi == null)
+            {
+                Label_Message.Text = Translate.translateString("模具編號不存在，請輸入正確模具編號");
+                return;
+            }
             //endwhd080815
             if (!func.Text.Equals("Edit"))//非編輯，即添加狀態
             {
@@ -465,12 +299,7 @@ namespace ModuleWorkFlow.admin
                 //添加版次字段 whd080815
               
                 //ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PADD");//檢查添加權限 
-                OrderDesignInfo odi = new OrderDesign().GetOrderDesignByModuleId(txt_moduleId.Text.ToUpper().Trim());
-                if (odi == null)
-                {
-                    Label_Message.Text = Translate.translateString("模具編號不存在，請輸入正確模具編號");
-                    return;
-                }
+              
 
                 if (odi.Overdealt == 1)
                 {
@@ -512,7 +341,7 @@ namespace ModuleWorkFlow.admin
                 func.Text = "Edit";
                 if (!lab_Id.Text.Trim().Equals("") && !txt_content.Text.Equals(""))
                 {
-                    IList source = bpd.CheckDetailElectFile(txt_content.Text.Substring(0, txt_content.Text.Length - 1).Split('\n'), bomDesignInfo, true, "public");
+                    List<PartBomDetailInfo> source = bpd.CheckDetailElectFile(txt_content.Text.Substring(0, txt_content.Text.Length - 1).Split('\n'), bomDesignInfo, true, "public");
                     //					IList parts = bompart.CheckPartElectFile(txt_elec_content.Text.Substring(0,txt_elec_content.Text.Length-1).Split('\n'),txt_moduleid.Text);
 
                     string userno = "";
@@ -523,21 +352,26 @@ namespace ModuleWorkFlow.admin
                     IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
                     outsourceApplyDesigninfo.Creater = userno;
                     outsourceApplyDesigninfo.CreateDate = DateTime.Now;
-                    ModuleWorkFlow.BLL.BomDetail bd = new BomDetail();
-                    foreach (BomDetailInfo bdi in source)
-                    {
-                        bdi.ErrorCode = -1;
-                    }
-                    Label_Message.Text = bd.updateAllBomDetail(source, true, true, lab_User.Text, new SendAlert(), false, true, new OutSourceDetail(), outsourceApplyDesigninfo);
+                   
 
 
                     ierr = bpd.getErrorList();
-
+                 
                     if (ierr.Count > 0)
                     {
                         dg_error.Visible = true;
                         dg_error.DataSource = ierr;
                         dg_error.DataBind();
+                    }else
+                    {
+                        ModuleWorkFlow.BLL.PartBomDetail bd = new PartBomDetail();
+                        foreach (PartBomDetailInfo bdi in source)
+                        {
+                            bdi.ErrorCode = -1;
+                        }
+
+                        Label_Message.Text = bd.updateAllBomDetail(odi,source, true, true, lab_User.Text, new SendAlert(), true, true, new PartOutSourceDetail(), outsourceApplyDesigninfo);
+
                     }
                 }
             }
@@ -577,7 +411,7 @@ namespace ModuleWorkFlow.admin
 
 
                 //判斷是否複製excel內容到控件
-                IList source;
+                List<PartBomDetailInfo> source = new List<PartBomDetailInfo>();
                 if (txt_content.Text.Length == 0)
                 {
                     Label_Message.Text = Lang.SAVE_FAIL + Translate.translateString(" 需要拷貝Excel內容");
@@ -596,13 +430,7 @@ namespace ModuleWorkFlow.admin
                 IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
                 outsourceApplyDesigninfo.Creater = userno;
                 outsourceApplyDesigninfo.CreateDate = DateTime.Now;
-                ModuleWorkFlow.BLL.BomDetail bd = new BomDetail();
-                foreach (BomDetailInfo bdi in source)
-                {
-                    bdi.ErrorCode = -1;
-                }
-                Label_Message.Text = bd.updateAllBomDetail(source, true, true, lab_User.Text, new SendAlert(), false, false, new OutSourceDetail(), outsourceApplyDesigninfo);
-
+             
 
                 ierr = bpd.getErrorList();
 
@@ -612,6 +440,16 @@ namespace ModuleWorkFlow.admin
                     dg_error.Visible = true;
                     dg_error.DataSource = ierr;
                     dg_error.DataBind();
+                }
+                else
+                {
+                    ModuleWorkFlow.BLL.PartBomDetail bd = new PartBomDetail();
+                    foreach (PartBomDetailInfo bdi in source)
+                    {
+                        bdi.ErrorCode = -1;
+                    }
+                    Label_Message.Text = bd.updateAllBomDetail(odi,source, true, true, lab_User.Text, new SendAlert(), true, false, new PartOutSourceDetail(), outsourceApplyDesigninfo);
+
                 }
 
             }

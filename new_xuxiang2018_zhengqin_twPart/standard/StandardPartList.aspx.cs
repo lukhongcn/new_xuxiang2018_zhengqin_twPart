@@ -41,22 +41,23 @@ namespace ModuleWorkFlow.standard
         protected string hrefmenuname = "";
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-			standprocess = new WorkFlow.BLL.Standard.PartStandProcess();
+            TmenuInfo mi = new Tmenu().findbykey(menuid);
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+
+                master.Menuname = mi.Menuname;
+                hrefmenuname = mi.Menuname;
+                titlemenuname = mi.Menuname;
+            }
+
+            standprocess = new WorkFlow.BLL.Standard.PartStandProcess();
 			
 			if(!this.IsPostBack)
 			{
 				if(ModuleWorkFlow.BLL.Private.checkPrivate(this,menuid,"PQUERY"))
 				{
-                    TmenuInfo mi = new Tmenu().findbykey(menuid);
-                    if (this.Master != null && this.Master is DefaultSub)
-                    {
-                        DefaultSub master = (DefaultSub)this.Master;
-
-                        master.Menuname = mi.Menuname;
-                        hrefmenuname = mi.Menuname;
-                        titlemenuname = mi.Menuname;
-                    }
-
+                   
                     
 
 					BindProcessType();

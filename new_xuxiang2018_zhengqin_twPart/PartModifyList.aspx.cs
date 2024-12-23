@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -59,7 +59,7 @@ namespace ModuleWorkFlow
             // Put user code to initialize the page here
             if (!this.IsPostBack)
             {
-                //Åv­­±±¨î
+                //èˆ¦î„¦åŒ—îŸ‘
                 ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PQUERY");
 
                 //				Common.DDL_BindData_CustomerList(Dropdownlist_Customer);
@@ -95,7 +95,7 @@ namespace ModuleWorkFlow
 
         private void bindModuleid()
         {
-            Dropdownlist_ModuleId.DataSource = new OrderDesign().GetOrderDesignInfos(" and overdealt=0 and  isModifyModuleOrder=1 "); ;
+            Dropdownlist_ModuleId.DataSource = new OrderDesign().GetOrderDesignInfos(" and overdealt=0 "); ;
             Dropdownlist_ModuleId.DataTextField = "moduleid";
             Dropdownlist_ModuleId.DataValueField = "moduleid";
             Dropdownlist_ModuleId.DataBind();
@@ -465,7 +465,7 @@ namespace ModuleWorkFlow
                 }
                 else
                 {
-                    Label_Message.Text = "³o¨Ç¹s¥ó±¾¾a¤£¬Û¦P¹s¥ó¡AµLªk¦P®É±¾¾a";
+                    Label_Message.Text = "é€™äº›é›¶ä»¶æ›é ä¸ç›¸åŒé›¶ä»¶ï¼Œç„¡æ³•åŒæ™‚æ›é ";
                     return;
                 }
             }
@@ -485,7 +485,7 @@ namespace ModuleWorkFlow
                 }
                 else
                 {
-                    Label_Message.Text = "½Ğ¿ï¾Ü¹s¥ó";
+                    Label_Message.Text = "è«‹é¸æ“‡é›¶ä»¶";
                 }
             }
         }
@@ -501,7 +501,7 @@ namespace ModuleWorkFlow
             }
             else
             {
-                Label_Message.Text = "½Ğ¿ï¾Ü¹s¥ó";
+                Label_Message.Text = "è«‹é¸æ“‡é›¶ä»¶";
             }
         }
 
@@ -521,12 +521,12 @@ namespace ModuleWorkFlow
 
         protected void lnkbutton_print_Click(object sender, EventArgs e)
         {
-            Label_Message.Text = "³øªí²£¥Í¤¤....";
+            Label_Message.Text = "å ±è¡¨ç”¢ç”Ÿä¸­....";
             ReporttemplateInfo rti = new Reporttemplate().GetReporttemplateByNo("PartModifyListInfo.xls");
             if (rti != null)
             {
                 string downloadPath = createReport(rti.CreateClass, rti.CreateExeclClass);
-                Label_Message.Text = "<a href='" + downloadPath.Replace("//", "/") + "'>¥´¶}³øªí</a>";
+                Label_Message.Text = "<a href='" + downloadPath.Replace("//", "/") + "'>æ‰“é–‹å ±è¡¨</a>";
             }
             //bindData(MainDataGrid.CurrentPageIndex + 1);   
         }
@@ -657,7 +657,7 @@ namespace ModuleWorkFlow
                 FactSource.Add(ppi);
             }
 
-            string subject = moduleid + "   ¹s¥ó¤uÃÀ«H®§";
+            string subject = moduleid + "   é›¶ä»¶å·¥è—ä¿¡æ¯";
 
             Label_Message.Text = new ModuleWorkFlow.BLL.Alert.SendAlert().sendAlert("PartModifyListMail", FactSource, subject);
         }
@@ -711,13 +711,13 @@ namespace ModuleWorkFlow
                 }
                 else
                 {
-                    Label_Message.Text = "½Ğ¿é¤J¥¿½T­¶½X";
+                    Label_Message.Text = "è«‹è¼¸å…¥æ­£ç¢ºé ç¢¼";
                     return;
                 }
             }
             catch (Exception ex)
             {
-                Label_Message.Text = "½Ğ¿é¤J¥¿½T­¶½X";
+                Label_Message.Text = "è«‹è¼¸å…¥æ­£ç¢ºé ç¢¼";
                 return;
             }
 

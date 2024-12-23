@@ -124,14 +124,19 @@
                                        <asp:TextBox ID="txt_comment" runat="server" CssClass="form-control custom-height-width text-start border-primary"></asp:TextBox>
                                    </div>
 
-                               
-
-
-
-
+     
 
                              </div>
-                          
+                            <div class="row mb-3">
+                                 <div class="col-lg-6  d-flex">
+                                     <asp:Label ID="lab_processtype" runat="server" Text="標準工藝類型" CssClass="me-10"></asp:Label>
+                                     <asp:DropDownList ID="dpl_processtype" runat="server" AutoPostBack="True" OnSelectedIndexChanged="dpl_processtype_SelectedIndexChanged" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
+                                 </div>
+                                 <div class="col-lg-6  d-flex">
+                                     <asp:Label ID="lab_standprocess" runat="server" Text="標準工藝" CssClass="me-10"></asp:Label>
+                                     <asp:DropDownList ID="dpl_standprocess" runat="server" AutoPostBack="True" OnSelectedIndexChanged="dpl_standprocess_SelectedIndexChanged" CssClass="form-select custom-heighter-width  text-start border-primary me-1"></asp:DropDownList>
+                                 </div>
+                            </div>
                             
                             <div class="row mb-3">
                                <div class="col-lg-12  d-flex">
@@ -140,9 +145,15 @@
                                     <ContentTemplate>
                                      <div class="container mt-3">
                                         <div class="row g-0 mb-3">
+                                             <div class="col-lg-4  d-flex">
+                                                   <asp:Label ID="Label7" runat = "server" Text = "工藝類型"  CssClass="me-10"/>
+                                                   <asp:DropDownList ID="dpl_processGroup" runat="server" CssClass="form-select custom-heighter-width  text-start border-primary me-1" OnSelectedIndexChanged="dpl_processGroup_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                             </div>
+                                        </div>
+                                        <div class="row g-0 mb-3">
                                             
                                             <div class="col-lg-3  d-flex">
-                                                <div class="overflow-auto border border-primary" style="height: 360px; width:220px;">
+                                                <div class="overflow-auto border border-primary" style="height: 400px; width:250px;" onscroll="saveScrollPosition()">
                                                     <div class="mt-3 ml-10 "> <!-- Bootstrap class for margin-top -->
                                                         
                                                             <asp:CheckBoxList ID="CheckBoxList_Process" runat="server" AutoPostBack="True" OnSelectedIndexChanged="CheckBoxList_Process_SelectedIndexChanged" RepeatDirection="Vertical"  repeatcolumns="1" Width="200px"  RepeatLayout="Table" ></asp:CheckBoxList>
@@ -241,6 +252,16 @@
                                                                 <asp:DropDownList ID="dpl_processMachineid" runat="server"></asp:DropDownList>
                                                             </ItemTemplate>
                                                         </asp:TemplateColumn>
+                                                         <asp:TemplateColumn HeaderText="外發廠商">
+                                                             <ItemTemplate>
+                                                                 <asp:DropDownList ID="dpl_Supply" runat="server"></asp:DropDownList>
+                                                             </ItemTemplate>
+                                                         </asp:TemplateColumn>
+                                                        <asp:TemplateColumn HeaderText="抽檢率(%)" >
+                                                            <ItemTemplate>
+                                                                 <asp:TextBox Runat="server" ID="dg_txt_qcPercent" Width="40" Text='<%# DataBinder.Eval(Container, "DataItem.QCPercent") %>' />
+                                                             </ItemTemplate>
+                                                           </asp:TemplateColumn>
                                                         <asp:ButtonColumn Text="上移" ButtonType="PushButton" HeaderText="" CommandName="Upper" HeaderStyle-Width="40px"></asp:ButtonColumn>
                                                         <asp:ButtonColumn Text="下移" ButtonType="PushButton" CommandName="Lower" HeaderStyle-Width="40px"></asp:ButtonColumn>
                                                         <asp:ButtonColumn Text="刪除" ButtonType="PushButton" CommandName="Delete" HeaderStyle-Width="40px"></asp:ButtonColumn>
@@ -270,6 +291,7 @@
                                   <Triggers>
                                          <asp:AsyncPostBackTrigger ControlID="MainDataGrid" EventName="ItemCommand" />
                                          <asp:AsyncPostBackTrigger ControlID="CheckBoxList_Process" EventName="SelectedIndexChanged" />
+                                       <asp:AsyncPostBackTrigger ControlID="dpl_processGroup" EventName="SelectedIndexChanged" />
                                   </Triggers>
                                   </asp:UpdatePanel>
                                 </div>
@@ -329,7 +351,23 @@
 
         });
 
-      
+        // 保存滚动位置
+        function saveScrollPosition() {
+            sessionStorage.setItem('scrollPosition', document.querySelector('.overflow-auto').scrollTop);
+        }
+
+        // 恢复滚动位置
+        function restoreScrollPosition() {
+            var scrollPos = sessionStorage.getItem('scrollPosition');
+            if (scrollPos) {
+                document.querySelector('.overflow-auto').scrollTop = scrollPos;
+            }
+        }
+
+        // 页面加载后恢复滚动位置
+        Sys.Application.add_load(function () {
+            restoreScrollPosition();
+        });
     </script>
 </asp:Content>
 

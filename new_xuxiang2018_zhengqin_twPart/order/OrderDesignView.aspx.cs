@@ -865,7 +865,16 @@ namespace ModuleWorkFlow
 
         private void InitalAddPage()
         {
-            string initalDate = string.Format("{0:yyyy-MM-dd}", (DateTime.Now));
+            DateTime currentDate = DateTime.Now;
+            if (currentDate.DayOfWeek == DayOfWeek.Saturday)
+            {
+                currentDate = currentDate.AddDays(2); // Move to Monday
+            }
+            else if (currentDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                currentDate = currentDate.AddDays(1); // Move to Monday
+            }
+            string initalDate = string.Format("{0:yy-MM-dd}", currentDate);
             ((TextBox)Table4.FindControl("txt_checkDate")).Text = initalDate;
 
             //Table4.Rows.c
