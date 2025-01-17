@@ -12,6 +12,7 @@ using System.Web.UI.HtmlControls;
 using ModuleWorkFlow.business;
 using ModuleWorkFlow.BLL;
 using Utility;
+using ModuleWorkFlow.Model;
 
 namespace ModuleWorkFlow.admin
 {
@@ -30,7 +31,18 @@ namespace ModuleWorkFlow.admin
         protected string menuname = "";
         private void Page_Load(object sender, System.EventArgs e)
         {
-            menuname = new Tmenu().findbykey(menuid).Menuname;
+            Tmenu menu = new Tmenu();
+            TmenuInfo mi = menu.findbykey(menuid);
+
+
+
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+
+                master.Menuname = mi.Menuname;
+                menuname = mi.Menuname;
+            }
             if (ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PQUERY"))
             {
                 if (!this.IsPostBack)

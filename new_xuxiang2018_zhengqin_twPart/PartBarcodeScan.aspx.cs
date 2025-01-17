@@ -18,6 +18,8 @@ using ModuleWorkFlow.Model;
 using ModuleWorkFlow.BLL.StupidReport;
 using ModuleWorkFlow.Model.StupidReport;
 using ModuleWorkFlow.BLL.NewOrder;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ModuleWorkFlow
 {
@@ -125,66 +127,89 @@ namespace ModuleWorkFlow
             bindDataByModuleId(lab_seach_moduleid.Text.Trim());
         }
 
-       
+        protected void lnkbutton_save_Click(object sender, EventArgs e)
+        {
+            PartPartProcess partPartProcess = new PartPartProcess();
+            foreach (DataGridItem item in MainDataGrid.Items)
+            {
+                // Get the QRCode value from the TextBox
+                TextBox txtQRCode = (TextBox)item.FindControl("txt_QRCode");
+                string qrCode = txtQRCode?.Text;
+
+                // Get the ProcessNo value from the Label
+                Label lblProcessNo = (Label)item.FindControl("lab_ProcessNo");
+                string processNo = lblProcessNo?.Text;
+
+               //if ()
+            }
+
+        }
+
+
 
         private void bindDataByModuleId(string moduleid)
         {
             Label_Message.Text = "";
 
-           
-            DataSet ds = ModuleWorkFlow.business.PartProcess.getPartsExceptDesign(moduleid, txt_partnoid.Text.Trim());
-            DataTable dt = ds.Tables[0];
+            PartPartProcess partPartProcess= new PartPartProcess();
+            List<PartPartProcessInfo> partParts = partPartProcess.getPartseachHaveBatchCount(moduleid, txt_partnoid.Text.Trim());
+         
 
-            if (dt.Rows.Count % 10 == 0)
-            {
-                lab_totalpagte.Text = (dt.Rows.Count / 10).ToString();
-            }
-            else
-            {
-                lab_totalpagte.Text = (dt.Rows.Count / 10 + 1).ToString();
-            }
+         
             lab_nowpage.Text = (MainDataGrid.CurrentPageIndex + 1).ToString();
 
 
-            IList rows = new ArrayList();
-            int endrow = (MainDataGrid.CurrentPageIndex + 1) * 10;
-            if (dt.Rows.Count < endrow)
+            // Group by ModuleId and PartNo_Id, then order each group by ProcessOrder
+            var groupedAndOrdered = partParts
+                .GroupBy(p => new { p.ModuleId, p.PartNo_Id }) // Group by ModuleId and PartNo_Id
+                .Select(g => new
+                {
+                    Key = g.Key, // The grouping key (ModuleId and PartNo_Id)
+                    Items = g.OrderBy(p => p.ProcessOrder).ToList() // Order each group by ProcessOrder
+                })
+                .ToList();
+
+            List<PartPartProcessInfo> treepart = new List<PartPartProcessInfo>();
+            foreach (var group in groupedAndOrdered)
             {
-                endrow = dt.Rows.Count;
+                PartPartProcessInfo ppi = new PartPartProcessInfo();
+                ppi.ModuleId = group.Key.ModuleId;
+                ppi.PartNo_Id = group.Key.PartNo_Id;
+              
+                foreach (var item in group.Items)
+                {
+                    ppi.ProcessName += $@"{item.ProcessName}/";
+                  
+                }
+
+                ppi.ProcessName = ppi.ProcessName.Substring(0, ppi.ProcessName.Length - 1);
+                treepart.Add(ppi);
             }
 
-            for (int i = MainDataGrid.CurrentPageIndex * 10; i < endrow; i++)
+
+            MainDataGrid.VirtualItemCount = treepart.Count;
+
+            if (treepart.Count % 10 == 0)
             {
-                rows.Add(dt.Rows[i]);
+                lab_totalpagte.Text = (treepart.Count / 10).ToString();
             }
-            //DataRow[] aryrow = new DataRow[rows.Count];
-
-
-            IList alltreepart = new ArrayList();
-            foreach (DataRow row in dt.Rows)
+            else
             {
-                alltreepart.Add(row);
-
+                lab_totalpagte.Text = (treepart.Count / 10 + 1).ToString();
             }
-
-            IList treepart = new ArrayList();
-            treepart = new ModuleWorkFlow.BLL.PartProcess().AllGetRelationTree(rows);
-
-
-            MainDataGrid.VirtualItemCount = new ModuleWorkFlow.BLL.PartProcess().AllGetRelationTreeCount(moduleid, txt_partnoid.Text.Trim());
 
             int lowcount = 0;
             int highcount = 0;
             int pages = 0;
-            if (ds.Tables[0].Rows.Count > 0)
+            if (treepart.Count > 0)
             {
-                if (ds.Tables[0].Rows.Count % 10 == 0)
+                if (treepart.Count % 10 == 0)
                 {
-                    pages = ds.Tables[0].Rows.Count / 10;
+                    pages = treepart.Count / 10;
                 }
                 else
                 {
-                    pages = ds.Tables[0].Rows.Count / 10 + 1;
+                    pages = treepart.Count / 10 + 1;
                 }
             }
             else

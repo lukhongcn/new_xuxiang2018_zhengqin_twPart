@@ -20,6 +20,12 @@
                 <div id="Menu">
                     <div class="menubox">
                     <div class="mod1">
+                        <ul>
+                            <li class="btn3">
+                                <asp:LinkButton ID="lnkbutton_save" runat="server" ToolTip="保存/save" OnClick="lnkbutton_save_Click">保存/save</asp:LinkButton>
+                            </li>
+                           
+                        </ul>
                     </div>
                     <div class="mod2">
                         <ul>
@@ -38,7 +44,7 @@
                     <div class="row mb-3">
                         <div class="col-lg-7  d-flex">
                            <asp:Label ID="Label1" runat="server" CssClass="me-10">子批</asp:Label>
-                            <asp:dropdownlist id="Dropdownlist_ModuleId" runat="server" AutoPostBack="True" CssClass="form-select custom-large-width  text-start border-primary me-1"></asp:dropdownlist>
+                            <asp:dropdownlist id="Dropdownlist_ModuleId" runat="server" AutoPostBack="True" CssClass="form-selectcustom-heighter-width  text-start border-primary me-1"></asp:dropdownlist>
                             <asp:textbox id="txt_moduleid" runat="server" CssClass="form-control custom-large-width text-start border-primary"></asp:textbox>
                         </div>
                         <div class="col-lg-5  d-flex">
@@ -55,73 +61,58 @@
             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Wrap="true" CssClass="wrap-text"/>
             <Columns>
 
-                <asp:TemplateColumn HeaderStyle-Width ="60px">
-      <ItemTemplate>
-      <asp:CheckBox runat="server" ID="chk_datagrid" />
-      </ItemTemplate>
-  </asp:TemplateColumn>
+                  <asp:TemplateColumn HeaderStyle-Width ="170px" >
+                    <HeaderTemplate>
+                     <asp:Label id="lab_header_QRCode"  runat="server" >箱子條號</asp:Label>
+                 </HeaderTemplate>
+                 <ItemTemplate>
+                 <asp:TextBox id="txt_QRCode" runat="server" onkeydown="handleEnterKey(event, this)" Text='<%# DataBinder.Eval(Container, "DataItem.QRCode") %>' CssClass="form-control custom-height-width text-start border-primary" />
+                 </ItemTemplate>
+                </asp:TemplateColumn>
+                  <asp:TemplateColumn  HeaderText="ModuleId" HeaderStyle-Width="100px">
+                      <HeaderTemplate>
+                          <asp:Label id="lab_header_ModuleId" runat="server" >子批號</asp:Label>
+                      </HeaderTemplate>
+                      <ItemTemplate>
+                      <asp:Label id="lab_ModuleId" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.ModuleId") %>' />
+                      </ItemTemplate>
+                  </asp:TemplateColumn>
+                  <asp:TemplateColumn  HeaderText="PartNo_Id" HeaderStyle-Width="100px">
+                      <HeaderTemplate><asp:Label id="Label_10" runat="server">箱號</asp:Label>
+                      </HeaderTemplate>
+                      <ItemTemplate>
+                      <asp:Label id="lab_PartNo_Idtemp" runat="server" Text='<%# new Utility.FileOperate().getJT(Convert.ToString(Eval("ModuleId")),Convert.ToString(Eval("PartNo_Id"))) %>'/>
+                      </ItemTemplate>
+                  </asp:TemplateColumn>
 
-  <asp:TemplateColumn  HeaderText="ModuleId" HeaderStyle-Width="100px">
-      <HeaderTemplate>
-          <asp:Label id="lab_header_ModuleId" runat="server" >子批號</asp:Label>
-      </HeaderTemplate>
-      <ItemTemplate>
-      <asp:Label id="lab_ModuleId" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.ModuleId") %>' />
-      </ItemTemplate>
-  </asp:TemplateColumn>
-  <asp:TemplateColumn  HeaderText="PartNo_Id" HeaderStyle-Width="100px">
-      <HeaderTemplate><asp:Label id="Label_10" runat="server">箱號</asp:Label>
-      </HeaderTemplate>
-      <ItemTemplate>
-      <asp:Label id="lab_PartNo_Idtemp" runat="server" Text='<%# new Utility.FileOperate().getJT(Convert.ToString(Eval("ModuleId")),Convert.ToString(Eval("PartNo_Id"))) %>'/>
-      </ItemTemplate>
-  </asp:TemplateColumn>
+                  <asp:BoundColumn DataField="Priority" HeaderText="等級" Visible="false"></asp:BoundColumn>
+                  <asp:TemplateColumn HeaderText="工序" HeaderStyle-Width="550px"><ItemTemplate>
+                      <asp:Label runat="server" ID="Label_ProcessName" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessName") %>' ></asp:Label>
+                       <asp:Label runat="server" ID="dg_lnk_ProcessName" Text='' Visible="false"></asp:Label>
+                  </ItemTemplate>
+                  </asp:TemplateColumn>
+               
+                
 
-  <asp:BoundColumn DataField="Priority" HeaderText="等級" Visible="false"></asp:BoundColumn>
-  <asp:TemplateColumn HeaderText="工序" HeaderStyle-Width="635px"><ItemTemplate>
-      <asp:Label runat="server" ID="Label_ProcessName" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessName") %>' ></asp:Label>
-       <asp:Label runat="server" ID="dg_lnk_ProcessName" Text='' Visible="false"></asp:Label>
-  </ItemTemplate>
-  </asp:TemplateColumn>
-  <asp:BoundColumn DataField="priorityname" HeaderText="等級" HeaderStyle-Width ="40px"></asp:BoundColumn>
-  <asp:ButtonColumn Text="詳細信息" HeaderText="功能" CommandName="Detail" Visible="false"></asp:ButtonColumn>
-  <asp:TemplateColumn visible="false"><ItemTemplate><asp:HyperLink id="HyperLink_EditProcess" runat="server" Text="工序調整" NavigateUrl="&lt;%# &quot;PartModifyEdit.aspx?moduleid=&quot;+DataBinder.Eval(Container, &quot;DataItem.moduleid&quot;)+&quot;&amp;partno=&quot;+DataBinder.Eval(Container, &quot;DataItem.PartNo_Id&quot;)+&quot;&amp;priority=&quot;+DataBinder.Eval(Container, &quot;DataItem.Priority&quot;) %&gt;"></asp:HyperLink>
-  </ItemTemplate>
-  </asp:TemplateColumn>
-  <asp:TemplateColumn Visible="false"><ItemTemplate><asp:HyperLink id="HyperLink_EditAddProcess" runat="server" Text="工序順序調整" NavigateUrl="&lt;%# &quot;PartModifyProcessOrder.aspx?moduleid=&quot;+DataBinder.Eval(Container, &quot;DataItem.moduleid&quot;)+&quot;&amp;partnoid=&quot;+DataBinder.Eval(Container, &quot;DataItem.PartNo_Id&quot;) %&gt;"></asp:HyperLink>
-  </ItemTemplate>
-  </asp:TemplateColumn>
+                  <asp:TemplateColumn  HeaderText="PartNo_Id" Visible="false">
+                      <HeaderTemplate><asp:Label id="Label_101" runat="server" >零件編號</asp:Label>
+                      </HeaderTemplate>
+                      <ItemTemplate>
+                      <asp:Label id="lab_PartNo_Id" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.PartNo_Id") %>' />
+                      </ItemTemplate>
+                  </asp:TemplateColumn>
 
-  <asp:TemplateColumn  HeaderText="PartNo_Id" Visible="false">
-      <HeaderTemplate><asp:Label id="Label_101" runat="server" >零件編號</asp:Label>
-      </HeaderTemplate>
-      <ItemTemplate>
-      <asp:Label id="lab_PartNo_Id" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.PartNo_Id") %>' />
-      </ItemTemplate>
-  </asp:TemplateColumn>
+                 
+                  <asp:TemplateColumn  HeaderText="ProcessNo" Visible="false">
 
-  <asp:TemplateColumn HeaderText="DataTTid" Visible="false">
-      <ItemTemplate>
-          <asp:Label runat="server" ID="dg_lab_DataTTid" Text='<%# DataBinder.Eval(Container, "DataItem.DataTTid") %>'>
-          </asp:Label>
-      </ItemTemplate>
-  </asp:TemplateColumn>
-  <asp:TemplateColumn HeaderText="ParentDataTTid" Visible="false">
-      <ItemTemplate>
-          <asp:Label runat="server" ID="dg_lab_ParentDataTTid" Text='<%# DataBinder.Eval(Container, "DataItem.ParentDataTTid") %>'>
-          </asp:Label>
-      </ItemTemplate>
-  </asp:TemplateColumn>
-  <asp:TemplateColumn  HeaderText="ProcessNo" Visible="false">
-
-      <ItemTemplate>
-      <asp:Label id="lab_ProcessNo" runat="server" Text='<%# DataBinder.Eval(Container,"DataItem.ProcessNo") %>'/>
-      </ItemTemplate>
-  </asp:TemplateColumn>
+                      <ItemTemplate>
+                      <asp:Label id="lab_ProcessNo" runat="server" Text='<%# DataBinder.Eval(Container,"DataItem.ProcessNo") %>'/>
+                      </ItemTemplate>
+                  </asp:TemplateColumn>
             </Columns>
             <PagerStyle Mode="NumericPages" CssClass="table-primary"></PagerStyle>
             </asp:datagrid>
-        </div>
+       
         <table style="BORDER-COLLAPSE: collapse" cellSpacing="0" width="100%"  >
             <tr>
             <td align="right">
@@ -140,6 +131,7 @@
             <asp:Button id="btnGo" runat="server" Text="GO" CssClass="button" Width="29px" OnClick="btnGo_Click"></asp:Button></td>
             </tr>
         </table>
+         </div>
         <div class="container mt-3 border border-primary"><table width="100%" align="center" class="tbMessage"><TR vAlign="middle">
         <TD width="10%" height="28"><DIV align="center"><B><DIV align="center"><B>提示</B>
         </DIV>
@@ -155,4 +147,20 @@
         </div>
         </div>
     </div>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="JSHolder" runat="server">
+    <script type="text/javascript">
+        function handleEnterKey(event, currentElement) {
+        if (event.keyCode === 13) { // 13 is the key code for Enter
+            event.preventDefault(); // Prevent default behavior (e.g., form submission)
+
+            // Find the next input element
+            var inputs = document.querySelectorAll('input[type="text"]');
+            var index = Array.prototype.indexOf.call(inputs, currentElement);
+            if (index >= 0 && index < inputs.length - 1) {
+                inputs[index + 1].focus(); // Focus the next input
+            }
+        }
+    }
+    </script>
 </asp:Content>

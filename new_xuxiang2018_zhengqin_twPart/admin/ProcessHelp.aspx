@@ -1,61 +1,61 @@
-<%@ Page language="c#" Codebehind="ProcessHelp.aspx.cs" AutoEventWireup="false"  MasterPageFile="~/DefaultSub.Master" Inherits="ModuleWorkFlow.ProcessHelp" %>
+Ôªø<%@ Page language="c#" Codebehind="ProcessHelp.aspx.cs" AutoEventWireup="false"  MasterPageFile="~/DefaultSub.Master" Inherits="ModuleWorkFlow.ProcessHelp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="contentHolder" runat="server">
     <div id="Wrapper">
         <div id="Header">
             <div class="headbox">
                 <div class="linebox">
-                <a href="../defaultmain.aspx">•Õ≤£∫ﬁ≤z</a>
+                <a href="../defaultmain.aspx">ÁîüÁî¢ÁÆ°ÁêÜ</a>
                 <img src="images/arrow.png" />
                 <a href="#"><%=titlemenuname%></a>
                 </div>
-                <div class="logout"><a href="../login.aspx" TARGET="_parent">µn•X</a>
+                <div class="logout"><a href="../login.aspx" TARGET="_parent">ÁôªÂá∫</a>
                 </div>
         <div id='pop-div' style="width: 1000;display:none; border:solid 1px #6e8bde;margin:0 auto;" class="pop-box">  
-        <div class="pop-box-h4">§uß«≥]©w</div>  
+        <div class="pop-box-h4">Â∑•Â∫èË®≠ÂÆö</div>  
         <div class="pop-box-body" >
 
         <table id="TableCondition" width="100%" align="center" class="tbone" border="0">
         <tr>
         <td>
-        §uß«Ωs∏π°]Ω–øÈ§J≠^§Â¶W°A§£Ø‡±a¶≥§§§Â°^&nbsp;<asp:textbox id="txt_processid" runat="server"></asp:textbox>
+        Â∑•Â∫èÁ∑®ËôüÔºàË´ãËº∏ÂÖ•Ëã±ÊñáÂêçÔºå‰∏çËÉΩÂ∏∂Êúâ‰∏≠ÊñáÔºâ&nbsp;<asp:textbox id="txt_processid" runat="server"></asp:textbox>
         </td>
         <td>
-        §uß«¶W∫Ÿ°]¶π¶W∫Ÿ¨O±zπÍª⁄®œ•Œ§uß«¶W∫Ÿ°^<asp:textbox id="txt_processname" runat="server"></asp:textbox>
+        Â∑•Â∫èÂêçÁ®±ÔºàÊ≠§ÂêçÁ®±ÊòØÊÇ®ÂØ¶Èöõ‰ΩøÁî®Â∑•Â∫èÂêçÁ®±Ôºâ<asp:textbox id="txt_processname" runat="server"></asp:textbox>
         </td>
         </tr>
         <tr>
 
         <td>
-        ¨Oß_¨∞æ˜•x•[§u§uß«&nbsp;<asp:dropdownlist id="ddl_needschedule" runat="server">
-        <asp:ListItem Value="1">¨O</asp:ListItem>
-        <asp:ListItem Value="0">ß_</asp:ListItem>
+        ÊòØÂê¶ÁÇ∫Ê©üÂè∞Âä†Â∑•Â∑•Â∫è&nbsp;<asp:dropdownlist id="ddl_needschedule" runat="server">
+        <asp:ListItem Value="1">ÊòØ</asp:ListItem>
+        <asp:ListItem Value="0">Âê¶</asp:ListItem>
         </asp:dropdownlist>
         </td>
         </tr>
         <tr>
-        <td><asp:label id="lab_priceType" runat="server">§uß«√˛´¨</asp:label>
+        <td><asp:label id="lab_priceType" runat="server">Â∑•Â∫èÈ°ûÂûã</asp:label>
         &nbsp;<asp:dropdownlist id="dpl_priceType" runat="server">
-        <asp:ListItem Value="0">™≈</asp:ListItem>
+        <asp:ListItem Value="0">Á©∫</asp:ListItem>
         <asp:ListItem Value="IPQC">IPQC</asp:ListItem>
         <asp:ListItem Value="OPQ">OPQ</asp:ListItem>
-        <asp:ListItem Value="OUTSOURCE">•~•]</asp:ListItem>
-        <asp:ListItem Value="ZULI">≤’•ﬂ</asp:ListItem>
+        <asp:ListItem Value="OUTSOURCE">Â§ñÂåÖ</asp:ListItem>
+        <asp:ListItem Value="ZULI">ÁµÑÁ´ã</asp:ListItem>
         </asp:dropdownlist>
         </td>
         <td>
-        §uÆ…§¿√˛&nbsp;<asp:dropdownlist id="dpl_processgroups" runat="server"></asp:dropdownlist>
+        Â∑•ÊôÇÂàÜÈ°û&nbsp;<asp:dropdownlist id="dpl_processgroups" runat="server"></asp:dropdownlist>
         </td>
         </tr>
         <tr>
 
         <td>
-        ¨Oß_™Ω±µ∂}©l&nbsp;<asp:dropdownlist id="dpl_startdirectly" runat="server">
-        <asp:ListItem Value="0">ß_</asp:ListItem>
-        <asp:ListItem Value="1">¨O</asp:ListItem>
+        ÊòØÂê¶Áõ¥Êé•ÈñãÂßã&nbsp;<asp:dropdownlist id="dpl_startdirectly" runat="server">
+        <asp:ListItem Value="0">Âê¶</asp:ListItem>
+        <asp:ListItem Value="1">ÊòØ</asp:ListItem>
         </asp:dropdownlist>
         </td>
         <td>
-        <asp:Label ID="lab_price" Runat="server">ª˘ÆÊ</asp:Label>
+        <asp:Label ID="lab_price" Runat="server">ÂÉπÊ†º</asp:Label>
         &nbsp;<asp:TextBox ID="txt_price" Runat="server"></asp:TextBox>
         </td>
         </tr>
@@ -64,7 +64,7 @@
         <asp:Label ID="lab_func" runat="server" Text="" Visible="false"></asp:Label>
         </div>  
         <div class='buttonPanel' style="text-align: right" mce_style="text-align: right">  
-            <span><span><span class="ok"><asp:button id="btn_save" runat="server" Text="´O¶s"></asp:button></span></span></span>
+            <span><span><span class="ok"><asp:button id="btn_save" runat="server" Text="‰øùÂ≠ò"></asp:button></span></span></span>
         </div>  
         </div>
 
@@ -97,61 +97,61 @@
                             <asp:CheckBox runat="server" ID="chk_datagrid" />
                             </ItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="§uß«Ωs∏π" Visible="true"><ItemTemplate>
+                            <asp:TemplateColumn HeaderText="Â∑•Â∫èÁ∑®Ëôü" Visible="true"><ItemTemplate>
                             &nbsp;<asp:Label id="dg_lab_ProcessId" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessId&quot;) %&gt;"></asp:Label>
                             </ItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="§uß«¶W∫Ÿ">
+                            <asp:TemplateColumn HeaderText="Â∑•Â∫èÂêçÁ®±">
                             <ItemTemplate>
                             &nbsp;<asp:Label id="dg_lab_ProcessName" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessName&quot;) %&gt;"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate><asp:textbox id="dg_txt_ProcessName" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessName&quot;) %&gt;"></asp:textbox>
                             </EditItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="µ˘ƒ¿" Visible="false">
+                            <asp:TemplateColumn HeaderText="Ë®ªÈáã" Visible="false">
                             <ItemTemplate>
                             &nbsp;<asp:Label ID="dg_lab_comment" Runat="server" Text="&lt;%# DataBinder.Eval(Container,&quot;DataItem.Comment&quot;)%&gt;"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate><asp:TextBox ID="dg_txt_comment" Runat="server" Text="&lt;%# DataBinder.Eval(Container,&quot;DataItem.Comment&quot;)%&gt;"></asp:TextBox>
                             </EditItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="¨Oß_¨∞æ˜•x•[§u§uß«" Visible="false"><ItemTemplate>
+                            <asp:TemplateColumn HeaderText="ÊòØÂê¶ÁÇ∫Ê©üÂè∞Âä†Â∑•Â∑•Â∫è" Visible="false"><ItemTemplate>
                             &nbsp;<asp:Label id="lab_needschedule" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.CNeedSchedule&quot;) %&gt;"></asp:Label>
                             </ItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="§uß«√˛´¨" Visible="false">
+                            <asp:TemplateColumn HeaderText="Â∑•Â∫èÈ°ûÂûã" Visible="false">
                             <ItemTemplate>
                             &nbsp;<asp:Label id="dg_lab_pricetype" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.CPriceType&quot;) %&gt;"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate><asp:dropdownlist id="dg_dpl_pricetype" runat="server">
-                            <asp:ListItem Value="0">™≈</asp:ListItem>
-                            <asp:ListItem Value="OUTSOURCE">•~•]</asp:ListItem>
-                            <asp:ListItem Value="ZULI">≤’•ﬂ</asp:ListItem>
-                            <asp:ListItem Value="NEEDDESIGN">ª›≥]≠p</asp:ListItem>
+                            <asp:ListItem Value="0">Á©∫</asp:ListItem>
+                            <asp:ListItem Value="OUTSOURCE">Â§ñÂåÖ</asp:ListItem>
+                            <asp:ListItem Value="ZULI">ÁµÑÁ´ã</asp:ListItem>
+                            <asp:ListItem Value="NEEDDESIGN">ÈúÄË®≠Ë®à</asp:ListItem>
                             </asp:dropdownlist>
                             </EditItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="§uÆ…§¿√˛" Visible="false">
+                            <asp:TemplateColumn HeaderText="Â∑•ÊôÇÂàÜÈ°û" Visible="false">
                             <ItemTemplate>
                             &nbsp;<asp:Label id="lab_processgroups" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.ProcessGroupsId&quot;) %&gt;"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate><asp:DropDownList ID="dg_dpl_processgroups" Runat="server"></asp:DropDownList>
                             </EditItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="ª˘ÆÊ" Visible="false">
+                            <asp:TemplateColumn HeaderText="ÂÉπÊ†º" Visible="false">
                             <ItemTemplate>
                             &nbsp;<asp:Label id="dg_lab_price" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.Price&quot;) %&gt;"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate><asp:textbox id="dg_txt_price" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.Price&quot;) %&gt;"></asp:textbox>
                             </EditItemTemplate>
                             </asp:TemplateColumn>
-                            <asp:TemplateColumn HeaderText="¨Oß_™Ω±µ∂}©l" Visible="false">
+                            <asp:TemplateColumn HeaderText="ÊòØÂê¶Áõ¥Êé•ÈñãÂßã" Visible="false">
                             <ItemTemplate>
                             &nbsp;<asp:Label id="lab_startdirectly" runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.CStartDirectly&quot;) %&gt;"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate><asp:DropDownList ID="dg_dpl_startdirectly" Runat="server">
-                            <asp:ListItem Value="1">¨O</asp:ListItem>
-                            <asp:ListItem Value="0">ß_</asp:ListItem>
+                            <asp:ListItem Value="1">ÊòØ</asp:ListItem>
+                            <asp:ListItem Value="0">Âê¶</asp:ListItem>
                             </asp:DropDownList>
                             </EditItemTemplate>
                             </asp:TemplateColumn>
@@ -160,7 +160,7 @@
                     </asp:datagrid>
                 </div>
                 <div class="container mt-3 border border-warning"><TABLE id="Table3" width="100%" align="center" class="tbMessage" border="0"><TR vAlign="middle">
-                <TD width="10%" height="28"><DIV align="center"><B><DIV align="center"><B>¥£•‹</B>
+                <TD width="10%" height="28"><DIV align="center"><B><DIV align="center"><B>ÊèêÁ§∫</B>
                 </DIV>
                 </B>
                 </DIV>

@@ -170,11 +170,13 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="GroupGetStation.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="middle.aspx" />
     <Content Include="order\controls\OrderDesignView.ascx" />
     <Content Include="order\OrderDesignList.aspx" />
     <Content Include="order\OrderDesignView.aspx" />
+    <Content Include="OutSourceProcessOperatingDay.aspx" />
     <Content Include="outsource\OutSourceConfirmView.aspx" />
     <Content Include="outsource\OutSourceDetailList.aspx" />
     <Content Include="outsource\OutSourceView.aspx" />
@@ -184,6 +186,7 @@
     <Content Include="PartModifyEdit.aspx" />
     <Content Include="PartModifyEditall.aspx" />
     <Content Include="PartModifyList.aspx" />
+    <Content Include="ProcessOperatingDay.aspx" />
     <Content Include="ProjectAdd.aspx" />
     <Content Include="ProjectList.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -413,6 +416,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GroupGetStation.aspx.cs">
+      <DependentUpon>GroupGetStation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -434,6 +441,10 @@
     </Compile>
     <Compile Include="order\OrderDesignView.aspx.cs">
       <DependentUpon>OrderDesignView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OutSourceProcessOperatingDay.aspx.cs">
+      <DependentUpon>OutSourceProcessOperatingDay.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="outsource\OutSourceConfirmView.aspx.cs">
@@ -473,6 +484,10 @@
     </Compile>
     <Compile Include="PartModifyList.aspx.cs">
       <DependentUpon>PartModifyList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProcessOperatingDay.aspx.cs">
+      <DependentUpon>ProcessOperatingDay.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ProjectAdd.aspx.cs">
@@ -584,13 +599,16 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BomDetailView.aspx.resx" />
     <EmbeddedResource Include="Controls\newLeft.aspx.resx" />
+    <EmbeddedResource Include="GroupGetStation.aspx.resx" />
     <EmbeddedResource Include="Login.aspx.resx" />
     <EmbeddedResource Include="order\OrderDesignList.aspx.resx" />
     <EmbeddedResource Include="order\OrderDesignView.aspx.resx" />
+    <EmbeddedResource Include="OutSourceProcessOperatingDay.aspx.resx" />
     <EmbeddedResource Include="ParRelation.aspx.resx" />
     <EmbeddedResource Include="PartList.aspx.resx" />
     <EmbeddedResource Include="PartModifyEdit.aspx.resx" />
     <EmbeddedResource Include="PartModifyList.aspx.resx" />
+    <EmbeddedResource Include="ProcessOperatingDay.aspx.resx" />
     <EmbeddedResource Include="ProjectAdd.aspx.resx" />
     <EmbeddedResource Include="ProjectList.aspx.resx" />
     <EmbeddedResource Include="standard\StandardPartAddEdit.aspx.resx" />
@@ -629,6 +647,10 @@
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\IDAL.Report\IDAL.Report.csproj">
       <Project>{ac912214-ef60-46fd-a444-d27b6a989025}</Project>
       <Name>IDAL.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.Alert\Model.Alert.csproj">
+      <Project>{17e4606d-fb43-48f4-96a7-083ffb13bf30}</Project>
+      <Name>Model.Alert</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\new_xuxiang2018_zhengqin_twNJ\Model.Outsource\Model.Outsource.csproj">
       <Project>{ccdb26c6-beba-4b4b-87e3-f70f3050d8b0}</Project>
