@@ -297,15 +297,15 @@ namespace ModuleWorkFlow
                
 
                 int processno = Convert.ToInt32((e.Item.FindControl("dg_lab_ProcessNo") as Label).Text);
-                ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
+                ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
                 TextBox txt_user = e.Item.FindControl("dpl_txt_user") as TextBox;
 
                 DatePicker txt_StartDate = e.Item.FindControl("dp_StartDate") as DatePicker;
                 DropDownList dpl_StartTime = e.Item.FindControl("dpl_StartTime") as DropDownList;
 
 
-                PartProcessInfo ppi = new PartProcessInfo();
-                ppi = pp.getPartProcessInfo(processno);
+              
+                PartPartProcessInfo ppi = pp.getPartProcessInfo(processno);
                 if (dpl_status.SelectedValue.Equals("Holdon") || dpl_status.SelectedValue.Equals("Implementation") || dpl_status.SelectedValue.Equals("AllImplementation"))
                 {
                     if (ppi.UserId != null)
@@ -314,14 +314,47 @@ namespace ModuleWorkFlow
                     }
                     txt_StartDate.Text = DateTime.Now.ToShortDateString();
                     dpl_StartTime.SelectedValue = DateTime.Now.Hour.ToString("D2");
-                    this.MainDataGrid.Columns[2].Visible = false;
-                    this.MainDataGrid.Columns[3].Visible = false;
+                 
                 }
-                else
-                {
-                    this.MainDataGrid.Columns[2].Visible = false;
-                    this.MainDataGrid.Columns[3].Visible = false;
 
+                if (ppi.StatusId.Equals("Ready"))
+                {
+                    Label lab_productNumber = e.Item.FindControl("lab_productNumber") as Label;
+                    TextBox txt_productNumber = e.Item.FindControl("txt_productNumber") as TextBox;
+                    lab_productNumber.Text = ppi.ReadyCount.ToString();
+                    txt_productNumber.Text = lab_productNumber.Text;
+                }
+
+                if (ppi.StatusId.Equals("JIEDAN"))
+                {
+                    Label lab_productNumber = e.Item.FindControl("lab_productNumber") as Label;
+                    TextBox txt_productNumber = e.Item.FindControl("txt_productNumber") as TextBox;
+                    lab_productNumber.Text = ppi.GetCount.ToString();
+                    txt_productNumber.Text = lab_productNumber.Text;
+                }
+
+                if (ppi.StatusId.Equals("Working"))
+                {
+                    Label lab_productNumber = e.Item.FindControl("lab_productNumber") as Label;
+                    lab_productNumber.Text = ppi.StartCount.ToString();
+                    TextBox txt_productNumber = e.Item.FindControl("txt_productNumber") as TextBox;
+                    txt_productNumber.Text = lab_productNumber.Text;
+                }
+
+                if (ppi.StatusId.Equals("Holdon"))
+                {
+                    Label lab_productNumber = e.Item.FindControl("lab_productNumber") as Label;
+                    lab_productNumber.Text = ppi.HoldCount.ToString();
+                    TextBox txt_productNumber = e.Item.FindControl("txt_productNumber") as TextBox;
+                    txt_productNumber.Text = lab_productNumber.Text;
+                }
+
+                if (ppi.StatusId.Equals("Implementation"))
+                {
+                    Label lab_productNumber = e.Item.FindControl("lab_productNumber") as Label;
+                    lab_productNumber.Text = ppi.FinishedCount.ToString();
+                    TextBox txt_productNumber = e.Item.FindControl("txt_productNumber") as TextBox;
+                    txt_productNumber.Text = lab_productNumber.Text;
                 }
 
 
@@ -514,8 +547,7 @@ namespace ModuleWorkFlow
             Label_Message.Text = "";
             PartScanBar scanbar = new PartScanBar();
             ModuleWorkFlow.BLL.PartPartProcess partprocess = new ModuleWorkFlow.BLL.PartPartProcess();
-            IList checkpartprocess = new ArrayList();
-
+        
             huserno = new ModuleWorkFlow.BLL.User().getUserName();
 
             ModuleWorkFlow.BLL.User u = new ModuleWorkFlow.BLL.User();
@@ -593,7 +625,7 @@ namespace ModuleWorkFlow
                 bool isSelect = CheckBox_Select.Checked;
 
                 ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
-                ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour ppddw = new ModuleWorkFlow.BLL.PartProcessDealDateTimeWorkHour();
+                ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour ppddw = new ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour();
 
                 //MYD0123-3
                 int processno = Convert.ToInt32(MainDataGrid.Items[i].Cells[20].Text);//whd
@@ -610,6 +642,8 @@ namespace ModuleWorkFlow
                 {
                     TextBox txt_user = MainDataGrid.Items[i].FindControl("dpl_txt_user") as TextBox;
                     TextBox txt_UnitPriceNoTax = MainDataGrid.Items[i].FindControl("txt_UnitPriceNoTax") as TextBox;
+                    TextBox txt_productNumber = MainDataGrid.Items[i].FindControl("txt_productNumber") as TextBox;
+                    CheckBox unbound_Select = MainDataGrid.Items[i].FindControl("unbound_Select") as CheckBox;
                     userno = txt_user.Text.Trim();
                     UserInfo ui = new User().getUserInfoByusername(userno);
                     username = ui.Name;
@@ -617,11 +651,16 @@ namespace ModuleWorkFlow
 
                     ppi.UserId = userno;
                     ppi.UserName = username;
+                    ppi.ScanCount = Convert.ToInt32(txt_productNumber.Text);
+                    if (unbound_Select.Checked)
+                    {
+                        ppi.QRCode = "";
+                    }
                     if (actionid.Equals("JIESHU") && Dropdownlist_Process.SelectedValue.Equals(""))
                     {
                         if (ppi.FactStartDate.Ticks == 0)
                         {
-                            IList partProcesses = partprocess.getPartProcessInfo(ppi.ModuleId, ppi.PartNo_Id);
+                            List<PartPartProcessInfo> partProcesses = partprocess.getListPartProcessInfo(ppi.ModuleId, ppi.PartNo_Id);
 
                             int startindex = -1;
                             for (int j = partProcesses.Count - 1; j > -1; j--)
@@ -642,7 +681,7 @@ namespace ModuleWorkFlow
 
                             if (startindex > -1)
                             {
-                                IList continueSouce = new ArrayList();
+                                List<PartPartProcessInfo> continueSouce = new List<PartPartProcessInfo>();
                                 continueSouce.Add(partProcesses[startindex]);
                                 ModuleWorkFlow.Model.ProcessInfo continuepi = new Process().GetProcessInfoById((partProcesses[startindex] as PartProcessInfo).ProcessId);
                                 continuepi.FinishedDirectly = true;
@@ -705,29 +744,7 @@ namespace ModuleWorkFlow
                     }
 
 
-                    if (MainDataGrid.Columns[MainDataGrid.Columns.Count - 2].Visible)
-                    {
-                        if (txt_UnitPriceNoTax.Text.Trim().Equals(""))
-                        {
-                            ppi.UnitPriceNoTax = 0;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                ppi.UnitPriceNoTax = Convert.ToDouble(txt_UnitPriceNoTax.Text.Trim());
-                            }
-                            catch
-                            {
-                                Label_Message.Text = Label_Message.Text + Translate.translateString("價格必須為數字");
-                                return;
-                            }
-                        }
-
-
-
-
-                    }
+                  
 
 
 
@@ -762,10 +779,10 @@ namespace ModuleWorkFlow
             {
                 if (pi.PriceType.Equals("PARTOUTSOURCE") && actionid.Equals("JIESHU"))
                 {
-                    IList nextsource = new ArrayList();
-                    foreach (PartProcessInfo ppi in source)
+                    List<PartPartProcessInfo> nextsource = new List<PartPartProcessInfo>();
+                    foreach (PartPartProcessInfo ppi in source)
                     {
-                        PartProcessInfo nextppi = partprocess.getPartProcessInfo(ppi.ModuleId, ppi.PartNo_Id, ppi.ProcessOrder + 1);
+                        PartPartProcessInfo nextppi = partprocess.getPartProcessInfo(ppi.ModuleId, ppi.PartNo_Id, ppi.ProcessOrder + 1);
                         if (nextppi != null && nextppi.PriceType.Equals("AUTOSTART"))
                         {
                             nextppi.UserId = ppi.UserId;

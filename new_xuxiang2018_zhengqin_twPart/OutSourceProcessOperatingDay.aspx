@@ -118,7 +118,14 @@
                     <ItemTemplate><asp:CheckBox id="unbound_Select" runat="server" Checked="true"></asp:CheckBox>
                     </ItemTemplate>
                 </asp:TemplateColumn>
-
+                 <asp:TemplateColumn HeaderText="數量">
+                     <ItemTemplate><asp:TextBox id="txt_productNumber" runat="server" ></asp:TextBox>
+                     </ItemTemplate>
+                 </asp:TemplateColumn>
+                 <asp:TemplateColumn HeaderText="可用數量" Visible="false">
+                      <ItemTemplate><asp:Label id="lab_productNumber" runat="server"  ></asp:Label>
+                      </ItemTemplate>
+                  </asp:TemplateColumn>
                 <asp:TemplateColumn HeaderText="產品"><ItemTemplate><asp:Label runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.PartName&quot;) %&gt;" ID="dg_lab_partno"></asp:Label>
                 </ItemTemplate>
                 </asp:TemplateColumn>
@@ -127,7 +134,7 @@
                 <asp:TemplateColumn HeaderText="狀態"><ItemTemplate><asp:Label runat="server" Text="&lt;%# DataBinder.Eval(Container, &quot;DataItem.StatusDesc&quot;) %&gt;" ID="Label1"></asp:Label>
                 </ItemTemplate>
                 </asp:TemplateColumn>
-                 <asp:TemplateColumn HeaderText="氮確ユ戳" HeaderStyle-Width ="110px">
+                 <asp:TemplateColumn HeaderText="答復交期" HeaderStyle-Width ="110px">
                           <ItemTemplate>
                               <%# 
                                   Eval("ConfirmDate") == DBNull.Value || (DateTime?)Eval("ConfirmDate") == DateTime.MinValue
