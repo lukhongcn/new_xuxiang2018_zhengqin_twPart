@@ -90,7 +90,7 @@
                 <ItemTemplate><cc1:DatePicker id="dp_StartDate" runat="server" DateType="yyyy-mm-dd" imgDirectory="images/"></cc1:DatePicker>
                 </ItemTemplate>
                 </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="時間">
+                <asp:TemplateColumn HeaderText="時間" Visible="False">
                 <HeaderStyle Width="60px"></HeaderStyle>
                 <ItemTemplate><asp:dropdownlist id="dpl_StartTime" runat="server" AutoPostBack="True"></asp:dropdownlist>
                 </ItemTemplate>
@@ -119,7 +119,7 @@
                     </ItemTemplate>
                 </asp:TemplateColumn>
                  <asp:TemplateColumn HeaderText="數量">
-                     <ItemTemplate><asp:TextBox id="txt_productNumber" runat="server" ></asp:TextBox>
+                     <ItemTemplate><asp:TextBox id="txt_productNumber" runat="server" Width="60px"></asp:TextBox>
                      </ItemTemplate>
                  </asp:TemplateColumn>
                  <asp:TemplateColumn HeaderText="可用數量" Visible="false">
@@ -156,7 +156,12 @@
                         <asp:Label runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessNo") %>' ID="dg_lab_ProcessNo"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateColumn>
-                <asp:BoundColumn Visible="False" DataField="ProcessId" HeaderText="ProcessId"></asp:BoundColumn>
+                <asp:TemplateColumn  HeaderText="" Visible="false">
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ProcessId") %>' ID="dg_lab_ProcessId"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateColumn>
+               
                 <asp:TemplateColumn HeaderText="價格"><ItemTemplate>
                 <asp:TextBox id="txt_UnitPriceNoTax"  runat="server"></asp:TextBox>
                 </ItemTemplate>

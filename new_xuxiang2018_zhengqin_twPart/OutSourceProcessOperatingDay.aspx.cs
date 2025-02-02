@@ -323,6 +323,7 @@ namespace ModuleWorkFlow
                     TextBox txt_productNumber = e.Item.FindControl("txt_productNumber") as TextBox;
                     lab_productNumber.Text = ppi.ReadyCount.ToString();
                     txt_productNumber.Text = lab_productNumber.Text;
+                 
                 }
 
                 if (ppi.StatusId.Equals("JIEDAN"))
@@ -628,8 +629,8 @@ namespace ModuleWorkFlow
                 ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour ppddw = new ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour();
 
                 //MYD0123-3
-                int processno = Convert.ToInt32(MainDataGrid.Items[i].Cells[20].Text);//whd
-                string processid = MainDataGrid.Items[i].Cells[21].Text;
+                int processno = Convert.ToInt32((MainDataGrid.Items[i].FindControl("dg_lab_ProcessNo") as Label).Text);//whd
+                string processid = (MainDataGrid.Items[i].FindControl("dg_lab_ProcessId") as Label).Text;
 
 
 
@@ -643,6 +644,7 @@ namespace ModuleWorkFlow
                     TextBox txt_user = MainDataGrid.Items[i].FindControl("dpl_txt_user") as TextBox;
                     TextBox txt_UnitPriceNoTax = MainDataGrid.Items[i].FindControl("txt_UnitPriceNoTax") as TextBox;
                     TextBox txt_productNumber = MainDataGrid.Items[i].FindControl("txt_productNumber") as TextBox;
+                    Label lab_productNumber = MainDataGrid.Items[i].FindControl("lab_productNumber") as Label;
                     CheckBox unbound_Select = MainDataGrid.Items[i].FindControl("unbound_Select") as CheckBox;
                     userno = txt_user.Text.Trim();
                     UserInfo ui = new User().getUserInfoByusername(userno);
@@ -652,9 +654,13 @@ namespace ModuleWorkFlow
                     ppi.UserId = userno;
                     ppi.UserName = username;
                     ppi.ScanCount = Convert.ToInt32(txt_productNumber.Text);
+                    ppi.BoxCount = Convert.ToInt32(lab_productNumber.Text);
                     if (unbound_Select.Checked)
                     {
+                        ppi.SplitQRCode = ppi.QRCode;
                         ppi.QRCode = "";
+                        
+                        ppi.BoxUnBoxCount = ppi.ScanCount;
                     }
                     if (actionid.Equals("JIESHU") && Dropdownlist_Process.SelectedValue.Equals(""))
                     {
@@ -800,7 +806,21 @@ namespace ModuleWorkFlow
 
             if (Label_Message.Text.Equals(""))
             {
-                Label_Message.Text = Lang.SAVE_SUCCESS;
+                BoxLog boxlog = new BoxLog();
+                 foreach (PartPartProcessInfo ppi in source)
+                {
+                    if (ppi.ScanCount < ppi.BoxCount)
+                    {
+                        if (boxlog.splitBoxPart(ppi,new PartOutSourceDetail(),actionid,ppi.SplitQRCode).Equals(Lang.SAVE_FAIL))
+                        {
+                            Label_Message.Text += $"{ppi.ModuleId}:{ppi.PartNo_Id},拆箱失敗</br>";
+                        }
+                    }
+
+                }
+
+                if (Label_Message.Text.Equals(""))
+                    Label_Message.Text = Lang.SAVE_SUCCESS;
             }
 
 
