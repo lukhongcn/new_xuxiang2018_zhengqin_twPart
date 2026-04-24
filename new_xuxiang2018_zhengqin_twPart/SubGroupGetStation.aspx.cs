@@ -31,6 +31,16 @@ namespace ModuleWorkFlow
     /// </summary>
     public class SubGroupGetStation : System.Web.UI.Page
     {
+        [Serializable]
+        private class DynamicGridState
+        {
+            public string GridKey { get; set; }
+            public string Title { get; set; }
+            public List<int> ProcessNos { get; set; }
+        }
+
+        private const string DynamicGridStateSessionKey = "SubGroupGetStation_DynamicGridStates";
+
         protected System.Web.UI.WebControls.Label Label_StatusMsg;
         protected System.Web.UI.WebControls.Label lab_action;
         protected System.Web.UI.WebControls.Label lab_moduleId;
@@ -47,7 +57,7 @@ namespace ModuleWorkFlow
 
         private ModuleWorkFlow.BLL.PartProcess partprocess;
         protected System.Web.UI.WebControls.DropDownList drp_processlist;
-        protected System.Web.UI.WebControls.DataGrid MainDatagrid;
+        protected Repeater rptDynamicGrids;
         protected System.Web.UI.WebControls.Label lab_totalcount;
         protected System.Web.UI.WebControls.Label lab_repeate;
         protected System.Web.UI.WebControls.Label lab_hiddenModuleId;
@@ -72,6 +82,132 @@ namespace ModuleWorkFlow
         private PartScanBar scanbar;
 
         protected string menuname = "";
+
+        private List<DynamicGridState> GetDynamicGridStates()
+        {
+            List<DynamicGridState> states = Session[DynamicGridStateSessionKey] as List<DynamicGridState>;
+            if (states == null)
+            {
+                states = new List<DynamicGridState>();
+                Session[DynamicGridStateSessionKey] = states;
+            }
+
+            return states;
+        }
+
+        private void SetDynamicGridStates(List<DynamicGridState> states)
+        {
+            Session[DynamicGridStateSessionKey] = states ?? new List<DynamicGridState>();
+        }
+
+        private void ClearDynamicGridStates()
+        {
+            SetDynamicGridStates(new List<DynamicGridState>());
+        }
+
+        private bool HasDynamicGridData()
+        {
+            return GetDynamicGridStates().Count > 0;
+        }
+
+        private int GetDynamicGridRowCount()
+        {
+            return GetAllDynamicGridItems().Count;
+        }
+
+        private List<PartProcessInfo> GetGridSource(DynamicGridState state)
+        {
+            List<PartProcessInfo> source = new List<PartProcessInfo>();
+            Utility.NoSortHashTable currentProcessHash = Session["hprocessno"] as Utility.NoSortHashTable;
+            if (state == null || state.ProcessNos == null || currentProcessHash == null)
+            {
+                return source;
+            }
+
+            foreach (int processNo in state.ProcessNos)
+            {
+                if (currentProcessHash[processNo] != null)
+                {
+                    source.Add((PartProcessInfo)currentProcessHash[processNo]);
+                }
+            }
+
+            return source.OrderBy(m => m.ProcessOrder).ToList();
+        }
+
+        private void RebindDynamicGridRepeater()
+        {
+            rptDynamicGrids.DataSource = GetDynamicGridStates();
+            rptDynamicGrids.DataBind();
+        }
+
+        private void AppendDynamicGrid(string title, IEnumerable<PartProcessInfo> source)
+        {
+            List<PartProcessInfo> sourceList = source == null
+                ? new List<PartProcessInfo>()
+                : source.Where(m => m != null).OrderBy(m => m.ProcessOrder).ToList();
+            if (sourceList.Count == 0)
+            {
+                return;
+            }
+
+            List<DynamicGridState> states = GetDynamicGridStates();
+            states.Add(new DynamicGridState
+            {
+                GridKey = "DynamicGrid_" + Guid.NewGuid().ToString("N"),
+                Title = title,
+                ProcessNos = sourceList.Select(m => m.ProcessNo).Distinct().ToList()
+            });
+            SetDynamicGridStates(states);
+        }
+
+        private void ReplaceDynamicGrids(string title, IEnumerable<PartProcessInfo> source)
+        {
+            ClearDynamicGridStates();
+            AppendDynamicGrid(title, source);
+        }
+
+        private IEnumerable<DataGrid> GetAllDynamicGrids()
+        {
+            foreach (RepeaterItem item in rptDynamicGrids.Items)
+            {
+                DataGrid grid = item.FindControl("dgDynamic") as DataGrid;
+                if (grid != null)
+                {
+                    yield return grid;
+                }
+            }
+        }
+
+        private List<DataGridItem> GetAllDynamicGridItems()
+        {
+            List<DataGridItem> items = new List<DataGridItem>();
+            foreach (DataGrid grid in GetAllDynamicGrids())
+            {
+                items.AddRange(grid.Items.Cast<DataGridItem>());
+            }
+
+            return items;
+        }
+
+        private void ApplyGridColumnVisibility(DataGrid grid)
+        {
+            if (grid == null)
+            {
+                return;
+            }
+
+            ModuleWorkFlow.Model.ProcessInfo pi = string.IsNullOrEmpty(drp_processlist.SelectedValue)
+                ? null
+                : new BLL.Process().GetProcessInfoById(drp_processlist.SelectedValue);
+            bool showQcColumns = lab_hiddenActionId.Text.Equals("JIESHU")
+                && pi != null
+                && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC"));
+            bool showHoldComment = lab_hiddenActionId.Text.Equals("ZANTING");
+            grid.Columns[grid.Columns.Count - 2].Visible = showQcColumns;
+            grid.Columns[grid.Columns.Count - 3].Visible = showQcColumns;
+            grid.Columns[grid.Columns.Count - 1].Visible = showHoldComment;
+        }
 
 
         private void Page_Load(object sender, System.EventArgs e)
@@ -99,6 +235,7 @@ namespace ModuleWorkFlow
                 //權限控制
               
                 Session["hprocessno"] = null;
+                ClearDynamicGridStates();
                 ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PQUERY");
                 ModuleWorkFlow.BLL.Process p = new ModuleWorkFlow.BLL.Process();
 
@@ -224,19 +361,14 @@ namespace ModuleWorkFlow
 
             if (lab_hiddenActionId.Text.Trim().Equals("JIESHU") && !drp_processlist.SelectedValue.Equals(""))
             {
-                //ModuleWorkFlow.Model.ProcessInfo pi = new Process().GetProcessInfoById(drp_processlist.SelectedValue);
                 if (pi != null && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC")))
                 {
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = true;
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = true;
                     lab_Ineligibility_qrCode.Visible = true;
                     txt_Ineligibility_qrCode.Visible = true;
 
                 }
                 else
                 {
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = false;
                     lab_Ineligibility_qrCode.Visible = false;
                     txt_Ineligibility_qrCode.Visible = false;
 
@@ -244,10 +376,14 @@ namespace ModuleWorkFlow
             }
             else
             {
-                MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
-               
+                lab_Ineligibility_qrCode.Visible = false;
+                txt_Ineligibility_qrCode.Visible = false;
             }
 
+            if (HasDynamicGridData())
+            {
+                RebindDynamicGridRepeater();
+            }
             setMachine();
         }
 
@@ -257,8 +393,10 @@ namespace ModuleWorkFlow
             //
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
             //
+            scanbar = new PartScanBar();
             InitializeComponent();
             base.OnInit(e);
+            RebindDynamicGridRepeater();
         }
 
         /// <summary>
@@ -270,7 +408,6 @@ namespace ModuleWorkFlow
             this.btn_submit.Click += new System.EventHandler(this.btn_submit_Click);
             this.Button1.Click += new System.EventHandler(this.Button1_Click);
             this.drp_processlist.SelectedIndexChanged += new System.EventHandler(this.drp_processlist_SelectedIndexChanged);
-            this.MainDatagrid.ItemDataBound += new System.Web.UI.WebControls.DataGridItemEventHandler(this.MainDatagrid_ItemDataBound);
             this.Load += new System.EventHandler(this.Page_Load);
 
         }
@@ -401,33 +538,13 @@ namespace ModuleWorkFlow
                         break;
 
                     case "ACTION":
-                        Session["hprocessno"] = null;
                         Label_Message.Text = selectAction(content);
-                        ModuleWorkFlow.Model.ProcessInfo processInfo = new ModuleWorkFlow.BLL.Process().GetProcessInfoById(drp_processlist.SelectedValue);
-                       
-                        if (content.Equals("JIESHU") && !drp_processlist.SelectedValue.Equals(""))
-                        {
-                            //ModuleWorkFlow.Model.ProcessInfo pi = new Process().GetProcessInfoById(drp_processlist.SelectedValue);
-                            if (pi != null && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC")))
-                            {
-                              
-                                MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = true;
-                                MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = true;
-
-                            }
-                            else
-                            {
-                             
-                                MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
-                                MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = false;
-                            }
-                        }
-                        else
-                        {
-                            MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
-                            MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = false;
-
-                        }
+                        bool showQcColumns = content.Equals("JIESHU")
+                            && !drp_processlist.SelectedValue.Equals("")
+                            && pi != null
+                            && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC"));
+                        lab_Ineligibility_qrCode.Visible = showQcColumns;
+                        txt_Ineligibility_qrCode.Visible = showQcColumns;
 
                         if (content.Equals("ZANTING"))
                         {
@@ -436,14 +553,16 @@ namespace ModuleWorkFlow
                             txt_combine_qrCode.Text = "";
                             txt_combine_qrCode.BackColor = Color.LightGray;
                             txt_combine_qrCode.ReadOnly = true;
-                            MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = true;
                         }
                         else
                         {
-                            MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = false;
                             chk_combine.Enabled = true;
                             txt_combine_qrCode.BackColor = Color.White;
                             txt_combine_qrCode.ReadOnly = false;
+                        }
+                        if (HasDynamicGridData())
+                        {
+                            RebindDynamicGridRepeater();
                         }
                         break;
                 }
@@ -457,12 +576,6 @@ namespace ModuleWorkFlow
 
             doingProductNumber = schedule.GetScheduleByDoProductNo(drp_processlist.SelectedValue, machineId);
             return doingProductNumber;
-        }
-
-        private IList BindMainDatagrid(IList ilist, PartProcessInfo part)
-        {
-            ilist.Insert(0, part);
-            return ilist;
         }
 
         private IList BuildSplitHoldInfos(IEnumerable<PartPartProcessInfo> partProcessInfos, DateTime scanTime, string comment)
@@ -741,7 +854,11 @@ namespace ModuleWorkFlow
                 {
                     hprocessno = new Utility.NoSortHashTable();
                 }
-                int beforecount = hprocessno.Count;
+                List<int> beforeProcessNos = new List<int>();
+                foreach (DictionaryEntry entry in hprocessno)
+                {
+                    beforeProcessNos.Add(Convert.ToInt32(entry.Key));
+                }
 
                 PartInfo pi = null;
                 int Ineligibility = 0;
@@ -831,18 +948,20 @@ namespace ModuleWorkFlow
               
              
 
-                if (lab_hiddenActionId.Text.Equals("ZANTING"))
+                List<PartProcessInfo> currentSource = source.Cast<PartProcessInfo>().OrderBy(m => m.ProcessOrder).ToList();
+                List<PartProcessInfo> appendedSource = currentSource
+                    .FindAll(m => beforeProcessNos.IndexOf(m.ProcessNo) < 0);
+                if (appendedSource.Count > 0)
                 {
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = true;
+                    AppendDynamicGrid(content, appendedSource);
                 }
-                else
+                else if (currentSource.Count > 0 && !HasDynamicGridData())
                 {
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = false;
+                    AppendDynamicGrid(content, currentSource);
                 }
 
-                MainDatagrid.DataSource = source.Cast<PartProcessInfo>().OrderBy(m => m.ProcessOrder).ToList();
-                MainDatagrid.DataBind();
                 Session["hprocessno"] = hprocessno;
+                RebindDynamicGridRepeater();
                 drp_processlist.Enabled = false;
             }
             catch (Exception e)
@@ -999,11 +1118,13 @@ namespace ModuleWorkFlow
                     index = i;
                 }
             }
-            if (MainDatagrid.Items.Count > 0)
+            if (HasDynamicGridData())
             {
                 msg = "已經選擇了零件,不能更換操作，請先清空";
                 return msg;
             }
+
+            Session["hprocessno"] = null;
 
             BLL.Process process = new BLL.Process();
             ModuleWorkFlow.Model.ProcessInfo processinfo = process.GetProcessInfoById(drp_processlist.SelectedValue);
@@ -1041,19 +1162,6 @@ namespace ModuleWorkFlow
 
 
 
-                if (lab_hiddenActionId.Text.Equals("ZANTING"))
-                {
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = true;
-
-
-                }
-                else
-                {
-                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = false;
-                }
-
-
-
                 if (!lab_machine_value.Text.Trim().Equals("") && processinfo.NeedSchedule == 1)
                 {
                     if (lab_hiddenActionId.Text.Equals("ZANTING") || lab_hiddenActionId.Text.Equals("JIESHU"))
@@ -1077,8 +1185,8 @@ namespace ModuleWorkFlow
 
 
 
-                        MainDatagrid.DataSource = source.Cast<PartProcessInfo>().OrderBy(m => m.ProcessOrder).ToList();
-                        MainDatagrid.DataBind();
+                        ReplaceDynamicGrids("機台[" + lab_machine_value.Text + "]", source.Cast<PartProcessInfo>().ToList());
+                        RebindDynamicGridRepeater();
                         drp_processlist.Enabled = false;
 
                     }
@@ -1172,15 +1280,6 @@ namespace ModuleWorkFlow
                 msg = Lang.NO_NEED_MACHINE;
             }
 
-            if (lab_hiddenActionId.Text.Equals("ZANTING"))
-            {
-                MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = true;
-            }
-            else
-            {
-                MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = false;
-            }
-
             if (lab_hiddenActionId.Text.Equals(""))
             {
                 if (lab_doingProductNumber.Text.Equals(""))
@@ -1244,8 +1343,8 @@ namespace ModuleWorkFlow
                         return msg;
                     }
                 
-                    MainDatagrid.DataSource = source.Cast<PartProcessInfo>().OrderBy(m => m.ProcessOrder).ToList();
-                    MainDatagrid.DataBind();
+                    ReplaceDynamicGrids("機台[" + content + "]", source.Cast<PartProcessInfo>().ToList());
+                    RebindDynamicGridRepeater();
                     drp_processlist.Enabled = false;
 
                 }
@@ -1397,6 +1496,8 @@ namespace ModuleWorkFlow
             lab_hiddenActionId.Text = "";
             drp_processlist.Enabled = true;
             Session["hprocessno"] = null;
+            ClearDynamicGridStates();
+            RebindDynamicGridRepeater();
             lab_user_value.Text = "";
             lab_username.Text = "";
             chk_combine.Checked = false;
@@ -1426,7 +1527,8 @@ namespace ModuleWorkFlow
                 return;
             }
 
-            if (chk_combine.Checked && MainDatagrid.Items.Count == 1)
+            List<DataGridItem> gridItems = GetAllDynamicGridItems();
+            if (chk_combine.Checked && gridItems.Count == 1)
             {
                 chk_combine.Checked = false;
                 txt_combine_qrCode.Text = "";
@@ -1470,15 +1572,16 @@ namespace ModuleWorkFlow
             IList partFinishedProcessHolds = new ArrayList();
             ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
             ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour ppddw = new ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour();
-            for (int i = 0; i < MainDatagrid.Items.Count; i++)
+            for (int i = 0; i < gridItems.Count; i++)
             {
-                CheckBox CheckBox_Select = MainDatagrid.Items[i].FindControl("CheckBox_Select") as CheckBox;
+                DataGridItem gridItem = gridItems[i];
+                CheckBox CheckBox_Select = gridItem.FindControl("CheckBox_Select") as CheckBox;
              
 
                 bool isSelect = CheckBox_Select.Checked;
                 if (actionid.Equals("JIESHU") || actionid.Equals("ZANTING"))
                 {
-                    Label lab_processno = MainDatagrid.Items[i].FindControl("dg_lab_processno") as Label;
+                    Label lab_processno = gridItem.FindControl("dg_lab_processno") as Label;
                     int processno = Convert.ToInt32(lab_processno.Text);
                     PartPartProcessInfo ppi = new PartPartProcessInfo();
                   
@@ -1519,7 +1622,7 @@ namespace ModuleWorkFlow
 
                 if (isSelect)
                 {
-                    Label lab_processno = MainDatagrid.Items[i].FindControl("dg_lab_processno") as Label;
+                    Label lab_processno = gridItem.FindControl("dg_lab_processno") as Label;
                     int processno = Convert.ToInt32(lab_processno.Text);
                     PartPartProcessInfo ppi = new PartPartProcessInfo();
                  
@@ -1535,9 +1638,9 @@ namespace ModuleWorkFlow
 
                  
 
-                    TextBox txt_productNumber = MainDatagrid.Items[i].FindControl("txt_productNumber") as TextBox;
-                    Label lab_productNumber = MainDatagrid.Items[i].FindControl("lab_productNumber") as Label;
-                    TextBox dg_txt_QRCode = MainDatagrid.Items[i].FindControl("dg_txt_QRCode") as TextBox;
+                    TextBox txt_productNumber = gridItem.FindControl("txt_productNumber") as TextBox;
+                    Label lab_productNumber = gridItem.FindControl("lab_productNumber") as Label;
+                    TextBox dg_txt_QRCode = gridItem.FindControl("dg_txt_QRCode") as TextBox;
                     try
                     {
                         ppi.ScanCount = Convert.ToInt32(txt_productNumber.Text);
@@ -1555,7 +1658,7 @@ namespace ModuleWorkFlow
                         {
                             if (string.IsNullOrWhiteSpace(splitQRCode))
                             {
-                                Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text} 必須輸入分箱條碼";
+                                Label_Message.Text = $@"{(gridItem.FindControl("dg_lab_moduleid") as Label).Text},{(gridItem.FindControl("dg_lab_partnoId") as Label).Text} 必須輸入分箱條碼";
                                 return;
                             }
 
@@ -1590,13 +1693,13 @@ namespace ModuleWorkFlow
                         }
                         if (ppi.ScanCount > Convert.ToInt32(lab_productNumber.Text))
                         {
-                            Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text}加工數量不能大於可加工{Convert.ToInt32(lab_productNumber.Text)}";
+                            Label_Message.Text = $@"{(gridItem.FindControl("dg_lab_moduleid") as Label).Text},{(gridItem.FindControl("dg_lab_partnoId") as Label).Text}加工數量不能大於可加工{Convert.ToInt32(lab_productNumber.Text)}";
                             return;
                         }
                     }
                     catch
                     {
-                        Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text}加工數量必須為數字";
+                        Label_Message.Text = $@"{(gridItem.FindControl("dg_lab_moduleid") as Label).Text},{(gridItem.FindControl("dg_lab_partnoId") as Label).Text}加工數量必須為數字";
                         return;
                     }
 
@@ -1641,13 +1744,13 @@ namespace ModuleWorkFlow
                     {
                         if (actionid.Equals("JIESHU") && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC")))
                         {
-                            Label dg_lab_qcprocesslist = MainDatagrid.Items[i].FindControl("dg_lab_qcprocesslist") as Label;
+                            Label dg_lab_qcprocesslist = gridItem.FindControl("dg_lab_qcprocesslist") as Label;
                             ppi.ProcessList = dg_lab_qcprocesslist.Text;
 
-                            Label dg_lab_qccustomerprocesslist = MainDatagrid.Items[i].FindControl("dg_lab_qccustomerprocesslist") as Label;
+                            Label dg_lab_qccustomerprocesslist = gridItem.FindControl("dg_lab_qccustomerprocesslist") as Label;
                             ppi.CustomerProcessList = dg_lab_qccustomerprocesslist.Text;
 
-                            TextBox dg_lab_Eligibility = MainDatagrid.Items[i].FindControl("dg_lab_Eligibility") as TextBox;
+                            TextBox dg_lab_Eligibility = gridItem.FindControl("dg_lab_Eligibility") as TextBox;
                             try
                             {
                                 ppi.Eligibility = Convert.ToInt32(dg_lab_Eligibility.Text);
@@ -1666,7 +1769,7 @@ namespace ModuleWorkFlow
 
                             if (ppi.Ineligibility >0)
                             {
-                                TextBox dg_txt_IneligibilityQR = MainDatagrid.Items[i].FindControl("dg_txt_IneligibilityQR") as TextBox;
+                                TextBox dg_txt_IneligibilityQR = gridItem.FindControl("dg_txt_IneligibilityQR") as TextBox;
                                 if (string.IsNullOrEmpty(dg_txt_IneligibilityQR.Text))
                                 {
                                     Label_Message.Text = "有不合格數量必須填入不合格QRCode";
@@ -1706,7 +1809,7 @@ namespace ModuleWorkFlow
 
                     if (actionid.Equals("ZANTING"))
                     {
-                        TextBox txt_hold_comment = MainDatagrid.Items[i].FindControl("txt_hold_comment") as TextBox;
+                        TextBox txt_hold_comment = gridItem.FindControl("txt_hold_comment") as TextBox;
                         PartProcessHoldInfo partProcessHoldInfo = new PartProcessHoldInfo();
                         partProcessHoldInfo.ModuleId = ppi.ModuleId;
                         partProcessHoldInfo.ProcessOrder = ppi.ProcessOrder;
@@ -2035,10 +2138,6 @@ namespace ModuleWorkFlow
             }
             catch (Exception ex)
             {
-
-                MainDatagrid.DataSource = isource;
-                MainDatagrid.DataBind();
-
                 clearMsg();
                 Label_Message.Text = ex.Message;
                 return;
@@ -2046,8 +2145,6 @@ namespace ModuleWorkFlow
 
 
             isource = new ArrayList();
-            MainDatagrid.DataSource = isource;
-            MainDatagrid.DataBind();
             clearMsg();
 
         }
@@ -2059,14 +2156,42 @@ namespace ModuleWorkFlow
 
         private void Button1_Click(object sender, System.EventArgs e)
         {
-            //			ilist.Clear();
-            IList isource = new ArrayList();
-            MainDatagrid.DataSource = isource;
-            MainDatagrid.DataBind();
             clearMsg();
         }
 
 
+
+        protected void rptDynamicGrids_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType != ListItemType.Item && e.Item.ItemType != ListItemType.AlternatingItem)
+            {
+                return;
+            }
+
+            DynamicGridState state = e.Item.DataItem as DynamicGridState;
+            Label labGridTitle = e.Item.FindControl("lab_gridTitle") as Label;
+            Panel pnlGridTitle = e.Item.FindControl("pnlGridTitle") as Panel;
+            DataGrid grid = e.Item.FindControl("dgDynamic") as DataGrid;
+            if (state == null || grid == null)
+            {
+                return;
+            }
+
+            if (labGridTitle != null)
+            {
+                labGridTitle.Text = state.Title;
+            }
+
+            if (pnlGridTitle != null)
+            {
+                pnlGridTitle.Visible = !string.IsNullOrEmpty(state.Title);
+            }
+
+            ApplyGridColumnVisibility(grid);
+            grid.ItemDataBound += new DataGridItemEventHandler(this.MainDatagrid_ItemDataBound);
+            grid.DataSource = GetGridSource(state);
+            grid.DataBind();
+        }
 
         private void MainDatagrid_ItemDataBound(object sender, System.Web.UI.WebControls.DataGridItemEventArgs e)
         {
@@ -2257,9 +2382,16 @@ namespace ModuleWorkFlow
             if (lab_hiddenActionId.Text.Equals("JIESHU") || lab_hiddenActionId.Text.Equals("ZANTING"))
             {
                 CheckBox allcheckbox = (CheckBox)sender;
-                for (int i = 0; i < MainDatagrid.Items.Count; i++)
+                DataGridItem headerItem = allcheckbox.NamingContainer as DataGridItem;
+                DataGrid currentGrid = headerItem == null ? null : headerItem.NamingContainer as DataGrid;
+                if (currentGrid == null)
                 {
-                    CheckBox CheckBox_Select = MainDatagrid.Items[i].FindControl("CheckBox_Select") as CheckBox;
+                    return;
+                }
+
+                for (int i = 0; i < currentGrid.Items.Count; i++)
+                {
+                    CheckBox CheckBox_Select = currentGrid.Items[i].FindControl("CheckBox_Select") as CheckBox;
                     CheckBox_Select.Checked = allcheckbox.Checked;
                 }
             }
