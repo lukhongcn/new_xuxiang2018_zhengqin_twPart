@@ -1609,17 +1609,28 @@ namespace ModuleWorkFlow
                             Label_Message.Text = boxCodeRuleMsg;
                             return;
                         }
-                        if (ppi.BoxCount > ppi.ScanCount)
+                        if (ppi.ScanCount < ppi.BoxCount)
                         {
-                            if (string.IsNullOrEmpty(splitQRCode) || !splitQRCode.StartsWith(PTSetting.PART_CODE + "-", StringComparison.OrdinalIgnoreCase))
+                            if (string.IsNullOrWhiteSpace(splitQRCode))
                             {
-                                Label_Message.Text = $@"{ppi.ModuleId}:{ppi.PartNo}必須要綁定條碼,並且綁定條碼必須以M-開頭";
+                                Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text} 必須輸入分箱條碼";
                                 return;
                             }
 
-                            if (string.IsNullOrEmpty(splitQRCode) && !chk_combine.Checked)
+                            if (string.Equals(splitQRCode, ppi.QRCode, StringComparison.OrdinalIgnoreCase))
                             {
-                                Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text} 必須輸入分箱條碼";
+                                Label_Message.Text = $@"{ppi.ModuleId}:{ppi.PartNo}加工數量小於箱數時，分箱條碼不能與原條碼相同";
+                                return;
+                            }
+                        }
+
+                        bool requiresSplitBox = !string.IsNullOrEmpty(splitQRCode)
+                            && !string.Equals(splitQRCode, ppi.QRCode, StringComparison.OrdinalIgnoreCase);
+                        if (requiresSplitBox)
+                        {
+                            if (!splitQRCode.StartsWith(PTSetting.PART_CODE + "-", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Label_Message.Text = $@"{ppi.ModuleId}:{ppi.PartNo}必須要綁定條碼,並且綁定條碼必須以M-開頭";
                                 return;
                             }
 
@@ -1631,6 +1642,10 @@ namespace ModuleWorkFlow
                             }
 
                             ppi.SplitQRCode = splitQRCode;
+                        }
+                        else
+                        {
+                            ppi.SplitQRCode = "";
                         }
                         if (ppi.ScanCount > Convert.ToInt32(lab_productNumber.Text))
                         {
@@ -2141,6 +2156,10 @@ namespace ModuleWorkFlow
                 
                 ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
                 PartPartProcessInfo ppi = pp.getPartProcessInfo(processno);
+                int displayCount;
+                bool productNumberReadOnly;
+                bool splitQrCodeReadOnly;
+                scanbar.GetProductNumberDisplayState(lab_hiddenActionId.Text, ppi, pi, out displayCount, out productNumberReadOnly, out splitQrCodeReadOnly);
                 CheckBox cbSelectRow = e.Item.FindControl("CheckBox_Select") as CheckBox;
                 if (ppi != null && ppi.IsEmpty == 1 && cbSelectRow != null)
                     cbSelectRow.Checked = false;
@@ -2233,6 +2252,8 @@ namespace ModuleWorkFlow
                 }
 
                 lab_productNumber.Text = txt_productNumber.Text;
+                dg_txt_SplitQRCode.ReadOnly = splitQrCodeReadOnly;
+                dg_txt_SplitQRCode.BackColor = splitQrCodeReadOnly ? Color.LightGray : Color.White;
 
 
                 if (statusid.Text.Equals("Ready"))
