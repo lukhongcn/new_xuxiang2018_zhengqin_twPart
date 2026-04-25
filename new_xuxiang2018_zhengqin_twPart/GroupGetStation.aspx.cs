@@ -1,23 +1,28 @@
-﻿using System;
+using ModuleWorkflow.OutSource.BLL.Interface;
+using ModuleWorkFlow.BLL;
+using ModuleWorkFlow.BLL.NewOrder;
+using ModuleWorkFlow.BLL.Outsource;
+using ModuleWorkFlow.BLL.System;
+using ModuleWorkFlow.business;
+using ModuleWorkFlow.IDAL;
+using ModuleWorkFlow.Model;
+using ModuleWorkFlow.Model.NewOrder;
+using ModuleWorkFlow.Model.Outsource;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-
-
+using System.Web.UI.WebControls;
 using Utility;
-using ModuleWorkFlow.BLL;
-using ModuleWorkFlow.Model;
-
-
-
 using Utility;
-using ModuleWorkFlow.BLL.System;
+using WorkFlow.Model.Standard;
 
 namespace ModuleWorkFlow
 {
@@ -48,7 +53,6 @@ namespace ModuleWorkFlow
         protected System.Web.UI.WebControls.Label lab_hiddenModuleId;
         protected System.Web.UI.WebControls.Label lab_hiddenPartNo;
         protected System.Web.UI.WebControls.Label lab_hiddenprocess;
-        protected System.Web.UI.WebControls.Label lab_parnohidden;
         protected System.Web.UI.WebControls.Label lab_machine;
         protected System.Web.UI.WebControls.Label lab_machine_value;
         protected System.Web.UI.WebControls.Label lab_hidden_machine;
@@ -58,13 +62,16 @@ namespace ModuleWorkFlow
         protected System.Web.UI.WebControls.Button btn_submit;
         protected System.Web.UI.WebControls.Button Button1;
         protected System.Web.UI.WebControls.Label lab_username;
-        protected CheckBox chk_passed;
         protected IList ilist = new ArrayList();
         private Utility.NoSortHashTable hprocessno;
-        protected Label lab_combineStamp;
+       
         protected CheckBox chk_combine;
-        private ScanBar scanbar;
+        protected TextBox txt_combine_qrCode;
+        protected TextBox txt_Ineligibility_qrCode;
+        protected Label lab_Ineligibility_qrCode;
+        private PartScanBar scanbar;
 
+        protected string menuname = "";
 
 
         private void Page_Load(object sender, System.EventArgs e)
@@ -74,12 +81,23 @@ namespace ModuleWorkFlow
             Response.ExpiresAbsolute = DateTime.Now.AddSeconds(-1);
             Response.AddHeader("pragma", "no-cache");
             Response.CacheControl = "no-cache";
-            scanbar = new ScanBar();
+            scanbar = new PartScanBar();
+
+            string menuid = "F226";
+            PartTmenu menu = new PartTmenu();
+            PartTmenuInfo mi = menu.findbykey(menuid);
+            if (this.Master != null && this.Master is DefaultSub)
+            {
+                DefaultSub master = (DefaultSub)this.Master;
+
+                master.Menuname = mi.Menuname;
+                menuname = mi.Menuname;
+            }
 
             if (!this.IsPostBack)
             {
                 //權限控制
-                string menuid = "F28";
+              
                 Session["hprocessno"] = null;
                 ModuleWorkFlow.BLL.Private.checkPrivate(this, menuid, "PQUERY");
                 ModuleWorkFlow.BLL.Process p = new ModuleWorkFlow.BLL.Process();
@@ -89,18 +107,14 @@ namespace ModuleWorkFlow
                 HttpCookie cookie = Request.Cookies["COOKIEGROUPPROCESSID"];
                 if (cookie != null)
                 {
-                    Methods.DropDownListChange(drp_processlist, cookie.Value);
+                    Utility.Methods.DropDownListChange(drp_processlist, cookie.Value);
                 }
 
                 if (p.GetProcessInfoById(drp_processlist.SelectedValue).NeedSchedule == 1)
                 {
                     setMachine();
                 }
-                else
-                {
-                    chk_combine.Checked = false;
-                    chk_combine.Enabled = false;
-                }
+              
             }
 
 
@@ -134,7 +148,7 @@ namespace ModuleWorkFlow
         private void setMachine()
         {
             bool needMachine = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["needMachine"]);
-            ModuleWorkFlow.Model.ProcessInfo pi = new Process().GetProcessInfoById(drp_processlist.SelectedValue);
+            ModuleWorkFlow.Model.ProcessInfo pi = new BLL.Process().GetProcessInfoById(drp_processlist.SelectedValue);
             if (!needMachine || pi.NeedSchedule == 0)
             {
                 lab_machine_value.Text = "";
@@ -203,17 +217,9 @@ namespace ModuleWorkFlow
             cookie.Expires = DateTime.Now + tsminute;
             Response.Cookies.Add(cookie);
 
-            Process process = new Process();
+            BLL.Process process = new BLL.Process();
             ModuleWorkFlow.Model.ProcessInfo pi = process.GetProcessInfoById(drp_processlist.SelectedValue);
-            if (pi.NeedSchedule == 0)
-            {
-                chk_combine.Enabled = false;
-                chk_combine.Checked = false;
-            }
-            else
-            {
-                chk_combine.Enabled = true;
-            }
+          
 
 
             if (lab_hiddenActionId.Text.Trim().Equals("JIESHU") && !drp_processlist.SelectedValue.Equals(""))
@@ -222,18 +228,24 @@ namespace ModuleWorkFlow
                 if (pi != null && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC")))
                 {
                     MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = true;
-                    chk_passed.Visible = true;
+                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = true;
+                    lab_Ineligibility_qrCode.Visible = true;
+                    txt_Ineligibility_qrCode.Visible = true;
+
                 }
                 else
                 {
                     MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
-                    chk_passed.Visible = false;
+                    MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = false;
+                    lab_Ineligibility_qrCode.Visible = false;
+                    txt_Ineligibility_qrCode.Visible = false;
+
                 }
             }
             else
             {
                 MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
-                chk_passed.Visible = false;
+               
             }
 
             setMachine();
@@ -272,9 +284,9 @@ namespace ModuleWorkFlow
 
         private void BindProcess()
         {
-            ModuleWorkFlow.BLL.Process process = new Process();
-            ModuleWorkFlow.BLL.PartProcess partprocess = new PartProcess();
-            drp_processlist.DataSource = process.GetNoMachineProcessInfo();
+            ModuleWorkFlow.BLL.Process process = new BLL.Process();
+            ModuleWorkFlow.BLL.PartPartProcess partprocess = new PartPartProcess();
+            drp_processlist.DataSource = process.GetNoMachineProcessInfo().Cast<Model.ProcessInfo>().ToList().FindAll(m=>!m.PriceType.Equals("Assambly") && !m.PriceType.Equals("OUTSOURCE"));
             drp_processlist.DataTextField = "ProcessName";
             drp_processlist.DataValueField = "ProcessId";
             drp_processlist.DataBind();
@@ -296,7 +308,7 @@ namespace ModuleWorkFlow
             bool needUserName = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["needUserName"]);
             bool canexchange = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["canExchanged"]);
             bool needMachine = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["needMachine"]);
-            Process process = new Process();
+            BLL.Process process = new BLL.Process();
             ModuleWorkFlow.Model.ProcessInfo pi = process.GetProcessInfoById(drp_processlist.SelectedValue);
             if (txt.IndexOf("A-") == -1 && txt.IndexOf("B-") == -1 && txt.IndexOf("D-") == -1 && txt.IndexOf("M-") == -1 && txt.IndexOf("-") > -1)
             {
@@ -351,7 +363,7 @@ namespace ModuleWorkFlow
                             return;
                         }
 
-                        Label_Message.Text = selectPart(content, pi);
+                        Label_Message.Text = selectPart("M-" + content, pi);
                         break;
 
                     case "MACHINE":
@@ -392,39 +404,46 @@ namespace ModuleWorkFlow
                         Session["hprocessno"] = null;
                         Label_Message.Text = selectAction(content);
                         ModuleWorkFlow.Model.ProcessInfo processInfo = new ModuleWorkFlow.BLL.Process().GetProcessInfoById(drp_processlist.SelectedValue);
-                        if (content.Equals("JIEDAN") || content.Equals("XIAODAN") || processInfo.NeedSchedule == 0)
-                        {
-                            chk_combine.Checked = false;
-                            chk_combine.Enabled = false;
-                        }
+                       
                         if (content.Equals("JIESHU") && !drp_processlist.SelectedValue.Equals(""))
                         {
                             //ModuleWorkFlow.Model.ProcessInfo pi = new Process().GetProcessInfoById(drp_processlist.SelectedValue);
                             if (pi != null && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC")))
                             {
-                                chk_passed.Visible = true;
+                              
                                 MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = true;
+                                MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = true;
 
                             }
                             else
                             {
-                                chk_passed.Visible = false;
+                             
                                 MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
+                                MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = false;
                             }
                         }
                         else
                         {
                             MainDatagrid.Columns[MainDatagrid.Columns.Count - 2].Visible = false;
-                            chk_passed.Visible = false;
+                            MainDatagrid.Columns[MainDatagrid.Columns.Count - 3].Visible = false;
+
                         }
 
                         if (content.Equals("ZANTING"))
                         {
+                            chk_combine.Checked = false;
+                            chk_combine.Enabled = false;
+                            txt_combine_qrCode.Text = "";
+                            txt_combine_qrCode.BackColor = Color.LightGray;
+                            txt_combine_qrCode.ReadOnly = true;
                             MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = true;
                         }
                         else
                         {
                             MainDatagrid.Columns[MainDatagrid.Columns.Count - 1].Visible = false;
+                            chk_combine.Enabled = true;
+                            txt_combine_qrCode.BackColor = Color.White;
+                            txt_combine_qrCode.ReadOnly = false;
                         }
                         break;
                 }
@@ -446,6 +465,83 @@ namespace ModuleWorkFlow
             return ilist;
         }
 
+        private IList BuildSplitHoldInfos(IEnumerable<PartPartProcessInfo> partProcessInfos, DateTime scanTime, string comment)
+        {
+            IList partProcessHolds = new ArrayList();
+            foreach (PartPartProcessInfo ppi in partProcessInfos)
+            {
+                PartProcessHoldInfo partProcessHoldInfo = new PartProcessHoldInfo();
+                partProcessHoldInfo.ModuleId = ppi.ModuleId;
+                partProcessHoldInfo.ProcessOrder = ppi.ProcessOrder;
+                partProcessHoldInfo.PartNo_Id = ppi.PartNo_Id;
+                partProcessHoldInfo.Startdate = scanTime;
+                partProcessHoldInfo.Comment = comment;
+                partProcessHoldInfo.CombineTimeStamp = ppi.CombineTimeStamp;
+                partProcessHoldInfo.Processno = ppi.ProcessNo;
+                partProcessHoldInfo.Status = "Holdon";
+                partProcessHolds.Add(partProcessHoldInfo);
+            }
+
+            return partProcessHolds;
+        }
+
+        private IList BuildSplitStartInfos(IEnumerable<PartPartProcessInfo> partProcessInfos, DateTime scanTime)
+        {
+            IList partProcessHolds = new ArrayList();
+            foreach (PartPartProcessInfo ppi in partProcessInfos)
+            {
+                PartProcessHoldInfo partProcessHoldInfo = new PartProcessHoldInfo();
+                partProcessHoldInfo.ModuleId = ppi.ModuleId;
+                partProcessHoldInfo.ProcessOrder = ppi.ProcessOrder;
+                partProcessHoldInfo.PartNo_Id = ppi.PartNo_Id;
+                partProcessHoldInfo.Enddate = scanTime;
+                partProcessHolds.Add(partProcessHoldInfo);
+            }
+
+            return partProcessHolds;
+        }
+
+        private void MarkHoldon(IEnumerable<PartPartProcessInfo> partProcessInfos)
+        {
+            foreach (PartPartProcessInfo ppi in partProcessInfos)
+            {
+                ppi.StatusId = "Holdon";
+                ppi.HoldOnCount++;
+                ppi.OriginalPartPartProcessInfos = null;
+            }
+        }
+
+        private void MarkWorking(IEnumerable<PartPartProcessInfo> partProcessInfos)
+        {
+            foreach (PartPartProcessInfo ppi in partProcessInfos)
+            {
+                ppi.StatusId = "Working";
+                ppi.OriginalPartPartProcessInfos = null;
+            }
+        }
+
+        private bool RequiresSplitBox(PartPartProcessInfo ppi)
+        {
+            return !string.IsNullOrEmpty(ppi.SplitQRCode)
+                && !string.Equals(ppi.SplitQRCode, ppi.QRCode, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool RequiresSplitActionHandling(string actionId)
+        {
+            return actionId.Equals("JIEDAN")
+                || actionId.Equals("KAISHI")
+                || actionId.Equals("XIAODAN")
+                || actionId.Equals("JIESHU");
+        }
+
+        private bool GetAutoSplitEmptyBoxMode()
+        {
+            bool autoSplitEmptyBoxMode = false;
+            bool.TryParse(Convert.ToString(System.Configuration.ConfigurationSettings.AppSettings["autoSplitEmptyBoxMode"]), out autoSplitEmptyBoxMode);
+            return autoSplitEmptyBoxMode;
+        }
+
+
         private string selectPart(string content, ModuleWorkFlow.Model.ProcessInfo processInfo)
         {
             string errmsg = "";
@@ -466,47 +562,72 @@ namespace ModuleWorkFlow
                 PartInfo pi = null;
                 int Ineligibility = 0;
                 int Eligibility = 0;
-                if (chk_passed.Checked)
-                {
-                    Ineligibility = 0;
-                    Eligibility = 1;
-                }
-                else
-                {
-                    Ineligibility = 1;
-                    Eligibility = 0;
-                }
-                if (Utility.tools.IsNumeric(content))
-                {
-                    int partid = Convert.ToInt32(content);
-                    pi = new Part().GetPartInfoById(partid);
+               
 
-                    //  errmsg = scanbar.selectModulePart(pi, hprocessno, (Hashtable)Session["hstatus"], processInfo, lab_hiddenActionId.Text, lab_machine_value.Text, Eligibility, Ineligibility);
-                    errmsg = scanbar.selectModulePart(pi, hprocessno, (Hashtable)Session["hstatus"], processInfo, lab_hiddenActionId.Text, lab_machine_value.Text, Eligibility, Ineligibility, Convert.ToInt64(lab_combineStamp.Text.Trim()));
-                }
-                else
+                string pmoduleid = "";
+                string ppartno = "";
+                List<string> ppartnos = new List<string>();
+                if (content.Split('-').Length > 2)
                 {
-                    if (content.IndexOf("-") > -1)
+                    string[] modulparts = content.Split('-');
+                    if (modulparts.Length > 1)
                     {
-                        string[] modulparts = content.Split('-');
-                        if (modulparts.Length > 1)
+
+                        pmoduleid = modulparts[1];
+                        ppartno = modulparts[2];
+                        for (int i = 3; i < modulparts.Length; i++)
                         {
-                            string ppartno = modulparts[modulparts.Length - 1];
-                            string pmoduleid = modulparts[0];
-                            for (int i = 1; i < modulparts.Length - 1; i++)
+                            ppartno = ppartno + "-" + modulparts[i];
+                        }
+                        pi = new BLL.Part().getPartInfo(pmoduleid, ppartno);
+                     
+                        if (pi != null)
+                        {
+                            List<PartPartProcessInfo> partPartProcessInfos = new PartPartProcess().GetIListPartProcessAll(pi.ModuleId).FindAll(m => m.PartNo.Equals(pi.PartNo) && m.ProcessId.Equals(processInfo.ProcessId) && m.IsEmpty != 1);
+                            if (lab_hiddenActionId.Text.Equals("KAISHI") || lab_hiddenActionId.Text.Equals("JIEDAN"))
                             {
-                                pmoduleid = pmoduleid + "-" + modulparts[i];
+                                partPartProcessInfos = partPartProcessInfos.FindAll(m => m.StatusId.Equals("Ready") || m.StatusId.Equals("Holdon") || m.StatusId.Equals("JIEDAN"));
                             }
-                            pi = new Part().getPartInfo(pmoduleid, ppartno);
+
+                            if (lab_hiddenActionId.Text.Equals("ZANTING") || lab_hiddenActionId.Text.Equals("JIESHU"))
+                            {
+                                partPartProcessInfos = partPartProcessInfos.FindAll(m=>m.StatusId.Equals("Working"));
+                            }
+
+                            if (lab_hiddenActionId.Text.Equals("XIAODAN"))
+                            {
+                                partPartProcessInfos = partPartProcessInfos.FindAll(m => m.StatusId.Equals("Implementation"));
+                            }
+
+                            foreach (var ppi in partPartProcessInfos)
+                            {
+                                ppartnos.Add(ppi.PartNo_Id);
+                            }
                         }
                     }
-                    else
-                    {
-                        pi = new Part().GetPartInfoByQRCode(content);
-                    }
-                    //errmsg = scanbar.selectModulePart(pi, hprocessno, (Hashtable)Session["hstatus"], processInfo, lab_hiddenActionId.Text, lab_machine_value.Text, Eligibility, Ineligibility);
-                    errmsg = scanbar.selectModulePart(pi, hprocessno, (Hashtable)Session["hstatus"], processInfo, lab_hiddenActionId.Text, lab_machine_value.Text, Eligibility, Ineligibility, Convert.ToInt64(lab_combineStamp.Text.Trim()));
                 }
+                else
+                {
+                    QRCodeInfo qRCodeInfo = new QRCode().GetQRCodeByNo(content);
+                    if (qRCodeInfo == null)
+                    {
+                        //Label_Message.Text = $"{content}不存在";
+                        return $"{content}不存在"; ;
+                    }
+                    pmoduleid = qRCodeInfo.ModuleId;
+                    ppartno = qRCodeInfo.PartNoId;
+                    ppartnos.Add(ppartno);
+
+
+                }
+                //errmsg = scanbar.selectModulePart(pi, hprocessno, (Hashtable)Session["hstatus"], processInfo, lab_hiddenActionId.Text, lab_machine_value.Text, Eligibility, Ineligibility);
+                PartOrderDesignInfo podi = new PartOrderDesign().GetOrderDesignByNo(pmoduleid);
+                foreach (var appartno in ppartnos)
+                {
+                    errmsg = scanbar.selectModulePart(pmoduleid, appartno, hprocessno, (Hashtable)Session["hstatus"], processInfo, lab_hiddenActionId.Text, lab_machine_value.Text, Eligibility, Ineligibility, podi);
+                }
+           
+                
 
 
 
@@ -523,18 +644,8 @@ namespace ModuleWorkFlow
                     }
                     source.Add((PartProcessInfo)objDE.Value);
                 }
-                if (source.Count > 1 && (neverMade || combineTimeStame == 0) && chk_combine.Enabled)
-                {
-                    chk_combine.Checked = true;
-                }
-
-                if (combineTimeStame != 0)
-                {
-                    chk_combine.Checked = true;
-
-                }
-                lab_combineStamp.Text = combineTimeStame.ToString().Trim();
-
+              
+             
 
                 if (lab_hiddenActionId.Text.Equals("ZANTING"))
                 {
@@ -568,7 +679,7 @@ namespace ModuleWorkFlow
 
 
             UserInfo ui = u.getUserInfo(content);
-            ModuleWorkFlow.Model.ProcessInfo pi = new Process().GetProcessInfoById(drp_processlist.SelectedValue);
+            ModuleWorkFlow.Model.ProcessInfo pi = new BLL.Process().GetProcessInfoById(drp_processlist.SelectedValue);
             if (ui != null)
             {
                 if (checkRoleProcess(content))
@@ -710,7 +821,7 @@ namespace ModuleWorkFlow
                 return msg;
             }
 
-            Process process = new Process();
+            BLL.Process process = new BLL.Process();
             ModuleWorkFlow.Model.ProcessInfo processinfo = process.GetProcessInfoById(drp_processlist.SelectedValue);
             if (index != -1)
             {
@@ -797,11 +908,11 @@ namespace ModuleWorkFlow
                             IList updateSchedule = new ArrayList();
                             foreach (ScheduleInfo si in schedules)
                             {
-                                PartProcessInfo ppi = new PartProcess().getPartProcessInfo(si.ProcessNo);
+                                PartPartProcessInfo ppi = new PartPartProcess().getPartProcessInfo(si.ProcessNo);
 
                                 if (ppi == null || (ppi.FactEndDate.Ticks == 0 && !ppi.StatusId.Equals("Holdon")))
                                 {
-                                    ppi = new PartProcess().getPartProcessInfo(si.ProcessNo);
+                                    ppi = new PartPartProcess().getPartProcessInfo(si.ProcessNo);
                                     if (ppi == null || (ppi.FactEndDate.Ticks == 0 && !ppi.StatusId.Equals("Holdon")))
                                     {
                                         ppi = null;
@@ -859,7 +970,7 @@ namespace ModuleWorkFlow
         {
             string msg = "";
 
-            ModuleWorkFlow.Model.ProcessInfo pi = new Process().GetProcessInfoById(drp_processlist.SelectedValue);
+            ModuleWorkFlow.Model.ProcessInfo pi = new BLL.Process().GetProcessInfoById(drp_processlist.SelectedValue);
             if (pi != null && pi.NeedSchedule == 1)
             {
 
@@ -933,15 +1044,7 @@ namespace ModuleWorkFlow
                         //}
 
                         PartProcessInfo ppi = (PartProcessInfo)objDE.Value;
-                        if (ppi.CombineTimeStamp == 0)
-                        {
-                            chk_combine.Checked = false;
-                        }
-                        else
-                        {
-                            chk_combine.Checked = true;
-                            lab_combineStamp.Text = ppi.CombineTimeStamp.ToString();
-                        }
+                      
 
                         PartProcessInfo nextppi = partprocess.getNextPartProcessInfo(ppi.ModuleId, ppi.PartNo_Id, ppi.ProcessOrder);
                         if (nextppi != null)
@@ -956,7 +1059,7 @@ namespace ModuleWorkFlow
                         msg = Lang.MACHINE_EMPTY;
                         return msg;
                     }
-                    chk_combine.Enabled = false;
+                
                     MainDatagrid.DataSource = source;
                     MainDatagrid.DataBind();
                     drp_processlist.Enabled = false;
@@ -972,11 +1075,11 @@ namespace ModuleWorkFlow
                         IList updateSchedule = new ArrayList();
                         foreach (ScheduleInfo si in schedules)
                         {
-                            PartProcessInfo ppi = new PartProcess().getPartProcessInfo(si.ProcessNo);
+                            PartProcessInfo ppi = new PartPartProcess().getPartProcessInfo(si.ProcessNo);
 
                             if (ppi == null || (ppi.FactEndDate.Ticks == 0 && !ppi.StatusId.Equals("Holdon")))
                             {
-                                ppi = new PartProcess().getPartProcessInfo(si.ProcessNo);
+                                ppi = new PartPartProcess().getPartProcessInfo(si.ProcessNo);
                                 if (ppi == null || (ppi.FactEndDate.Ticks == 0 && !ppi.StatusId.Equals("Holdon")))
                                 {
                                     ppi = null;
@@ -1047,7 +1150,7 @@ namespace ModuleWorkFlow
 
         private void updateLog(PartProcessInfo ppi)
         {
-            string processname = Methods.TranslateProcessName(ppi.ProcessId, new Process(), new ProcessCustomer());
+            string processname = Utility.Methods.TranslateProcessName(ppi.ProcessId, new BLL.Process(), new ProcessCustomer());
             string actionname = lab_actionvalue.Text;
             LogBarCodeInfo lbci = new LogBarCodeInfo();
             lbci.ProcessNo = ppi.ProcessNo;
@@ -1108,21 +1211,20 @@ namespace ModuleWorkFlow
 
             lab_actionvalue.Text = "";
             lab_hiddenActionId.Text = "";
-            lab_parnohidden.Text = "";
             drp_processlist.Enabled = true;
             Session["hprocessno"] = null;
             lab_user_value.Text = "";
             lab_username.Text = "";
-
-            chk_passed.Checked = true;
             chk_combine.Checked = false;
-            chk_combine.Enabled = true;
-            lab_combineStamp.Text = "0";
+            txt_combine_qrCode.Text = "";
+
+         
 
         }
 
         private void btn_submit_Click(object sender, System.EventArgs e)
         {
+            bool canCombine = true;
             bool needMachine = Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["needMachine"]);
             hprocessno = (Utility.NoSortHashTable)Session["hprocessno"];
             if (hprocessno == null)
@@ -1134,7 +1236,19 @@ namespace ModuleWorkFlow
             string userno = lab_user_value.Text;
             string username = lab_username.Text;
 
-            Process process = new Process();
+            if (chk_combine.Checked && string.IsNullOrEmpty(txt_combine_qrCode.Text))
+            {
+                Label_Message.Text = "請填入合併條碼";
+                return;
+            }
+
+            if (chk_combine.Checked && MainDatagrid.Items.Count == 1)
+            {
+                chk_combine.Checked = false;
+                txt_combine_qrCode.Text = "";
+            }
+
+            BLL.Process process = new BLL.Process();
             ModuleWorkFlow.Model.ProcessInfo pi = process.GetProcessInfoById(drp_processlist.SelectedValue);
 
             if (actionid.Equals("") || userno.Equals("") || (pi.NeedSchedule == 1 && needMachine && lab_machine_value.Text.Trim().Equals("") && !actionid.Equals("JIEDAN") && !actionid.Equals("XIAODAN")))
@@ -1160,93 +1274,32 @@ namespace ModuleWorkFlow
                 return;
             }
 
-            lab_parnohidden.Text = "";
+         
             int count = 0;
 
 
-            bool isCombine = chk_combine.Checked;
-            for (int i = 0; i < MainDatagrid.Items.Count; i++)
-            {
-                CheckBox CheckBox_Select = MainDatagrid.Items[i].FindControl("CheckBox_Select") as CheckBox;
-                ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
-                ModuleWorkFlow.BLL.PartProcessDealDateTimeWorkHour ppddw = new ModuleWorkFlow.BLL.PartProcessDealDateTimeWorkHour();
-
-                bool isSelect = CheckBox_Select.Checked;
-                if ((actionid.Equals("ZANTING") || actionid.Equals("JIESHU")) && (System.Configuration.ConfigurationSettings.AppSettings["BatchFinished"] == null && !Convert.ToBoolean(System.Configuration.ConfigurationSettings.AppSettings["BatchFinished"])))
-                {
-                    isSelect = true;
-                }
-                if (isSelect)
-                {
-                    Label dg_lab_FactStartTime = MainDatagrid.Items[i].FindControl("dg_lab_FactStartTime") as Label;
-                    Label lab_processno = MainDatagrid.Items[i].FindControl("dg_lab_processno") as Label;
-                    //判斷合併是否正確
-                    if (!dg_lab_FactStartTime.Text.Equals(""))
-                    {
-
-                        int processno = Convert.ToInt32(lab_processno.Text);
-                        PartProcessInfo ppi = new PartProcessInfo();
-                        if (processno != 0)
-                        {
-                            ppi = (PartProcessInfo)hprocessno[processno];
-                        }
-                        else
-                        {
-                            Label lab_moduleid = MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label;
-                            ppi = (PartProcessInfo)hprocessno[lab_moduleid.Text + "-" + "999"];
-                        }
-                        Label dg_lab_combineTimeStame = MainDatagrid.Items[i].FindControl("dg_lab_combineTimeStame") as Label;
-
-                        if (dg_lab_combineTimeStame.Text.Trim().Equals("0") && isCombine)
-                        {
-                            Label_Message.Text = ppi.PartNo_Id + "無法合併加工";
-                            return;
-                        }
-
-                        if (!dg_lab_combineTimeStame.Text.Trim().Equals("0") && !isCombine)
-                        {
-                            Label_Message.Text = ppi.PartNo_Id + "必須合併加工";
-                            return;
-                        }
-                    }
-
-                    lab_parnohidden.Text += lab_processno.Text + ",";
-                    count++;
-                }
-            }
-
-            if (count > 500)
-            {
-                Label_Message.Text = "無法刷超出500個小零件，請重新輸入";
-                return;
-            }
-
-            IList source = new ArrayList();
+       
+            List<PartPartProcessInfo> source = new List<PartPartProcessInfo>();
             IList partProcessHolds = new ArrayList();
-            IList partFinishedSource = new ArrayList();
-            IList partStartSource = new ArrayList();
+            List<PartPartProcessInfo> partFinishedSource = new List<PartPartProcessInfo>();
+            List<PartPartProcessInfo> partStartSource = new List<PartPartProcessInfo>();
             IList partFinishedProcessHolds = new ArrayList();
+            ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
+            ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour ppddw = new ModuleWorkFlow.BLL.PartPartProcessDealDateTimeWorkHour();
             for (int i = 0; i < MainDatagrid.Items.Count; i++)
             {
                 CheckBox CheckBox_Select = MainDatagrid.Items[i].FindControl("CheckBox_Select") as CheckBox;
-                ModuleWorkFlow.BLL.PartProcess pp = new ModuleWorkFlow.BLL.PartProcess();
-                ModuleWorkFlow.BLL.PartProcessDealDateTimeWorkHour ppddw = new ModuleWorkFlow.BLL.PartProcessDealDateTimeWorkHour();
+             
 
                 bool isSelect = CheckBox_Select.Checked;
                 if (actionid.Equals("JIESHU") || actionid.Equals("ZANTING"))
                 {
                     Label lab_processno = MainDatagrid.Items[i].FindControl("dg_lab_processno") as Label;
                     int processno = Convert.ToInt32(lab_processno.Text);
-                    PartProcessInfo ppi = new PartProcessInfo();
-                    if (processno != 0)
-                    {
-                        ppi = (PartProcessInfo)hprocessno[processno];
-                    }
-                    else
-                    {
-                        Label lab_moduleid = MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label;
-                        ppi = (PartProcessInfo)hprocessno[lab_moduleid.Text + "-" + "999"];
-                    }
+                    PartPartProcessInfo ppi = new PartPartProcessInfo();
+                  
+                     ppi = (PartPartProcessInfo)hprocessno[processno];
+                   
 
 
                     ppi.MachineId = lab_machine_value.Text;
@@ -1274,26 +1327,21 @@ namespace ModuleWorkFlow
                     {
                         partFinishedSource.Add(ppi);
                     }
-                    isSelect = true;
+                    //isSelect = true;
                 }
 
-
+                QRCode qRCode = new QRCode();   
 
 
                 if (isSelect)
                 {
                     Label lab_processno = MainDatagrid.Items[i].FindControl("dg_lab_processno") as Label;
                     int processno = Convert.ToInt32(lab_processno.Text);
-                    PartProcessInfo ppi = new PartProcessInfo();
-                    if (processno != 0)
-                    {
-                        ppi = (PartProcessInfo)hprocessno[processno];
-                    }
-                    else
-                    {
-                        Label lab_moduleid = MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label;
-                        ppi = (PartProcessInfo)hprocessno[lab_moduleid.Text + "-" + "999"];
-                    }
+                    PartPartProcessInfo ppi = new PartPartProcessInfo();
+                 
+                    ppi = (PartPartProcessInfo)hprocessno[processno];
+                    
+                  
 
 
                     ppi.MachineId = lab_machine_value.Text;
@@ -1301,25 +1349,103 @@ namespace ModuleWorkFlow
                     ppi.UserId = userno;
                     ppi.UserName = username;
 
+                 
+
+                    TextBox txt_productNumber = MainDatagrid.Items[i].FindControl("txt_productNumber") as TextBox;
+                    Label lab_productNumber = MainDatagrid.Items[i].FindControl("lab_productNumber") as Label;
+                    TextBox dg_txt_QRCode = MainDatagrid.Items[i].FindControl("dg_txt_QRCode") as TextBox;
+                    try
+                    {
+                        ppi.ScanCount = Convert.ToInt32(txt_productNumber.Text);
+                        ppi.BoxCount = Convert.ToInt32(lab_productNumber.Text);
+                        string splitQRCode = dg_txt_QRCode == null ? string.Empty : dg_txt_QRCode.Text.Trim();
+                        string targetQRCode = string.IsNullOrWhiteSpace(splitQRCode) ? ppi.QRCode : splitQRCode;
+                        ProcessBoxCodeRule processBoxCodeRule = new ProcessBoxCodeRule();
+                        string boxCodeRuleMsg = processBoxCodeRule.checkBoxCodeRule(ppi.ProcessId, lab_hiddenActionId.Text, ppi.NeedProduct, targetQRCode);
+                        if (!string.IsNullOrEmpty(boxCodeRuleMsg))
+                        {
+                            Label_Message.Text = boxCodeRuleMsg;
+                            return;
+                        }
+                        if (ppi.ScanCount < ppi.BoxCount)
+                        {
+                            if (string.IsNullOrWhiteSpace(splitQRCode))
+                            {
+                                Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text} 必須輸入分箱條碼";
+                                return;
+                            }
+
+                            if (string.Equals(splitQRCode, ppi.QRCode, StringComparison.OrdinalIgnoreCase))
+                            {
+                                Label_Message.Text = $@"{ppi.ModuleId}:{ppi.PartNo}加工數量小於箱數時，分箱條碼不能與原條碼相同";
+                                return;
+                            }
+                        }
+                        bool requiresSplitBox = !string.IsNullOrEmpty(splitQRCode)
+                            && !string.Equals(splitQRCode, ppi.QRCode, StringComparison.OrdinalIgnoreCase);
+                        if (requiresSplitBox)
+                        {
+                            if (!splitQRCode.StartsWith(PTSetting.PART_CODE + "-", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Label_Message.Text = $@"{ppi.ModuleId}:{ppi.PartNo}必須要綁定條碼,並且綁定條碼必須以M-開頭";
+                                return;
+                            }
+
+                            QRCodeInfo qRCodeInfo = qRCode.GetQRCodeByNo(splitQRCode);
+                            if (qRCodeInfo != null && !chk_combine.Checked)
+                            {
+                                Label_Message.Text = $@"{splitQRCode}已經綁定在{qRCodeInfo.ModuleId},{qRCodeInfo.PartNoId};";
+                                return;
+                            }
+
+                            ppi.SplitQRCode = splitQRCode;
+                        }
+                        else
+                        {
+                            ppi.SplitQRCode = "";
+                        }
+                        if (ppi.ScanCount > Convert.ToInt32(lab_productNumber.Text))
+                        {
+                            Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text}加工數量不能大於可加工{Convert.ToInt32(lab_productNumber.Text)}";
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        Label_Message.Text = $@"{(MainDatagrid.Items[i].FindControl("dg_lab_moduleid") as Label).Text},{(MainDatagrid.Items[i].FindControl("dg_lab_partnoId") as Label).Text}加工數量必須為數字";
+                        return;
+                    }
+
+                    if (!string.IsNullOrEmpty(pi.DealPartScan))
+                    {
+                        IPartScanBarEvent partScanBarEvent = DALFactory.PartScanBarEvent.Create(pi.DealPartScan);
+                        Label_Message.Text = partScanBarEvent.beforeSaveEvent(ppi);
+                        if (!string.IsNullOrEmpty(Label_Message.Text))
+                        {
+                            return;
+                        }
+
+                    }
+
+                    if ((!string.IsNullOrEmpty(ppi.QRCode) && !ppi.QRCode.Equals(txt_combine_qrCode.Text.Trim())) && ppi.ScanCount == ppi.BoxCount && chk_combine.Checked)
+                    {
+                        ppi.IsEmpty = 1;
+                    }
+
                     if ((actionid.Equals("ZANTING") || actionid.Equals("JIESHU")) && pi.NeedSchedule == 1 && needMachine && i == 0)
                     {
                         bool notDoing = false;
 
-                        if (ppi.PartNo.Equals("999"))
-                        {
-                            if (schedule.machineIsDoing(drp_processlist.SelectedValue, lab_machine_value.Text, ppi.ModuleId, ppi.PartNo_Id) == 0)
-                                notDoing = true;
-                        }
-                        else
-                        {
-                            if (schedule.machineIsDoing(drp_processlist.SelectedValue, lab_machine_value.Text, ppi.ProcessNo) == 0)
-                                notDoing = true;
-                        }
+                      
+                        
+                        if (schedule.machineIsDoing(drp_processlist.SelectedValue, lab_machine_value.Text, ppi.ProcessNo) == 0)
+                            notDoing = true;
+                        
 
                         if (notDoing)
                         {
-                            Label_Message.Text = "模具[" + ppi.ModuleId + "]零件[" + ppi.PartNo_Id + "]" +
-                                "工序[" + Methods.TranslateProcessName(ppi.ProcessId, new Process(), new ProcessCustomer()) + "]工序編號[" + ppi.ProcessOrder + "]狀態[" + Methods.TranslateStatusName(ppi.StatusId) + "]不可在此機臺生產,機臺空閑或不是此機臺加工";
+                            Label_Message.Text = "廠批[" + ppi.ModuleId + "]圖號[" + ppi.PartNo_Id + "]" +
+                                "工序[" + Utility.Methods.TranslateProcessName(ppi.ProcessId, new BLL.Process(), new ProcessCustomer()) + "]工序編號[" + ppi.ProcessOrder + "]狀態[" + Utility.Methods.TranslateStatusName(ppi.StatusId) + "]不可在此機臺生產,機臺空閑或不是此機臺加工";
                             return;
                         }
                         else
@@ -1338,22 +1464,47 @@ namespace ModuleWorkFlow
                             ppi.CustomerProcessList = dg_lab_qccustomerprocesslist.Text;
 
                             TextBox dg_lab_Eligibility = MainDatagrid.Items[i].FindControl("dg_lab_Eligibility") as TextBox;
-                            if (!dg_lab_Eligibility.Text.Equals("1") && !dg_lab_Eligibility.Text.Equals("") && !dg_lab_Eligibility.Text.Equals("0"))
+                            try
                             {
-                                Label_Message.Text = "請輸入正確的合格數量";
+                                ppi.Eligibility = Convert.ToInt32(dg_lab_Eligibility.Text);
+                            }
+                            catch
+                            {
+                                Label_Message.Text = "合格數量請輸入正確數字";
+                            }
+                            if (ppi.Eligibility > ppi.ScanCount)
+                            {
+                                Label_Message.Text = "合格數量不允許大於檢測數量";
                                 return;
                             }
-                            if (dg_lab_Eligibility.Text.Equals("1"))
-                            {
-                                ppi.Eligibility = 1;
-                                ppi.Ineligibility = 0;
-                            }
-                            else
-                            {
-                                ppi.Eligibility = 0;
-                                ppi.Ineligibility = 1;
-                            }
 
+                            ppi.Ineligibility = ppi.ScanCount - ppi.Eligibility;
+
+                            if (ppi.Ineligibility >0)
+                            {
+                                TextBox dg_txt_IneligibilityQR = MainDatagrid.Items[i].FindControl("dg_txt_IneligibilityQR") as TextBox;
+                                if (string.IsNullOrEmpty(dg_txt_IneligibilityQR.Text))
+                                {
+                                    Label_Message.Text = "有不合格數量必須填入不合格QRCode";
+                                    return;
+                                }
+                                if (!dg_txt_IneligibilityQR.Text.Substring(0, 2).Equals(PTSetting.PART_CODE + "-"))
+                                {
+                                    Label_Message.Text = $@"{ppi.ModuleId}:{ppi.PartNo}不合格QRCode必須以M-開頭";
+                                    return;
+                                }
+
+                                if (qRCode.GetQRCodeByNo(dg_txt_IneligibilityQR.Text) != null)
+                                {
+                                    Label_Message.Text = $"{dg_txt_IneligibilityQR.Text}已被使用";
+                                    return;
+                                }
+
+                                ppi.IneligibilityQRCode = dg_txt_IneligibilityQR.Text;
+                            }
+                          
+
+                            //ppi.FinishedCount = ppi.Eligibility;
 
                         }
                         source.Add(ppi);
@@ -1385,6 +1536,99 @@ namespace ModuleWorkFlow
                     }
                 }
             }
+
+            //end of for 
+            BoxLog boxlog = new BoxLog();
+            // 首道工序、狀態 Ready、ReadyCount 為 0 時先走裝箱（與外發頁 FirstProcessBoxing 一致），再進後續 QC/合併/scanbar
+            if ((actionid.Equals("KAISHI") && pi.StartDirectly) || (actionid.Equals("JIEDAN")))
+            {
+                foreach (PartPartProcessInfo ppi in source)
+                {
+                    if (ppi.ProcessOrder == 1 && ppi.StatusId.Equals("Ready") && ppi.EachBatchCount == 0)
+                    {
+                        ArrayList ilist = new ArrayList();
+                        string boxMsg = boxlog.FirstProcessBoxing(ppi, scanTime, schedule, ilist);
+                        if (!string.IsNullOrEmpty(boxMsg))
+                        {
+                            Label_Message.Text = boxMsg;
+                            return;
+                        }
+                    }
+                }
+            }
+            if (pi.PriceType.Equals("QC") && actionid.Equals("JIESHU"))
+            {
+                var grouped = source.FindAll(m=>!string.IsNullOrEmpty(m.IneligibilityQRCode))
+                      .GroupBy(item => item.IneligibilityQRCode)
+                      .ToList();
+                if (grouped.Count  < source.Count)
+                {
+                    foreach (var group in grouped)
+                    {
+                        List<PartPartProcessInfo> unormalpartPartProcessInfos = new List<PartPartProcessInfo>();
+                        unormalpartPartProcessInfos.Add(source.FindLast(m =>!string.IsNullOrEmpty(m.IneligibilityQRCode) &&  m.IneligibilityQRCode.Equals(group.Key)));
+
+                        foreach (var unormalppi in source.FindAll(m => m.IneligibilityQRCode.Equals(group.Key)))
+                        {
+
+                            if (unormalpartPartProcessInfos.IndexOf(unormalppi) < 0)
+                            {
+                               
+                                unormalpartPartProcessInfos.Add(unormalppi);
+                            }
+
+                        }
+
+                        var (combinemsg, combinCount) = boxlog.checkUnormalCanCombine(unormalpartPartProcessInfos, group.Key, actionid);
+                        if (!combinemsg.Equals(""))
+                        {
+                            Label_Message.Text = combinemsg;
+                            return;
+                        }
+
+                    }
+                }
+
+           
+            }
+
+             
+          
+ 
+            int totalCombineCount = 0;
+         
+            if (chk_combine.Checked)
+            {
+                var (combinemsg, combinCount) = boxlog.checkCanCombine(source, txt_combine_qrCode.Text.Trim(),actionid);
+                if (!combinemsg.Equals(""))
+                {
+                    Label_Message.Text = combinemsg;
+                    return;
+                }
+                else
+                {
+                    string searchText = txt_combine_qrCode.Text.Trim();
+                    var combinList = source.FindAll(m => !m.QRCode.Equals(searchText));
+
+                    int totalIneligibility = combinList.Sum(m => m.Ineligibility);
+                    int totalEligibility = combinList.Sum(m => m.Eligibility);
+
+                    totalCombineCount = combinCount;
+                    source.FindAll(m => m.QRCode.Equals(searchText))[0].OriginalScanCount = source.FindAll(m => m.QRCode.Equals(txt_combine_qrCode.Text.Trim()))[0].ScanCount;
+                    //source.FindAll(m => m.QRCode.Equals(searchText))[0].ScanCount += combinCount;
+                    source.FindAll(m => m.QRCode.Equals(searchText))[0].Ineligibility += totalIneligibility;
+                    source.FindAll(m => m.QRCode.Equals(searchText))[0].Eligibility += totalEligibility;
+
+
+                }
+            }
+
+      
+
+       
+
+
+
             IList isource = new ArrayList();
             try
             {
@@ -1393,99 +1637,191 @@ namespace ModuleWorkFlow
                 if (lab_hiddenWorkHours.Text.Equals(""))
                     lab_hiddenWorkHours.Text = "8";
 
-                if (actionid.Equals("ZANTING") || actionid.Equals("JIESHU"))
+                List<PartPartProcessInfo> completedSource = source.Cast<PartPartProcessInfo>().ToList();
+                bool requiresSplitActionHandling = RequiresSplitActionHandling(actionid);
+                List<PartPartProcessInfo> splitActionSource = requiresSplitActionHandling
+                    ? completedSource.FindAll(m => RequiresSplitBox(m))
+                    : new List<PartPartProcessInfo>();
+                List<PartPartProcessInfo> normalActionSource = requiresSplitActionHandling
+                    ? completedSource.FindAll(m => !RequiresSplitBox(m))
+                    : completedSource;
+
+                if (actionid.Equals("ZANTING") || requiresSplitActionHandling)
                 {
                     string retMsg = "";
                     if (source.Count > 0)
                     {
                         if (actionid.Equals("ZANTING"))
                         {
-                            if (partStartSource.Count > 0)
-                            {
-                                (source as ArrayList).AddRange(partStartSource);
-                                retMsg = scanbar.updatePartProcessInfo(source, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partFinishedProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), chk_combine.Checked, scanTime);
-                                IList partStartHolds = new ArrayList();
-                                foreach (PartProcessInfo ppi in partStartSource)
-                                {
-                                    ppi.StatusId = "Holdon";
-                                    ppi.HoldOnCount++;
-                                    PartProcessHoldInfo partProcessHoldInfo = new PartProcessHoldInfo();
-                                    partProcessHoldInfo.ModuleId = ppi.ModuleId;
-                                    partProcessHoldInfo.ProcessOrder = ppi.ProcessOrder;
-                                    partProcessHoldInfo.CombineTimeStamp = ppi.CombineTimeStamp;
-                                    partProcessHoldInfo.PartNo_Id = ppi.PartNo_Id;
-                                    partProcessHoldInfo.Enddate = scanTime;
-                                    partStartHolds.Add(partProcessHoldInfo);
-                                }
-
-                                if (retMsg.Equals(Lang.SAVE_SUCCESS))
-                                {
-                                    Label_Message.Text = scanbar.updatePartProcessInfo(partStartSource, "KAISHI", "開始", pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partStartHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), chk_combine.Checked, scanTime);
-                                }
-                                else
-                                {
-                                    Label_Message.Text = retMsg;
-                                }
-                            }
-                            else
-                            {
-                                retMsg = scanbar.updatePartProcessInfo(source, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), chk_combine.Checked, scanTime);
+                         
+                          
+                                retMsg = scanbar.updatePartProcessInfo(source, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, scanTime);
                                 Label_Message.Text = retMsg;
-                            }
-
+                            
 
 
 
                         }
                         else
                         {
-                            if (partStartSource.Count > 0 && source.Count > 0)
+                            if (chk_combine.Checked)
                             {
-                                retMsg = scanbar.updatePartProcessInfo(source, "ZANTING", "暫停", pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partFinishedProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, chk_combine.Checked, scanTime);
-                                if (retMsg.Equals(Lang.SAVE_SUCCESS))
-                                {
-                                    foreach (PartProcessInfo ppi in source)
-                                    {
-                                        ppi.StatusId = "Holdon";
-                                        ppi.HoldOnCount++;
-                                    }
-
-                                    foreach (PartProcessHoldInfo pphi in partFinishedProcessHolds)
-                                    {
-                                        pphi.Enddate = scanTime;
-                                    }
-
-                                    retMsg = scanbar.updatePartProcessInfo(source, "KAISHI", "開始", pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partFinishedProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, chk_combine.Checked, scanTime);
-                                    if (retMsg.Equals(Lang.SAVE_SUCCESS))
-                                    {
-                                        foreach (PartProcessInfo ppi in partFinishedSource)
-                                        {
-                                            ppi.StatusId = "Working";
-                                            ppi.HoldOnCount++;
-                                        }
-                                        retMsg = scanbar.updatePartProcessInfo(partFinishedSource, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, chk_combine.Checked, scanTime);
-                                    }
-
-                                }
+                                retMsg = scanbar.updatePartProcessInfo(normalActionSource.FindAll(m => m.QRCode.Equals(txt_combine_qrCode.Text.Trim()) || m.IsEmpty == 1), actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, scanTime);
                             }
                             else
                             {
-                                retMsg = scanbar.updatePartProcessInfo(source, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, chk_combine.Checked, scanTime);
+                                if (normalActionSource.Count > 0)
+                                {
+                                    retMsg = scanbar.updatePartProcessInfo(normalActionSource, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, scanTime);
+                                }
+                                else
+                                {
+                                    retMsg = Lang.SAVE_SUCCESS;
+                                }
                             }
 
+                            if (retMsg.Equals(Lang.SAVE_SUCCESS) && splitActionSource.Count > 0)
+                            {
+                                List<PartPartProcessInfo> splitFinishedSource = new List<PartPartProcessInfo>();
+                                string splitActionNotes = string.Empty;
+                                IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
+                                outsourceApplyDesigninfo.Creater = userno;
+                                outsourceApplyDesigninfo.CreateDate = DateTime.Now;
 
-                            Label_Message.Text = retMsg;
+                                foreach (PartPartProcessInfo splitSource in splitActionSource)
+                                {
+                                    var splitActionResult = boxlog.HandleSplitAction(splitSource, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), userno, GetAutoSplitEmptyBoxMode(), scanTime, new PartOutSourceDetail(), outsourceApplyDesigninfo);
+                                    if (!splitActionResult.msg.Equals(Lang.SAVE_SUCCESS) || splitActionResult.splitppi == null)
+                                    {
+                                        retMsg = splitActionResult.msg;
+                                        break;
+                                    }
 
+                                    if (!string.IsNullOrEmpty(splitActionResult.note))
+                                    {
+                                        splitActionNotes += splitActionResult.note;
+                                    }
+
+                                    splitFinishedSource.Add(splitActionResult.splitppi);
+                                }
+
+                                if (retMsg.Equals(Lang.SAVE_SUCCESS))
+                                {
+                                    completedSource = normalActionSource.Concat(splitFinishedSource).ToList();
+                                    Label_Message.Text = retMsg + splitActionNotes;
+                                }
+                            }
+
+                            if (string.IsNullOrEmpty(Label_Message.Text) || !retMsg.Equals(Lang.SAVE_SUCCESS))
+                            {
+                                Label_Message.Text = retMsg;
+                            }
                         }
                     }
                 }
                 else
                 {
-                    Label_Message.Text = scanbar.updatePartProcessInfo(source, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, chk_combine.Checked, scanTime);
+                    if (chk_combine.Checked)
+                    {
+                        Label_Message.Text = scanbar.updatePartProcessInfo(source.FindAll(m => m.QRCode.Equals(txt_combine_qrCode.Text.Trim()) || m.IsEmpty == 1), actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, scanTime);
+                    }
+                    else
+                    {
+                        Label_Message.Text = scanbar.updatePartProcessInfo(source, actionid, lab_actionvalue.Text, pi, Convert.ToDouble(lab_hiddenWorkHours.Text), 0, partProcessHolds, new ModuleWorkFlow.BLL.Outsource.OutSourceDetail(), false, scanTime);
+                    }
+
                 }
 
 
+                (string msg, List<PartPartProcessInfo> unNormalSource) unnormalResult = ("", new  List<PartPartProcessInfo>());
+                if (Label_Message.Text.Equals(Lang.SAVE_SUCCESS))
+                {
 
+                    if (pi.PriceType.Equals("QC") && actionid.Equals("JIESHU"))
+                    {
+
+                        unnormalResult  = pp.UnNormalPartDeal(completedSource, scanTime,pi.FinishedDirectly || pi.EndDirectly); 
+                      
+
+                    }
+
+                    IOutsourceApplyDesignInfo outsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
+                    outsourceApplyDesigninfo.Creater = userno;
+                    outsourceApplyDesigninfo.CreateDate = DateTime.Now;
+                    if (chk_combine.Checked)
+                    {
+                        Label_Message.Text = boxlog.boxCombineOperation(completedSource, txt_combine_qrCode.Text.Trim(), totalCombineCount, actionid, scanTime, new PartOutSourceDetail(), outsourceApplyDesigninfo);
+                    }
+                 
+                    foreach (PartPartProcessInfo ppi in completedSource)
+                    {
+                        if (ppi.QRCode.Equals(txt_combine_qrCode.Text) && chk_combine.Checked)
+                        {
+                            continue;
+                        }
+                        if (RequiresSplitActionHandling(actionid) && RequiresSplitBox(ppi))
+                        {
+                            continue;
+                        }
+                        Label_Message.Text = boxlog.boxOperation(ppi, actionid, ppi.SplitQRCode, scanTime, new PartOutSourceDetail(), outsourceApplyDesigninfo);
+                    }
+                    
+
+                    if (unnormalResult.msg.Equals(Lang.SAVE_SUCCESS) && unnormalResult.unNormalSource.Count > 0 )
+                    {
+                        List<PartPartProcessInfo> unNormalSource = new List<PartPartProcessInfo>();
+                        foreach (var unnormalppi in unnormalResult.unNormalSource)
+                        {
+                            PartPartProcessInfo unppi = pp.getPartProcessInfo(unnormalppi.ModuleId, unnormalppi.PartNo_Id, unnormalppi.ProcessOrder);
+                            unppi.ScanCount = unppi.FinishedCount;
+                            unppi.BoxCount = unppi.FinishedCount;
+                            unppi.OriginalScanCount = unppi.FinishedCount;
+                            unppi.QRCode = unnormalppi.QRCode;
+                            unNormalSource.Add(unppi);
+                        }
+                        var grouped = unNormalSource.FindAll(m => !string.IsNullOrEmpty(m.QRCode))
+                                             .GroupBy(item => item.QRCode)
+                                             .ToList();
+
+                        foreach (var group in grouped)
+                        {
+                            txt_Ineligibility_qrCode.Text = group.Key;
+                            if (unNormalSource.FindAll(m => m.QRCode.Equals(group.Key)).Count == 1)
+                            {
+                                continue;
+                            }
+                            IOutsourceApplyDesignInfo ncoutsourceApplyDesigninfo = new OutsourceApplyDesignInfo();
+                            ncoutsourceApplyDesigninfo.Creater = userno;
+                            ncoutsourceApplyDesigninfo.CreateDate = DateTime.Now;
+                            int combineCount = 0;
+                            var unnormalCombines = unNormalSource.FindAll(m => m.QRCode.Equals(group.Key));
+                            foreach (var unnormalppi in unnormalCombines)
+                            {
+                                if (!unnormalppi.Equals(unnormalCombines.Find(m => m.QRCode.Equals(group.Key))))
+                                {
+                                    unnormalppi.QRCode = "";
+                                    combineCount += unnormalppi.ScanCount;
+                                }
+                            }
+                            boxlog.boxCombineOperation(unnormalCombines, txt_Ineligibility_qrCode.Text.Trim(), combineCount, actionid, scanTime, new PartOutSourceDetail(), ncoutsourceApplyDesigninfo);
+             
+                        }
+
+                       
+                    }
+
+                    if (!string.IsNullOrEmpty(pi.DealPartScan))
+                    {
+                        IPartScanBarEvent partScanBarEvent = DALFactory.PartScanBarEvent.Create(pi.DealPartScan);
+                        Label_Message.Text = partScanBarEvent.afterSaveEvent(source);
+                      
+                    }
+
+                }
+              
+
+                //if (Label_Message.Text.Equals(""))
+                //    Label_Message.Text = Lang.SAVE_SUCCESS;
             }
             catch (Exception ex)
             {
@@ -1524,87 +1860,157 @@ namespace ModuleWorkFlow
 
         private void MainDatagrid_ItemDataBound(object sender, System.Web.UI.WebControls.DataGridItemEventArgs e)
         {
+            ModuleWorkFlow.Model.ProcessInfo pi = new BLL.Process().GetProcessInfoById(drp_processlist.SelectedValue);
             if (e.Item.ItemType == ListItemType.Header)
             {
-                CheckBox allcheckbox = e.Item.FindControl("allcheckbox") as CheckBox;
-                if (lab_hiddenActionId.Text.Equals("JIESHU") || lab_hiddenActionId.Text.Equals("ZANTING"))
-                {
-                    allcheckbox.Visible = true;
-                    allcheckbox.Checked = true;
+                CheckBox allcheckbox = e.Item.FindControl("checkall") as CheckBox;
+                //if (lab_hiddenActionId.Text.Equals("JIESHU") || lab_hiddenActionId.Text.Equals("ZANTING"))
+                //{
+                //    allcheckbox.Visible = true;
+                //    allcheckbox.Checked = true;
 
-                }
-                else
+                //}
+                //else
+                //{
+                //    allcheckbox.Visible = false;
+                //    allcheckbox.Visible = false;
+                //}
+                // 获取表头中的 Label 控件
+                Label lblHeaderCount = (Label)e.Item.FindControl("dg_header_Count");
+
+                if (lab_hiddenActionId.Text.Equals("JIEDAN"))
                 {
-                    allcheckbox.Visible = false;
-                    allcheckbox.Visible = false;
+                    // 设置表头 Label 的文本
+                    lblHeaderCount.Text = "接單數量";
                 }
+
+                if (lab_hiddenActionId.Text.Equals("KAISHI"))
+                {
+                    // 设置表头 Label 的文本
+                    lblHeaderCount.Text = "開始數量";
+                }
+
+                if (lab_hiddenActionId.Text.Equals("ZANTING"))
+                {
+                    // 设置表头 Label 的文本
+                    lblHeaderCount.Text = "暫停數量";
+                }
+
+                if (lab_hiddenActionId.Text.Equals("JIESHU"))
+                {
+                    if (pi != null && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC")))
+                    {
+                        // 设置表头 Label 的文本
+                        lblHeaderCount.Text = "檢測數量";
+                    }else
+                    {
+                        // 设置表头 Label 的文本
+                        lblHeaderCount.Text = "結束數量";
+                    }
+                      
+                }
+
+                if (lab_hiddenActionId.Text.Equals("XIAODAN"))
+                {
+                    // 设置表头 Label 的文本
+                    lblHeaderCount.Text = "消單數量";
+                }
+
             }
+
+         
             if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
             {
-                e.Item.Cells[0].Text = Convert.ToString((e.Item.ItemIndex + 1));
+                Label dg_lab_ProcessNo = e.Item.FindControl("dg_lab_ProcessNo") as Label;
+                int processno = Convert.ToInt32(dg_lab_ProcessNo.Text);
+
+                ModuleWorkFlow.BLL.PartPartProcess pp = new ModuleWorkFlow.BLL.PartPartProcess();
+                PartPartProcessInfo ppi = pp.getPartProcessInfo(processno);
+
+                Label statusid = e.Item.FindControl("dg_lab_statuscode") as Label;
+
+                TextBox txt_productNumber = e.Item.FindControl("txt_productNumber") as TextBox;
+                Label lab_productNumber = e.Item.FindControl("lab_productNumber") as Label;
+                TextBox dg_txt_QRCode = e.Item.FindControl("dg_txt_QRCode") as TextBox;
+                int displayCount;
+                bool productNumberReadOnly;
+                bool splitQrCodeReadOnly;
+                scanbar.GetProductNumberDisplayState(lab_hiddenActionId.Text, ppi, pi, out displayCount, out productNumberReadOnly, out splitQrCodeReadOnly);
+                lab_productNumber.Text = displayCount.ToString();
+                txt_productNumber.Text = lab_productNumber.Text;
+                txt_productNumber.ReadOnly = productNumberReadOnly;
+                txt_productNumber.BackColor = productNumberReadOnly ? Color.LightGray : Color.White;
+                dg_txt_QRCode.ReadOnly = splitQrCodeReadOnly;
+                dg_txt_QRCode.BackColor = splitQrCodeReadOnly ? Color.LightGray : Color.White;
+
+                if (lab_hiddenActionId.Text.Equals("JIESHU"))
+                {
+                    if (pi != null && (pi.PriceType.ToUpper().Equals("QC") || pi.PriceType.ToUpper().Equals("RQC")))
+                    {
+                        TextBox dg_lab_Eligibility = e.Item.FindControl("dg_lab_Eligibility") as TextBox;
+                        dg_lab_Eligibility.Text = txt_productNumber.Text;
+                    }
+                }
+                
+
+                    //e.Item.Cells[0].Text = Convert.ToString((e.Item.ItemIndex + 1));
                 Label dg_lab_combineTimeStame = e.Item.FindControl("dg_lab_combineTimeStame") as Label;
                 CheckBox CheckBox_Select = e.Item.FindControl("CheckBox_Select") as CheckBox;
 
-                Label dg_lab_FactStartTime = e.Item.FindControl("dg_lab_FactStartTime") as Label;
-                Label dg_lab_combineTime = e.Item.FindControl("dg_lab_combineTime") as Label;
-                if ((!dg_lab_combineTimeStame.Text.Trim().Equals("") && !dg_lab_combineTimeStame.Text.Trim().Equals("0")))
-                {
-                    dg_lab_combineTime.Text = new DateTime(Convert.ToInt64(dg_lab_combineTimeStame.Text.Trim())).ToString("MM-dd HH:mm");
+                //Label dg_lab_FactStartTime = e.Item.FindControl("dg_lab_FactStartTime") as Label;
+              
+                //if (!dg_lab_FactStartTime.Text.Trim().Equals("") && Convert.ToDateTime(dg_lab_FactStartTime.Text.Trim()).Ticks > 0)
+                //{
 
+                //    CheckBox_Select.Enabled = false;
+                //    if (chk_combine.Checked)
+                //    {
 
-                }
-                if (!dg_lab_FactStartTime.Text.Trim().Equals("") && Convert.ToDateTime(dg_lab_FactStartTime.Text.Trim()).Ticks > 0)
-                {
+                //        if (dg_lab_combineTimeStame.Text.Trim().Equals("") || dg_lab_combineTimeStame.Text.Trim().Equals("0"))
+                //        {
+                //            CheckBox_Select.Checked = false;
+                //            CheckBox_Select.Enabled = false;
+                //        }
+                //        else
+                //        {
+                //            //if (lab_combineStamp.Text.Trim().Equals("0"))
+                //            //{
+                //            //    lab_combineStamp.Text = dg_lab_combineTimeStame.Text;
+                //            //}
+                //            if (dg_lab_combineTimeStame.Text.Trim().Equals(lab_combineStamp.Text.Trim()))
+                //            {
+                //                CheckBox_Select.Checked = true;
+                //            }
+                //            else
+                //            {
+                //                CheckBox_Select.Checked = false;
+                //            }
+                //            CheckBox_Select.Enabled = true;
 
-                    CheckBox_Select.Enabled = false;
-                    if (chk_combine.Checked)
-                    {
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if ((!dg_lab_combineTimeStame.Text.Trim().Equals("") && !dg_lab_combineTimeStame.Text.Trim().Equals("0")))
+                //        {
+                //            CheckBox_Select.Checked = false;
+                //            CheckBox_Select.Enabled = false;
+                //        }
+                //        else
+                //        {
+                //            CheckBox_Select.Checked = true;
+                //            CheckBox_Select.Enabled = true;
+                //        }
 
-                        if (dg_lab_combineTimeStame.Text.Trim().Equals("") || dg_lab_combineTimeStame.Text.Trim().Equals("0"))
-                        {
-                            CheckBox_Select.Checked = false;
-                            CheckBox_Select.Enabled = false;
-                        }
-                        else
-                        {
-                            //if (lab_combineStamp.Text.Trim().Equals("0"))
-                            //{
-                            //    lab_combineStamp.Text = dg_lab_combineTimeStame.Text;
-                            //}
-                            if (dg_lab_combineTimeStame.Text.Trim().Equals(lab_combineStamp.Text.Trim()))
-                            {
-                                CheckBox_Select.Checked = true;
-                            }
-                            else
-                            {
-                                CheckBox_Select.Checked = false;
-                            }
-                            CheckBox_Select.Enabled = true;
-
-                        }
-                    }
-                    else
-                    {
-                        if ((!dg_lab_combineTimeStame.Text.Trim().Equals("") && !dg_lab_combineTimeStame.Text.Trim().Equals("0")))
-                        {
-                            CheckBox_Select.Checked = false;
-                            CheckBox_Select.Enabled = false;
-                        }
-                        else
-                        {
-                            CheckBox_Select.Checked = true;
-                            CheckBox_Select.Enabled = true;
-                        }
-
-                    }
-                }
-                else
-                {
-                    if (!chk_combine.Checked || lab_combineStamp.Text.Equals("0"))
-                        CheckBox_Select.Enabled = true;
-                    else
-                        CheckBox_Select.Checked = false;
-                }
+                //    }
+                //}
+                //else
+                //{
+                //    if (!chk_combine.Checked || lab_combineStamp.Text.Equals("0"))
+                //        CheckBox_Select.Enabled = true;
+                //    else
+                //        CheckBox_Select.Checked = false;
+                //}
 
 
             }
@@ -1629,173 +2035,12 @@ namespace ModuleWorkFlow
 
         protected void chk_combine_CheckedChanged(object sender, EventArgs e)
         {
-            if (!chk_combine.Checked)
-            {
-                lab_combineStamp.Text = "0";
-            }
-            else
-            {
-                for (int i = 0; i < MainDatagrid.Items.Count; i++)
-                {
-                    Label dg_lab_combineTimeStame = MainDatagrid.Items[i].FindControl("dg_lab_combineTimeStame") as Label;
-                    Label dg_lab_FactStartTime = MainDatagrid.Items[i].FindControl("dg_lab_FactStartTime") as Label;
-                    if ((!dg_lab_combineTimeStame.Text.Trim().Equals("") && !dg_lab_combineTimeStame.Text.Trim().Equals("0")) || dg_lab_FactStartTime.Text.Trim().Equals(""))
-                    {
-                        if (dg_lab_FactStartTime.Text.Trim().Equals(""))
-                        {
-                            lab_combineStamp.Text = "0";
-                        }
-                        else
-                        {
-                            lab_combineStamp.Text = dg_lab_combineTimeStame.Text.Trim();
-                        }
-                        break;
-                    }
-                }
-
-            }
-            if (!lab_hiddenActionId.Text.Equals("JIEDAN") && !lab_hiddenActionId.Text.Equals("XIAODAN"))
-            {
-                for (int i = 0; i < MainDatagrid.Items.Count; i++)
-                {
-                    Label dg_lab_combineTimeStame = MainDatagrid.Items[i].FindControl("dg_lab_combineTimeStame") as Label;
-                    CheckBox CheckBox_Select = MainDatagrid.Items[i].FindControl("CheckBox_Select") as CheckBox;
-
-                    Label dg_lab_FactStartTime = MainDatagrid.Items[i].FindControl("dg_lab_FactStartTime") as Label;
-
-                    if (chk_combine.Checked)
-                    {
-                        if (!dg_lab_FactStartTime.Text.Trim().Equals("") && Convert.ToDateTime(dg_lab_FactStartTime.Text.Trim()).Ticks > 0)
-                        {
-                            if ((dg_lab_combineTimeStame.Text.Trim().Equals("") || dg_lab_combineTimeStame.Text.Trim().Equals("0")))
-                            {
-                                CheckBox_Select.Checked = false;
-                                CheckBox_Select.Enabled = false;
-                            }
-                            else
-                            {
-                                CheckBox_Select.Enabled = true;
-                                if (!dg_lab_combineTimeStame.Text.Trim().Equals(lab_combineStamp.Text.Trim()))
-                                {
-                                    CheckBox_Select.Checked = false;
-
-                                }
-                                else
-                                {
-                                    CheckBox_Select.Checked = true;
-                                }
-                            }
-                        }
-                        else //not start
-                        {
-                            if (lab_combineStamp.Text.Trim().Equals("0"))
-                            {
-                                CheckBox_Select.Checked = true;
-                                CheckBox_Select.Enabled = true;
-                            }
-                            else
-                            {
-                                CheckBox_Select.Checked = false;
-                                //CheckBox_Select.Enabled = false;
-                            }
-                        }
-                    }
-                    else // not combine
-                    {
-                        if (!dg_lab_combineTimeStame.Text.Trim().Equals("") && !dg_lab_combineTimeStame.Text.Trim().Equals("0"))
-                        {
-                            CheckBox_Select.Checked = false;
-                            CheckBox_Select.Enabled = true;
-                        }
-                        else
-                        {
-                            CheckBox_Select.Checked = true;
-                            CheckBox_Select.Enabled = true;
-                        }
-                    }
-                }
-            }
+         
         }
 
-        protected void CheckBox_Select_CheckedChanged(object sender, EventArgs e)
-        {
-            DataGridItem item = ((sender as CheckBox)).Parent.Parent as DataGridItem;
-            Label dg_lab_combineTimeStame = item.FindControl("dg_lab_combineTimeStame") as Label;
-            lab_combineStamp.Text = dg_lab_combineTimeStame.Text;
-            CheckBox CheckBox_Select = item.FindControl("CheckBox_Select") as CheckBox;
-            if (CheckBox_Select.Checked)
-            {
-                changCombineCheck(item);
-            }
-        }
+     
 
-        private void changCombineCheck(DataGridItem item)
-        {
-            if (!lab_hiddenActionId.Text.Equals("JIEDAN") && !lab_hiddenActionId.Text.Equals("XIAODAN") && !lab_hiddenActionId.Text.Equals("ZANTING") && !lab_hiddenActionId.Text.Equals("JIESHU"))
-            {
-                for (int i = 0; i < MainDatagrid.Items.Count; i++)
-                {
-                    Label dg_lab_combineTimeStame = MainDatagrid.Items[i].FindControl("dg_lab_combineTimeStame") as Label;
-                    CheckBox CheckBox_Select = MainDatagrid.Items[i].FindControl("CheckBox_Select") as CheckBox;
-
-                    Label dg_lab_FactStartTime = MainDatagrid.Items[i].FindControl("dg_lab_FactStartTime") as Label;
-
-                    if (chk_combine.Checked)
-                    {
-                        if (!dg_lab_FactStartTime.Text.Trim().Equals("") && Convert.ToDateTime(dg_lab_FactStartTime.Text.Trim()).Ticks > 0)
-                        {
-                            if ((dg_lab_combineTimeStame.Text.Trim().Equals("") || dg_lab_combineTimeStame.Text.Trim().Equals("0")))
-                            {
-                                CheckBox_Select.Checked = false;
-                                CheckBox_Select.Enabled = false;
-                            }
-                            else
-                            {
-                                CheckBox_Select.Enabled = true;
-                                if (!dg_lab_combineTimeStame.Text.Trim().Equals(lab_combineStamp.Text.Trim()))
-                                {
-                                    CheckBox_Select.Checked = false;
-
-                                }
-                                else
-                                {
-                                    if (!(i == item.ItemIndex && !CheckBox_Select.Checked))
-                                    {
-                                        CheckBox_Select.Checked = true;
-                                    }
-
-                                }
-                            }
-                        }
-                        else //not start
-                        {
-                            if (lab_combineStamp.Text.Trim().Equals("0"))
-                            {
-                                //if (!(i == item.ItemIndex && !CheckBox_Select.Checked && lab_combineStamp.Text.Trim().Equals("0")))
-                                //{
-                                //    CheckBox_Select.Checked = true;
-                                //}
-                                CheckBox_Select.Enabled = true;
-                            }
-                            else
-                            {
-                                CheckBox_Select.Checked = false;
-                                CheckBox_Select.Enabled = true;
-                            }
-                        }
-                    }
-                    else // not combine
-                    {
-                        if (!dg_lab_combineTimeStame.Text.Trim().Equals("") && !dg_lab_combineTimeStame.Text.Trim().Equals("0"))
-                        {
-                            CheckBox_Select.Checked = false;
-                            CheckBox_Select.Enabled = false;
-                        }
-
-                    }
-                }
-            }
-        }
+      
 
         protected void chkall_onchanged(object sender, EventArgs e)
         {
@@ -1811,3 +2056,4 @@ namespace ModuleWorkFlow
         }
     }
 }
+
